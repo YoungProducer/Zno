@@ -1,0 +1,13 @@
+/* Example stylesheet */
+
+h1 {
+  font-family: helvetica;
+  font-size: 21px;
+  font-weight: 200;
+}
+
+.block {
+  color: #e6e;
+  width: 260px;
+  height: 140px;
+}
