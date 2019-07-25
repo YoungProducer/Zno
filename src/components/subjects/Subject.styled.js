@@ -25,7 +25,7 @@ export const Wrapper = styled.div`
 
 const PosedWrapperBg = posed.div({
     init: {
-        x: '-100%',
+        x: '-101%',
         transition: {
             ease: [0.17, 0.81, 0.32, 0.94],
             duration: 400
@@ -61,7 +61,13 @@ export const Name = styled.h1`
 
     transform: translate(-50%, -50%);
 
+    font-family: 'ProductSans';
+    font-weight: lighter;
+    font-size: 18px;
+
     text-align: center;
 
     z-index: 2;
+
+    transition: all .1s ease-in-out;
 `

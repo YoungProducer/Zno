@@ -1,5 +1,5 @@
 import React from 'react'
-import Content from '../subjects/Content'
+import Content from '../components/subjects/Content'
 
 const Subjects = (props) => (
 

@@ -3,13 +3,16 @@ import Subject from './Subject'
 
 import { 
     ContentWrapper,
-    SubjectsWrapper 
+    SubjectsWrapper,
+    Header
 } from './Content.styled'
 
 const Content = (props) => {
 
     return(
         <ContentWrapper>
+            <Header>Предмети</Header>
+
             <SubjectsWrapper>
                 <Subject 
                     leftColor={'#FFBE76'}
