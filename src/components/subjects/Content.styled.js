@@ -5,7 +5,8 @@ export const ContentWrapper = styled.div`
     margin: auto;
     width: calc(100vw - 120px);
     max-width: 1440px;
-    padding-top: 90px;
+    margin-top: 90px;
+    position: relative;
 `
 
 export const SubjectsWrapper = styled.div`

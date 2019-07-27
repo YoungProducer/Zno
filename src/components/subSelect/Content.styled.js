@@ -8,15 +8,53 @@ export const theme = createMuiTheme({
         MuiOutlinedInput: {
             root: {
                 width: 220,
-                height: 47
+                height: 47,
+                '&$focused $notchedOutline': {
+                    borderColor: '#565656',
+                    borderWidth: 2,
+                },
+                '&:hover:not($disabled):not($focused):not($error) $notchedOutline': {
+                    borderColor: '#565656',
+                },
+            },
+            notchedOutline: {
+                borderColor: "#E7E5E2",
+                borderWidth: 2
             }
         },
         MuiFormHelperText: {
             root: {
-                marginLeft: 0
+                marginLeft: 0,
+                fontFamily: 'ProductSans',
+                fontWeight: 'lighter',
+                fontSize: '14px',
+                color: '#6F6F6F'
             },
             contained: {
                 marginLeft: 0
+            },
+            
+        },
+        MuiSelect: {
+            root: {
+                fontFamily: 'ProductSans',
+                fontWeight: 'lighter',
+                fontSize: '18px',
+                color: '#565656'
+            },
+            select: {
+                backgroundColor: '',
+                "&:focus": {
+                    backgroundColor: '#fff'
+                }
+            }
+        },
+        MuiMenuItem: {
+            root: {
+                fontFamily: 'ProductSans',
+                fontWeight: 'lighter',
+                fontSize: '18px',
+                color: '#565656'
             }
         }
     }
@@ -39,4 +77,11 @@ export const SubName = styled.p`
     color: #6F6F6F;
 
     margin-bottom: 50px;
+`
+
+export const SelectionsWrapper = styled.div`
+    width: 100%;
+    height: 100%;
+
+    margin-top: 50px;
 `

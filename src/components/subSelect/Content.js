@@ -3,6 +3,8 @@ import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
 
+import Selection from './Selection'
+
 import {
     ContentWrapper,
 } from '../subjects/Content.styled'
@@ -10,7 +12,8 @@ import {
 import {
     theme,
     Header,
-    SubName
+    SubName,
+    SelectionsWrapper,
 } from './Content.styled'
 
 class Content extends React.Component {
@@ -65,25 +68,54 @@ class Content extends React.Component {
                 <Header>Вибір тесту</Header>
                 <SubName>{subjectName}</SubName>
 
-                <ThemeProvider
-                    theme={theme}
+                <div
+                    style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 16
+                    }}
                 >
-                    <TextField
-                        id="standard-select-currency"
-                        select
-                        value={selectedYear}
-                        onChange={_inputHandle}
-                        helperText="Виберіть рік"
-                        margin="none"
-                        variant="outlined"
+                    <ThemeProvider
+                        theme={theme}
                     >
-                        {years.map(year => (
-                            <MenuItem key={year} value={year}>
-                                {year}
-                            </MenuItem>
-                        ))}
-                    </TextField>
-                </ThemeProvider>
+                        <TextField
+                            id="standard-select-currency"
+                            select
+                            value={selectedYear}
+                            onChange={_inputHandle}
+                            helperText="Оберіть рік тесту"
+                            margin="none"
+                            variant="outlined"
+                        >
+                            {years.map(year => (
+                                <MenuItem key={year} value={year}>
+                                    {year}
+                                </MenuItem>
+                            ))}
+                        </TextField>
+                    </ThemeProvider>
+                </div>
+
+                <SelectionsWrapper>
+                    <Selection 
+                        leftColor='#FF7979'
+                        rightColor='#E74C3C'
+                        selName='НАВЧАННЯ'
+                        subName={subjectName}
+                    />
+                    <Selection 
+                        leftColor='#FF7979'
+                        rightColor='#E74C3C'
+                        selName='ПРОБНИЙ ТЕСТ'
+                        subName={subjectName}
+                    />
+                    <Selection 
+                        leftColor='#FF7979'
+                        rightColor='#E74C3C'
+                        selName='ОСНОВНА СЕССІЯ'
+                        subName={subjectName}
+                    />
+                </SelectionsWrapper>
             </ContentWrapper>
         )
     }

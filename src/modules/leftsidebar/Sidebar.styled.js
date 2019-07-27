@@ -3,7 +3,7 @@ import styled from 'styled-components'
 
 const PosedWrapper = posed.div({
     init: {
-        x: '-250px',
+        x: '-280px',
         transition: {
             duration: 300,
             ease: [0.17, 0.81, 0.32, 0.94]
@@ -19,7 +19,7 @@ const PosedWrapper = posed.div({
 })
 
 export const Wrapper = styled(PosedWrapper)`
-    width: 300px;
+    width: 330px;
     height: 100vh;
     position: absolute;
     top: 0;

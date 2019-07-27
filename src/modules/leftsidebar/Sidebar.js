@@ -1,6 +1,8 @@
 
 import React, { useState } from 'react'
 
+import Content from './Content'
+
 import {
     Wrapper,
     ArrowContainer,
@@ -8,7 +10,7 @@ import {
 } from './Sidebar.styled'
 
 const Sidebar = (props) => {
-    const [pose, setPose] = useState('init')
+    const [pose, setPose] = useState('active')
 
     return(
         <Wrapper
@@ -23,6 +25,8 @@ const Sidebar = (props) => {
                     src='./img/arrow-icon.png' 
                 />
             </ArrowContainer>
+
+            <Content />
         </Wrapper>
     )
 }
