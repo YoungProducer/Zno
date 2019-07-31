@@ -17,32 +17,32 @@ const Content = (props) => {
                 <Subject 
                     leftColor={'#FFBE76'}
                     rightColor={'#F0932B'}
-                    subName={'Математика'}
+                    subName={'МАТЕМАТИКА'}
                 />
                 <Subject 
                     leftColor={'#FFBE76'}
                     rightColor={'#F0932B'}
-                    subName={'Фізика'}
+                    subName={'ФІЗИКА'}
                 />
                 <Subject 
                     leftColor={'#FFBE76'}
                     rightColor={'#F0932B'}
-                    subName={'Хімія'}
+                    subName={'ФІЗИКА'}
                 />
                 <Subject 
                     leftColor={'#FFBE76'}
                     rightColor={'#F0932B'}
-                    subName={'Англійська мова'}
+                    subName={'АНГЛІЙСЬКА МОВА'}
                 />
                 <Subject 
                     leftColor={'#FFBE76'}
                     rightColor={'#F0932B'}
-                    subName={'Українська мова та література'}
+                    subName={'УКРАЇНСЬКА МОВА ТА ЛІТЕРАТУРА'}
                 />
                 <Subject 
                     leftColor={'#FFBE76'}
                     rightColor={'#F0932B'}
-                    subName={'Географія'}
+                    subName={'ГЕОГРАФІЯ'}
                 />
             </SubjectsWrapper>
         </ContentWrapper>

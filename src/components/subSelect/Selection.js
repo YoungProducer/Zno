@@ -12,7 +12,7 @@ const Selection = (props) => {
 
     return(
         <NavLink
-            to={'/selection/' + props.subName + '/' + props.selName}
+            to={'/test/' + props.subName + '/' + props.year + '/' + props.selName}
         >
             <Wrapper
                 onMouseEnter={() => setPose('hover')}

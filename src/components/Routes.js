@@ -7,11 +7,13 @@ import Right from '../modules/rightsidebar/Sidebar'
 import Previous from '../containers/PreviousPage'
 import Subjects from '../pages/Subjects'
 import SubSelect from '../pages/SubSelect'
+import TestsPage from '../pages/TestsPage' 
 
 class Routes extends React.Component {
 
     historyHandler = (previousRoute, nextRoute) => {
         const { onUpdateData } = this.props
+        console.log(window.location)
 
         onUpdateData()
     }
@@ -23,8 +25,9 @@ class Routes extends React.Component {
                 <Left />
                 {/* <Previous /> */}
                 <Switch>
-                    <Route path='/' component={Subjects} exact/>
+                    <Route path='/' component={Subjects} exact />
                     <Route path='/selection/:name' component={SubSelect} />
+                    <Route path='/test/:name/:year/:type' component={TestsPage} />
                 </Switch>
             </HashRouter>
         )

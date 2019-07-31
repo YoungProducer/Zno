@@ -102,18 +102,21 @@ class Content extends React.Component {
                         rightColor='#E74C3C'
                         selName='НАВЧАННЯ'
                         subName={subjectName}
+                        year={selectedYear}
                     />
                     <Selection 
                         leftColor='#FF7979'
                         rightColor='#E74C3C'
                         selName='ПРОБНИЙ ТЕСТ'
                         subName={subjectName}
+                        year={selectedYear}
                     />
                     <Selection 
                         leftColor='#FF7979'
                         rightColor='#E74C3C'
                         selName='ОСНОВНА СЕССІЯ'
                         subName={subjectName}
+                        year={selectedYear}
                     />
                 </SelectionsWrapper>
             </ContentWrapper>

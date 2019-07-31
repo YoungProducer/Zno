@@ -10,7 +10,7 @@ import {
 } from './Sidebar.styled'
 
 const Sidebar = (props) => {
-    const [pose, setPose] = useState('active')
+    const [pose, setPose] = useState('init')
 
     return(
         <Wrapper
