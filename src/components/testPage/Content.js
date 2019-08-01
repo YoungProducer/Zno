@@ -1,9 +1,9 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { makeStyles } from '@material-ui/core/styles'
 
 import OneRightAnswer from '../../containers/OneRightAnswer'
 import RelationAnswers from '../../containers/RelationsAnswer'
+import TextAnswer from '../../containers/TextAnswer'
 
 import { ContentWrapper } from '../subjects/Content.styled'
 
@@ -16,13 +16,6 @@ import {
     ButtonsWrapper,
     Button
 } from './Content.styled'
-import { giveAnAnswer } from '../../store/answers/actions';
-
-const useStyles = makeStyles({
-    active: {
-        backgroundColor: '#FF6A5C'
-    }
-})
 
 const tasks = [
     { img: '/a.png', type: 0, answer: 1},
@@ -34,7 +27,11 @@ const tasks = [
     { img: '/f.png', type: 1, answer: [2, 1, 3, 4]},
     { img: '/g.png', type: 1, answer: [2, 3, 4, 1]},
     { img: '/h.png', type: 1, answer: [2, 1, 4, 3]},
+    { img: '/h.png', type: 2, answer: ['some text']},
+    { img: '/h.png', type: 2, answer: ['some text', 'some text']},
+    { img: '/h.png', type: 2, answer: ['some text', 'some text', 'something']},
 ]
+
 
 class Content extends React.Component {
 
@@ -149,33 +146,6 @@ class Content extends React.Component {
         this.setState({selectedTest: nQuestion})
     }
 
-    renderAnswers = () => {
-        const {
-            selectedTest,
-            tasks
-        } = this.state
-
-            return (
-                <>
-                    {
-                        tasks[selectedTest - 1].type === 0 ? (
-                            <OneRightAnswer 
-                                rightAnswer={tasks[selectedTest - 1].answer}
-                                testId={selectedTest - 1}
-                                updateAnswer={this.updateAnswer}
-                            />
-                        ) : (
-                            <RelationAnswers 
-                                rightAnswer={tasks[selectedTest - 1].answer}
-                                testId={selectedTest - 1}
-                                updateAnswer={this.updateAnswer}
-                            />    
-                        )
-                    }
-                </>
-            );
-    }
-
     render() {
         const { 
             nextQuestion,
@@ -219,7 +189,6 @@ class Content extends React.Component {
                                                 this.setState({selectedTest: index + 1})
                                                 this.updateAnswer(false, 'selected')
                                                 this.updateAnswer(false, 'gived')
-                                                // this.setState({updateComponents: Math.random()})
                                             }
                                         }
                                     >
@@ -288,13 +257,25 @@ class Content extends React.Component {
                                                 this.setState({selectedTest: index + 1})
                                                 this.updateAnswer(false, 'selected')
                                                 this.updateAnswer(false, 'gived')
-                                                // this.setState({updateComponents: Math.random()})
                                             }
                                         }
                                     >
                                         {index + 1}
                                     </Option>
-                                ) : <></>
+                                ) : (
+                                    <Option
+                                        key={index + 1}
+                                        onClick={() => 
+                                            {
+                                                this.setState({selectedTest: index + 1})
+                                                this.updateAnswer(false, 'selected')
+                                                this.updateAnswer(false, 'gived')
+                                            }
+                                        }
+                                    >
+                                        {index + 1}
+                                    </Option>
+                                )
                             }
                             </span>
                         ))
@@ -309,13 +290,18 @@ class Content extends React.Component {
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
                         />
-                    ) : (
+                    ) : tasks[selectedTest - 1].type === 1 ? (
                         <RelationAnswers 
                             rightAnswer={tasks[selectedTest - 1].answer}
                             testId={selectedTest - 1}
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
-                        />    
+                        /> 
+                    ) : (
+                        <TextAnswer 
+                            rightAnswer={tasks[selectedTest - 1].answer}
+                            testId={selectedTest - 1}
+                        />
                     )
                 }
                 <ButtonsWrapper>

@@ -3,9 +3,11 @@ import {
     INIT_ANSWERS,
     GIVE_AN_ANSWER,
     GIVE_AN_RELATION_ANSWER,
+    GIVE_AN_TEXT_ANSWER,
     INIT_SELECTED_ANSWERS,
     SAVE_SELECTED_ANSWER,
     SAVE_SELECTED_RELATION_ANSWER,
+    SAVE_SELECTED_TEXT_ANSWER,
     NULLIFY_ANSWER,
     NULLIFY_SELECTED_ANSWER
 } from './constants'
@@ -37,6 +39,11 @@ export const saveSelectedAnswer = (testId, answer) => ({
 
 export const saveSelectedRelationAnswer = (testId, index, answer) => ({
     type: SAVE_SELECTED_RELATION_ANSWER,
+    payload: { testId, index, answer }
+})
+
+export const saveSelectedTextAnswer = (testId, index, answer) => ({
+    type: SAVE_SELECTED_TEXT_ANSWER,
     payload: { testId, index, answer }
 })
 

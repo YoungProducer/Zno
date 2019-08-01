@@ -8,7 +8,8 @@ import {
     SAVE_SELECTED_RELATION_ANSWER,
     SELECT_ANSWER,
     NULLIFY_ANSWER,
-    NULLIFY_SELECTED_ANSWER
+    NULLIFY_SELECTED_ANSWER,
+    SAVE_SELECTED_TEXT_ANSWER
 } from './constants'
 
 const questionsInitialState = {
@@ -39,7 +40,24 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
     switch (action.type) {
         case INIT_ANSWERS: {
             for (let i = 0; i < action.payload.length; i++) {
-                state.givedAnswers.push(action.payload[i].type === 0 ? -1 : [-1, -1, -1, -1])
+
+                if (action.payload[i].type === 0) {
+                    state.givedAnswers.push(-1)
+                }
+
+                if (action.payload[i].type === 1) {
+                    state.givedAnswers.push([-1, -1, -1, -1])
+                }
+
+                if (action.payload[i].type === 2) {
+                    let array = []
+
+                    for (let j = 0; j < action.payload[i].answer.length; j++) {
+                        array.push('')
+                    }
+
+                    state.givedAnswers.push(array)
+                }
             }
 
             window.setTimeout(() => {
@@ -95,7 +113,24 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
     switch (action.type) {
         case INIT_SELECTED_ANSWERS: {
             for (let i = 0; i < action.payload.length; i++) {
-                state.selectedAnswers.push(action.payload[i].type === 0 ? -1 : [-1, -1, -1, -1])
+
+                if (action.payload[i].type === 0) {
+                    state.selectedAnswers.push(-1)
+                }
+
+                if (action.payload[i].type === 1) {
+                    state.selectedAnswers.push([-1, -1, -1, -1])
+                }
+
+                if (action.payload[i].type === 2) {
+                    let array = []
+
+                    for (let j = 0; j < action.payload[i].answer.length; j++) {
+                        array.push('')
+                    }
+
+                    state.selectedAnswers.push(array)
+                }
             }
 
             window.setTimeout(() => {
@@ -124,6 +159,17 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
                 ...state
             }
         }
+        case SAVE_SELECTED_TEXT_ANSWER: {
+            state.selectedAnswers[action.payload.testId][action.payload.index] = action.payload.answer
+            
+            window.setTimeout(() => {
+                console.log(state)
+            }, 200)
+
+            return {
+                ...state
+            }
+        }
         case NULLIFY_SELECTED_ANSWER: {
             if (action.payload.type === 0) {
                 state.selectedAnswers[action.payload.testId] = -1
@@ -131,7 +177,6 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
 
             if (action.payload.type === 1) {
                 state.selectedAnswers[action.payload.testId] = [-1, -1, -1, -1]
-                console.log(1)
             }
 
             return {

@@ -21,7 +21,7 @@ class Routes extends React.Component {
     render() {
         return(
             <HashRouter onChange={this.historyHandler}>
-                <Right />
+                {/* <Right /> */}
                 <Left />
                 {/* <Previous /> */}
                 <Switch>
