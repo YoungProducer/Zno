@@ -46,8 +46,6 @@ class OneRightAnswer extends React.Component {
             givedAnswers
         } = this.props
 
-        console.log('updated')
-
         return(
             <Wrapper>
                 {

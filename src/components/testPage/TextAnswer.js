@@ -13,27 +13,13 @@ class TextAnswer extends React.Component {
         super(props)
 
         this.state = {
-            value: '',
             answers: []
         }
     }
 
-    initAnswersArray = (size) => {
-        this.setState(state => {
-            const temp = []
-            for (let i = 0; i < size; i++) {
-                temp.push('')
-            }
+    initAnswersArray = () => {
+        this.setState({answers: this.props.selectedAnswers[this.props.testId]})
 
-            return {
-                value: '',
-                answers: temp
-            }
-        })
-
-        window.setTimeout(() => {
-            console.log(this.state.answers)
-        }, 200)
     }
 
     componentDidMount() {
@@ -42,11 +28,45 @@ class TextAnswer extends React.Component {
 
     componentWillReceiveProps(nextProps) {
         if (this.props.testId !== nextProps.testId) {
-            this.initAnswersArray(nextProps.selectedAnswers[nextProps.testId].length)
+            this.initAnswersArray()
         }
     }
 
-    inputOnChange = (event, index) => {
+    checkIsSelected = (selectedAnswers, testId) => {
+        let selected = false
+        
+        for (let i = 0; i < selectedAnswers[testId].length; i++) {
+            if (selectedAnswers[testId][i] !== '') {
+                selected = true
+                break;
+            }
+        }
+
+        return selected;
+    }
+
+    checkIsGived = (givedAnswers, testId) => {
+        let gived = false
+
+        for (let i = 0; i < givedAnswers[testId].length; i++) {
+            if (givedAnswers[testId][i] !== '') {
+                gived = true
+                break;
+            }
+        }
+
+        return gived;
+    }
+
+    componentDidUpdate() {
+        const { givedAnswers, selectedAnswers, testId } = this.props
+
+        this.props.updateAnswer(this.checkIsSelected(selectedAnswers, testId), 'selected')
+        this.props.updateAnswer(this.checkIsGived(givedAnswers, testId), 'gived')
+    }
+
+    inputOnChange = (event, index, testId) => {
+        const { onSaveSelectedTextAnswer } = this.props
         const value = event.target.value
 
         this.setState(state => {
@@ -57,6 +77,8 @@ class TextAnswer extends React.Component {
                     return answer;
                 }
             })
+            this.props.updateAnswer(true, 'selected')
+            onSaveSelectedTextAnswer(testId, index, list[index])
 
             return {
                 answers: list
@@ -68,10 +90,9 @@ class TextAnswer extends React.Component {
         const {
             rightAnswer,
             testId,
-            selectedAnswers
+            selectedAnswers,
+            updateAnswer
         } = this.props
-
-        console.log(this.state.answers)
 
         return(
             <TextFieldsWrapper>
@@ -81,10 +102,10 @@ class TextAnswer extends React.Component {
                             key={index}
                             onChange={
                                 event => { 
-                                    this.inputOnChange(event, index) 
+                                    this.inputOnChange(event, index, testId) 
                                 }
                             }
-                            value={this.state.answers[index]}
+                            value={selectedAnswers[testId][index]}
                         />
                     ))
                 }

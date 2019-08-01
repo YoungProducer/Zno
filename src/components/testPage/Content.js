@@ -78,6 +78,31 @@ class Content extends React.Component {
         })
     }
 
+    checkIsSelected = (selectedAnswers, testId) => {
+        let selected = false
+        
+        for (let i = 0; i < selectedAnswers[testId].length; i++) {
+            if (selectedAnswers[testId][i] !== '') {
+                selected = true
+                break;
+            }
+        }
+
+        return selected;
+    }
+
+    checkIsGived = (givedAnswers, testId) => {
+        let gived = true
+
+        for (let i = 0; i < givedAnswers[testId].length; i++) {
+            if (givedAnswers[testId][i] === '') {
+                gived = false
+                break;
+            }
+        }
+
+        return gived;
+    }
 
     cutToSlash = (url) => {
         let temp = url
@@ -120,7 +145,6 @@ class Content extends React.Component {
         let nQuestion = -1
 
         for (let i = currentQuestion; i < givedAnswers.length; i++) {
-            console.log(this.state.tasks[i].type)
             if (this.state.tasks[i].type === 0) {
                 if (givedAnswers[i] === -1) {
                     nQuestion = i + 1
@@ -136,6 +160,19 @@ class Content extends React.Component {
                     nQuestion = i + 1
                     break;
                 }
+            }
+            if (this.state.tasks[i].type === 2) {
+                let selected = false
+
+                for (let j = 0; j < givedAnswers[i].length; j++) {
+                    if (givedAnswers[i][j] === '') {
+                        selected = true
+                        break;
+                    }
+                }
+
+                nQuestion = selected ? i + 1 : -1
+                break;
             }
         }
 
@@ -270,6 +307,55 @@ class Content extends React.Component {
                                                 this.setState({selectedTest: index + 1})
                                                 this.updateAnswer(false, 'selected')
                                                 this.updateAnswer(false, 'gived')
+                                                this.forceUpdate()
+                                            }
+                                        }
+                                        bgColor={
+                                            () => {
+                                                if (this.state.inited) {
+                                                    if (this.checkIsGived(givedAnswers, index)) {
+                                                        return '#BADC58';
+                                                    }
+                                                    else if (this.checkIsSelected(selectedAnswers, index)) {
+                                                        return '#FFC400'
+                                                    } else if (index + 1 === selectedTest) {
+                                                        return '#FF6A5C';
+                                                    } else {
+                                                        return '#eee'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        tcolor={
+                                            () => {
+                                                if (this.state.inited) {
+                                                    if (this.checkIsGived(givedAnswers, index)) {
+                                                        return '#fff';
+                                                    }
+                                                    else if (this.checkIsSelected(selectedAnswers, index)) {
+                                                        return '#fff'
+                                                    } else if (index + 1 === selectedTest) {
+                                                        return '#fff';
+                                                    } else {
+                                                        return '#343434'
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        hbgColor={
+                                            () => {
+                                                if (this.state.inited) {
+                                                    if (this.checkIsGived(givedAnswers, index)) {
+                                                        return '#AFCF52';
+                                                    }
+                                                    else if (this.checkIsSelected(selectedAnswers, index)) {
+                                                        return '#FFAA00'
+                                                    } else if (index + 1 === selectedTest) {
+                                                        return '#FF6A5C';
+                                                    } else {
+                                                        return '#FF6A5C'
+                                                    }
+                                                }
                                             }
                                         }
                                     >
@@ -301,6 +387,8 @@ class Content extends React.Component {
                         <TextAnswer 
                             rightAnswer={tasks[selectedTest - 1].answer}
                             testId={selectedTest - 1}
+                            updateAnswer={this.updateAnswer}
+                            updateComponent={this.state.updateComponents}
                         />
                     )
                 }
@@ -311,10 +399,6 @@ class Content extends React.Component {
                             () => {
                                 if (isAnswerSelected) {
                                     onGiveAnAnswer(selectedTest - 1, selectedAnswers[selectedTest - 1])
-
-                                    window.setTimeout(() => {
-                                        console.log(selectedAnswers)
-                                    }, 200)
 
                                     this.nextQuestion(selectedTest)
                                     this.updateAnswer(false, 'gived')

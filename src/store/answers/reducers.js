@@ -6,7 +6,6 @@ import {
     INIT_SELECTED_ANSWERS,
     SAVE_SELECTED_ANSWER,
     SAVE_SELECTED_RELATION_ANSWER,
-    SELECT_ANSWER,
     NULLIFY_ANSWER,
     NULLIFY_SELECTED_ANSWER,
     SAVE_SELECTED_TEXT_ANSWER
@@ -60,10 +59,6 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
                 }
             }
 
-            window.setTimeout(() => {
-                console.log(state)
-            })
-
             return { ...state }
         }
         case GIVE_AN_ANSWER: {
@@ -76,10 +71,6 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
         case GIVE_AN_RELATION_ANSWER: {
             state.givedAnswers[action.payload.testId][action.payload.index] = action.payload.answer
 
-            window.setTimeout(() => {
-                console.log(state)
-            }, 100)
-
             return {
                 ...state
             }
@@ -91,6 +82,12 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
 
             if (action.payload.type === 1) {
                 state.givedAnswers[action.payload.testId] = [-1, -1, -1, -1]
+            }
+
+            if (action.payload.type === 2) {
+                for (let i = 0; i < state.givedAnswers[action.payload.testId].length; i++) {
+                    state.givedAnswers[action.payload.testId][i] = ''
+                }
             }
 
             return { 
@@ -133,10 +130,6 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
                 }
             }
 
-            window.setTimeout(() => {
-                console.log(state)
-            })
-
             return {
                 ...state
             }
@@ -151,20 +144,12 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
         case SAVE_SELECTED_RELATION_ANSWER: {
             state.selectedAnswers[action.payload.testId][action.payload.index] = action.payload.answer
 
-            window.setTimeout(() => {
-                console.log(state)
-            })
-
             return {
                 ...state
             }
         }
         case SAVE_SELECTED_TEXT_ANSWER: {
             state.selectedAnswers[action.payload.testId][action.payload.index] = action.payload.answer
-            
-            window.setTimeout(() => {
-                console.log(state)
-            }, 200)
 
             return {
                 ...state
@@ -177,6 +162,12 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
 
             if (action.payload.type === 1) {
                 state.selectedAnswers[action.payload.testId] = [-1, -1, -1, -1]
+            }
+
+            if (action.payload.type === 2) {
+                for (let i = 0; i < state.selectedAnswers[action.payload.testId].length; i++) {
+                    state.selectedAnswers[action.payload.testId][i] = ''
+                }
             }
 
             return {
