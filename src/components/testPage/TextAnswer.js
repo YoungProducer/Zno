@@ -5,7 +5,6 @@ import {
     TextFieldsWrapper,
     TextField
 } from './TextAnswer.styled'
-import { value } from 'popmotion';
 
 class TextAnswer extends React.Component {
 
@@ -17,18 +16,17 @@ class TextAnswer extends React.Component {
         }
     }
 
-    initAnswersArray = () => {
-        this.setState({answers: this.props.selectedAnswers[this.props.testId]})
-
+    initAnswersArray = (props) => {
+        this.setState({answers: props.selectedAnswers[props.testId]})
     }
 
     componentDidMount() {
-        this.initAnswersArray(this.props.selectedAnswers[this.props.testId].length)
+        this.initAnswersArray(this.props)
     }
 
     componentWillReceiveProps(nextProps) {
         if (this.props.testId !== nextProps.testId) {
-            this.initAnswersArray()
+            this.initAnswersArray(nextProps)
         }
     }
 
@@ -46,11 +44,10 @@ class TextAnswer extends React.Component {
     }
 
     checkIsGived = (givedAnswers, testId) => {
-        let gived = false
-
+        let gived = true
         for (let i = 0; i < givedAnswers[testId].length; i++) {
-            if (givedAnswers[testId][i] !== '') {
-                gived = true
+            if (givedAnswers[testId][i] === '') {
+                gived = false
                 break;
             }
         }
@@ -91,6 +88,7 @@ class TextAnswer extends React.Component {
             rightAnswer,
             testId,
             selectedAnswers,
+            givedAnswers,
             updateAnswer
         } = this.props
 
@@ -101,8 +99,10 @@ class TextAnswer extends React.Component {
                         <TextField 
                             key={index}
                             onChange={
-                                event => { 
-                                    this.inputOnChange(event, index, testId) 
+                                event => {
+                                    if (!this.checkIsGived(givedAnswers, testId)) {
+                                        this.inputOnChange(event, index, testId)
+                                    } 
                                 }
                             }
                             value={selectedAnswers[testId][index]}

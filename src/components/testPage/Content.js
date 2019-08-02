@@ -185,7 +185,6 @@ class Content extends React.Component {
 
     render() {
         const { 
-            nextQuestion,
             subject, 
             tasks, 
             selectedTest, 
@@ -307,7 +306,6 @@ class Content extends React.Component {
                                                 this.setState({selectedTest: index + 1})
                                                 this.updateAnswer(false, 'selected')
                                                 this.updateAnswer(false, 'gived')
-                                                this.forceUpdate()
                                             }
                                         }
                                         bgColor={
@@ -431,8 +429,6 @@ class Content extends React.Component {
                                         onNullifyAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
                                         onNullifySelectedAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
                                     }
-                                    this.updateAnswer(false, 'gived')
-                                    this.updateAnswer(false, 'selected')
                                     this.setState({updateComponents: Math.random()})
                                 }
                             }
