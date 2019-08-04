@@ -1,6 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types'
 
+import CountDownTimer from './CountDownTimer'
 import OneRightAnswer from '../../containers/OneRightAnswer'
 import RelationAnswers from '../../containers/RelationsAnswer'
 import TextAnswer from '../../containers/TextAnswer'
@@ -14,8 +15,31 @@ import {
     Option,
     Image,
     ButtonsWrapper,
-    Button
+    Button,
+    ShowAnswersSwitcher,
+    Header,
+    NameWrapper,
+    CountDownWrapper
 } from './Content.styled'
+
+const colors = {
+    green: {
+        default: '#BADC58',
+        hover: '#AFCF52'
+    },
+    red: {
+        default: '#FF6A5C',
+        hover: '#ff5747'
+    },
+    blue: {
+        default: '#038cfc',
+        hover: '#037bfc'
+    },
+    yellow: {
+        default: '#FFC400',
+        hover: '#FFAA00'
+    }
+}
 
 const tasks = [
     { img: '/a.png', type: 0, answer: 1},
@@ -47,7 +71,10 @@ class Content extends React.Component {
             isAnswerSelected: false,
             isAnswerGived: false,
             inited: false,
-            updateComponents: 0
+            updateComponents: 0,
+            showAnswersAfterTest: false,
+            testFinished: false,
+            timeForTestInMinutes: 180
         }
     }
 
@@ -78,30 +105,77 @@ class Content extends React.Component {
         })
     }
 
-    checkIsSelected = (selectedAnswers, testId) => {
+    checkIsSelected = (selectedAnswers, testId, type) => {
         let selected = false
-        
-        for (let i = 0; i < selectedAnswers[testId].length; i++) {
-            if (selectedAnswers[testId][i] !== '') {
-                selected = true
-                break;
+
+        if (type === 1) {
+            for (let i = 0; i < 4; i++) {
+                if (selectedAnswers[testId][i] !== -1) {
+                    selected = true;
+                    break;
+                }
+            }
+        }
+
+        if (type === 2) {
+            for (let i = 0; i < selectedAnswers[testId].length; i++) {
+                if (selectedAnswers[testId][i] !== '') {
+                    selected = true
+                    break;
+                }
             }
         }
 
         return selected;
     }
 
-    checkIsGived = (givedAnswers, testId) => {
+    checkIsGived = (givedAnswers, testId, type) => {
         let gived = true
 
-        for (let i = 0; i < givedAnswers[testId].length; i++) {
-            if (givedAnswers[testId][i] === '') {
-                gived = false
-                break;
+        if (type === 1) {
+            for (let i = 0; i < 4; i++) {
+                if (givedAnswers[testId][i] === -1) {
+                    gived = false;
+                    break;
+                }
+            }
+        }
+        
+        if (type === 2) {
+            for (let i = 0; i < givedAnswers[testId].length; i++) {
+                if (givedAnswers[testId][i] === '') {
+                    gived = false
+                    break;
+                }
             }
         }
 
         return gived;
+    }
+
+    checkIsRight = (givedAnswers, testId, type) => {
+        let right = true
+
+        if (type === 1) {
+            for (let i = 0; i < 4; i++) {
+                if (givedAnswers[testId][i] !== this.state.tasks[testId].answer[i]) {
+                    right = false;
+                    break;
+                }
+            }
+        }
+
+        if (type === 2) {
+            for (let i = 0; i < givedAnswers[testId].length; i++) {
+                if (givedAnswers[testId][i] !== this.state.tasks[testId].answer[i]) {
+                    right = false
+                    break;
+                }
+            }
+        }
+
+
+        return right;
     }
 
     cutToSlash = (url) => {
@@ -183,32 +257,63 @@ class Content extends React.Component {
         this.setState({selectedTest: nQuestion})
     }
 
+    setTestFinished = () => {
+        this.setState({
+            testFinished: true,
+            timeForTestInMinutes: 0
+        })
+    }
+
     render() {
         const { 
+            type,
             subject, 
             tasks, 
             selectedTest, 
             isAnswerSelected, 
-            isAnswerGived 
+            isAnswerGived,
+            showAnswersAfterTest,
+            testFinished,
+            timeForTestInMinutes
         } = this.state
 
         const { 
             onNullifyAnswer,
             onNullifySelectedAnswer, 
             onGiveAnAnswer, 
-            isSelected, 
             selectedAnswers,
             givedAnswers
         } = this.props
 
+        const {
+            green,
+            red, 
+            blue, 
+            yellow
+        } = colors
+
         return(
             <ContentWrapper>
-                <SubName>
-                    {subject}
-                </SubName>
-                <Counter>
-                    Тест {selectedTest} з {tasks.length}
-                </Counter>
+                <Header>
+                    <NameWrapper>
+                        <SubName>
+                            {subject}
+                        </SubName>
+                        <Counter>
+                            Тест {selectedTest} з {tasks.length}
+                        </Counter>
+                    </NameWrapper>
+                    {
+                        type === 'ОСНОВНА СЕССІЯ' ? (
+                            <CountDownWrapper>
+                                <CountDownTimer 
+                                    startTimeInMinutes={timeForTestInMinutes}
+                                    setTestFinished={this.setTestFinished}
+                                />
+                            </CountDownWrapper>
+                        ) : (<></>)
+                    }
+                </Header>
                 <TestNumberSelWrapper>
                     {
                         tasks.map((task, index) => (
@@ -217,9 +322,86 @@ class Content extends React.Component {
                                 task.type === 0 ? (
                                     <Option
                                         key={index + 1}
-                                        bgColor={givedAnswers[index] !== -1 ? '#BADC58' : selectedAnswers[index] !== -1 ? '#FFC400' : index + 1 !== selectedTest ? '#eee' : '#FF6A5C'}
-                                        tcolor={givedAnswers[index] !== -1 ? '#fff' : selectedAnswers[index] !== -1 ? '#fff' : index + 1 !== selectedTest ? '#343434' : '#fff'}
-                                        hbgColor={givedAnswers[index] !== -1 ? '#AFCF52' : selectedAnswers[index] !== -1 ? '#FFAA00' : index + 1 !== selectedTest ? '#FF6A5C' : '#FF6A5C'}
+                                        bgColor={
+                                            () => {
+                                                if (testFinished) {
+                                                    if (givedAnswers[index] === task.answer) {
+                                                        return colors.green.default;
+                                                    } else return red.default;
+                                                } else {
+                                                    if (!showAnswersAfterTest) {
+                                                        if (givedAnswers[index] !== -1) {
+                                                            if (givedAnswers[index] === task.answer) {
+                                                                return green.default;
+                                                            } else return red.default;
+                                                        } else {
+                                                            if (index + 1 === selectedTest) {
+                                                                return blue.default;
+                                                            } else {
+                                                                if (selectedAnswers[index] !== -1) {
+                                                                    return yellow.default;
+                                                                }   
+                                                                return '#eee';
+                                                            }
+                                                        }
+                                                    } else {
+                                                        return givedAnswers[index] !== -1 ? green.default : selectedAnswers[index] !== -1 ? yellow.default : index + 1 !== selectedTest ? '#eee' : blue.default;
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        tcolor={
+                                            () => {
+                                                if (testFinished) {
+                                                    return '#fff';
+                                                } else {
+                                                    if (!showAnswersAfterTest) {
+                                                        if (givedAnswers[index] !== -1) {
+                                                            return '#fff';
+                                                        } else {
+                                                            if (index + 1 === selectedTest) {
+                                                                return '#fff';
+                                                            } else {
+                                                                if (selectedAnswers[index] !== -1) {
+                                                                    return '#fff';
+                                                                }   
+                                                                return '#343434';
+                                                            }
+                                                        }
+                                                    } else {
+                                                        return givedAnswers[index] !== -1 ? '#fff' : selectedAnswers[index] !== -1 ? '#fff' : index + 1 !== selectedTest ? '#343434' : '#fff';
+                                                    }
+                                                }
+                                            }
+                                        }
+                                        hbgColor={
+                                            () => {
+                                                if (testFinished) {
+                                                    if (givedAnswers[index] === task.answer) {
+                                                        return green.hover;
+                                                    } else return red.hover;
+                                                } else {
+                                                    if (!showAnswersAfterTest) {
+                                                        if (givedAnswers[index] !== -1) {
+                                                            if (givedAnswers[index] === task.answer) {
+                                                                return green.hover;
+                                                            } else return red.hover;
+                                                        } else {
+                                                            if (index + 1 === selectedTest) {
+                                                                return blue.hover;
+                                                            } else {
+                                                                if (selectedAnswers[index] !== -1) {
+                                                                    return yellow.default;
+                                                                }   
+                                                                return blue.hover;
+                                                            }
+                                                        }
+                                                    } else {
+                                                        return givedAnswers[index] !== -1 ? green.hover : selectedAnswers[index] !== -1 ? yellow.hover : index + 1 !== selectedTest ? blue.hover : blue.hover;
+                                                    }
+                                                }
+                                            }
+                                        }
                                         onClick={() => 
                                             {
                                                 this.setState({selectedTest: index + 1})
@@ -237,17 +419,30 @@ class Content extends React.Component {
                                         bgColor={
                                             () => {
                                                 if (this.state.inited) {
-                                                    return givedAnswers[index][0] !== -1 && 
-                                                    givedAnswers[index][1] !== -1 && 
-                                                    givedAnswers[index][2] !== -1 && 
-                                                    givedAnswers[index][3] !== -1 ? '#BADC58' :
-                                                    selectedAnswers[index][0] !== -1 || 
-                                                    selectedAnswers[index][1] !== -1 || 
-                                                    selectedAnswers[index][2] !== -1 || 
-                                                    selectedAnswers[index][3] !== -1 ? 
-                                                    '#FFC400' :
-                                                    index + 1 !== selectedTest ? '#eee' : 
-                                                    '#FF6A5C';
+                                                    if (testFinished) {
+                                                        return this.checkIsRight(givedAnswers, index, 1) ? green.default : red.default;
+                                                    } else {
+                                                        if (!showAnswersAfterTest) {
+                                                            if (this.checkIsGived(givedAnswers, index, 1)) {
+                                                                return this.checkIsRight(givedAnswers, index, 1) ? green.default : red.default;
+                                                            } else {
+                                                                if (index + 1 === selectedTest) {
+                                                                    return blue.default;
+                                                                } else {
+                                                                    if (this.checkIsSelected(selectedAnswers, index, 1)) {
+                                                                        return yellow.default;
+                                                                    }
+                                                                    return '#eee';
+                                                                }
+                                                            }
+                                                        } else {
+                                                            return this.checkIsGived(givedAnswers, index, 1) ? green.default :
+                                                            this.checkIsSelected(selectedAnswers, index, 1) ? 
+                                                            yellow.default :
+                                                            index + 1 !== selectedTest ? '#eee' : 
+                                                            blue.default;
+                                                        }
+                                                    }
                                                 }
                                                 else return '#eee';
                                             }
@@ -255,35 +450,61 @@ class Content extends React.Component {
                                         tcolor={
                                             () => {
                                                 if (this.state.inited) {
-                                                    return givedAnswers[index][0] !== -1 && 
-                                                    givedAnswers[index][1] !== -1 && 
-                                                    givedAnswers[index][2] !== -1 && 
-                                                    givedAnswers[index][3] !== -1 ? '#fff' :
-                                                    selectedAnswers[index][0] !== -1 || 
-                                                    selectedAnswers[index][1] !== -1 || 
-                                                    selectedAnswers[index][2] !== -1 || 
-                                                    selectedAnswers[index][3] !== -1 ? 
-                                                    '#fff' :
-                                                    index + 1 !== selectedTest ? '#343434' : 
-                                                    '#fff';
+                                                    if (testFinished) {
+                                                        return '#fff';
+                                                    } else {
+                                                        if (!showAnswersAfterTest) {
+                                                            if (this.checkIsGived(givedAnswers, index, 1)) {
+                                                                return '#fff';
+                                                            } else {
+                                                                if (index + 1 === selectedTest) {
+                                                                    return '#fff';
+                                                                } else {
+                                                                    if (this.checkIsSelected(selectedAnswers, index, 1)) {
+                                                                        return '#fff';
+                                                                    }
+                                                                    return '#343434';
+                                                                }
+                                                            }
+                                                        } else {
+                                                            return this.checkIsGived(givedAnswers, index, 1) ? '#fff' :
+                                                            this.checkIsSelected(selectedAnswers, index, 1) ? 
+                                                            '#fff' :
+                                                            index + 1 !== selectedTest ? '#343434' : 
+                                                            '#fff';
+                                                        }
+                                                    }
                                                 }
-                                                else return '#eee';
+                                                else return '#fff';
                                             }
                                         }
                                         hbgColor={
                                             () => {
                                                 if (this.state.inited) {
-                                                    return givedAnswers[index][0] !== -1 && 
-                                                    givedAnswers[index][1] !== -1 && 
-                                                    givedAnswers[index][2] !== -1 && 
-                                                    givedAnswers[index][3] !== -1 ? '#AFCF52' :
-                                                    selectedAnswers[index][0] !== -1 || 
-                                                    selectedAnswers[index][1] !== -1 || 
-                                                    selectedAnswers[index][2] !== -1 || 
-                                                    selectedAnswers[index][3] !== -1 ? 
-                                                    '#FFAA00' :
-                                                    index + 1 !== selectedTest ? '#FF6A5C' : 
-                                                    '#FF6A5C';
+                                                    if (testFinished) {
+                                                        return this.checkIsRight(givedAnswers, index, 1) ? green.hover : red.hover;
+                                                    } else {
+                                                        if (!showAnswersAfterTest) {
+                                                            if (this.checkIsGived(givedAnswers, index, 1)) {
+                                                                return this.checkIsRight(givedAnswers, index, 1) ? green.hover : red.hover;
+                                                            } else {
+                                                                if (index + 1 === selectedTest) {
+                                                                    return blue.hover;
+                                                                } else {
+                                                                    if (this.checkIsSelected(selectedAnswers, index, 1)) {
+                                                                        return yellow.default;
+                                                                    }
+                                                                    return blue.hover;
+                                                                }
+                                                            }
+                                                        } else {
+                                                            return this.checkIsGived(givedAnswers, index, 1) ? green.hover :
+                                                            this.checkIsSelected(selectedAnswers, index, 1) ? 
+                                                            yellow.default :
+                                                            index + 1 !== selectedTest ? blue.hover : 
+                                                            blue.hover;
+                                                        }
+                                                    }
                                                 }
                                                 else return '#eee';
                                             }
@@ -311,15 +532,31 @@ class Content extends React.Component {
                                         bgColor={
                                             () => {
                                                 if (this.state.inited) {
-                                                    if (this.checkIsGived(givedAnswers, index)) {
-                                                        return '#BADC58';
-                                                    }
-                                                    else if (this.checkIsSelected(selectedAnswers, index)) {
-                                                        return '#FFC400'
-                                                    } else if (index + 1 === selectedTest) {
-                                                        return '#FF6A5C';
+                                                    if (testFinished) {
+                                                        return this.checkIsRight(givedAnswers, index, 2) ? green.default : red.default;
                                                     } else {
-                                                        return '#eee'
+                                                        if (!showAnswersAfterTest) {
+                                                            if (this.checkIsGived(givedAnswers, index, 2)) {
+                                                                return this.checkIsRight(givedAnswers, index, 2) ? green.default : red.default;
+                                                            } else {
+                                                                if (index + 1 === selectedTest) {
+                                                                    return blue.default;
+                                                                } else {
+                                                                    return this.checkIsSelected(selectedAnswers, index, 2) ? yellow.default : '#eee';
+                                                                }
+                                                            }
+                                                        } else {
+                                                            if (this.checkIsGived(givedAnswers, index, 2)) {
+                                                                return green.default;
+                                                            }
+                                                            else if (this.checkIsSelected(selectedAnswers, index, 2)) {
+                                                                return yellow.default
+                                                            } else if (index + 1 === selectedTest) {
+                                                                return blue.default;
+                                                            } else {
+                                                                return '#eee'
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -327,15 +564,31 @@ class Content extends React.Component {
                                         tcolor={
                                             () => {
                                                 if (this.state.inited) {
-                                                    if (this.checkIsGived(givedAnswers, index)) {
-                                                        return '#fff';
-                                                    }
-                                                    else if (this.checkIsSelected(selectedAnswers, index)) {
-                                                        return '#fff'
-                                                    } else if (index + 1 === selectedTest) {
+                                                    if (testFinished) {
                                                         return '#fff';
                                                     } else {
-                                                        return '#343434'
+                                                        if (!showAnswersAfterTest) {
+                                                            if (this.checkIsGived(givedAnswers, index, 2)) {
+                                                                return '#fff';
+                                                            } else {
+                                                                if (index + 1 === selectedTest) {
+                                                                    return '#fff';
+                                                                } else {
+                                                                    return '#343434';
+                                                                }
+                                                            }
+                                                        } else {
+                                                            if (this.checkIsGived(givedAnswers, index, 2)) {
+                                                                return '#fff';
+                                                            }
+                                                            else if (this.checkIsSelected(selectedAnswers, index, 2)) {
+                                                                return '#fff';
+                                                            } else if (index + 1 === selectedTest) {
+                                                                return '#fff';
+                                                            } else {
+                                                                return '#343434';
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -343,15 +596,31 @@ class Content extends React.Component {
                                         hbgColor={
                                             () => {
                                                 if (this.state.inited) {
-                                                    if (this.checkIsGived(givedAnswers, index)) {
-                                                        return '#AFCF52';
-                                                    }
-                                                    else if (this.checkIsSelected(selectedAnswers, index)) {
-                                                        return '#FFAA00'
-                                                    } else if (index + 1 === selectedTest) {
-                                                        return '#FF6A5C';
+                                                    if (testFinished) {
+                                                        return this.checkIsRight(givedAnswers, index, 2) ? green.hover : red.hover;
                                                     } else {
-                                                        return '#FF6A5C'
+                                                        if (!showAnswersAfterTest) {
+                                                            if (this.checkIsGived(givedAnswers, index, 2)) {
+                                                                return this.checkIsRight(givedAnswers, index, 2) ? green.hover : red.hover;
+                                                            } else {
+                                                                if (index + 1 === selectedTest) {
+                                                                    return blue.hover;
+                                                                } else {
+                                                                    return this.checkIsSelected(selectedAnswers, index, 2) ? yellow.hover : blue.hover;
+                                                                }
+                                                            }
+                                                        } else {
+                                                            if (this.checkIsGived(givedAnswers, index, 2)) {
+                                                                return green.hover;
+                                                            }
+                                                            else if (this.checkIsSelected(selectedAnswers, index, 2)) {
+                                                                return yellow.hover
+                                                            } else if (index + 1 === selectedTest) {
+                                                                return blue.hover;
+                                                            } else {
+                                                                return blue.hover;
+                                                            }
+                                                        }
                                                     }
                                                 }
                                             }
@@ -373,6 +642,8 @@ class Content extends React.Component {
                             testId={selectedTest - 1}
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
+                            showAnswersAfterTest={showAnswersAfterTest}
+                            isTestFinished={testFinished}
                         />
                     ) : tasks[selectedTest - 1].type === 1 ? (
                         <RelationAnswers 
@@ -380,6 +651,8 @@ class Content extends React.Component {
                             testId={selectedTest - 1}
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
+                            showAnswersAfterTest={showAnswersAfterTest}
+                            isTestFinished={testFinished}
                         /> 
                     ) : (
                         <TextAnswer 
@@ -387,6 +660,8 @@ class Content extends React.Component {
                             testId={selectedTest - 1}
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
+                            showAnswersAfterTest={showAnswersAfterTest}
+                            isTestFinished={testFinished}
                         />
                     )
                 }
@@ -398,9 +673,12 @@ class Content extends React.Component {
                                 if (isAnswerSelected) {
                                     onGiveAnAnswer(selectedTest - 1, selectedAnswers[selectedTest - 1])
 
-                                    this.nextQuestion(selectedTest)
+                                    if (showAnswersAfterTest) {
+                                        this.nextQuestion(selectedTest)
+                                    }
                                     this.updateAnswer(false, 'gived')
                                     this.updateAnswer(false, 'selected')
+                                    this.setState({updateComponents: Math.random()})
                                 }
 
                                 if (!isAnswerSelected && !isAnswerGived) {
@@ -436,7 +714,24 @@ class Content extends React.Component {
                     >
                         Змінити відповідь
                     </Button>
-                    <Button>Завершити</Button>
+                    <label>
+                        показувати відповіді після проходження тесту чи під час:
+                        <input
+                            name="showAnswersAfterTest"
+                            type="checkbox"
+                            checked={showAnswersAfterTest}
+                            onChange={
+                                event => {
+                                    this.setState({showAnswersAfterTest: event.target.checked})
+                                }
+                            }
+                        />
+                    </label>
+                    <Button
+                        onClick={this.setTestFinished}
+                    >
+                        Завершити
+                    </Button>
                 </ButtonsWrapper>
             </ContentWrapper>
         )

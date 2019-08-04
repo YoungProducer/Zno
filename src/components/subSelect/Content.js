@@ -60,7 +60,6 @@ class Content extends React.Component {
             subjectName, 
             years, 
             selectedYear, 
-            _inputHandle
         } = this.state
 
         return(
@@ -82,7 +81,7 @@ class Content extends React.Component {
                             id="standard-select-currency"
                             select
                             value={selectedYear}
-                            onChange={_inputHandle}
+                            onChange={this._inputHandle}
                             helperText="Оберіть рік тесту"
                             margin="none"
                             variant="outlined"

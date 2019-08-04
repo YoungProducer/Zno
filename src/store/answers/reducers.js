@@ -85,9 +85,11 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
             }
 
             if (action.payload.type === 2) {
+                const fields = []
                 for (let i = 0; i < state.givedAnswers[action.payload.testId].length; i++) {
-                    state.givedAnswers[action.payload.testId][i] = ''
+                    fields.push("")
                 }
+                state.givedAnswers[action.payload.testId] = fields
             }
 
             return { 
@@ -107,9 +109,11 @@ const selectedAnswersInitialState = {
 }
 
 export const selectedAnswersReducer = (state = selectedAnswersInitialState, action) => {
-    switch (action.type) {
+    const { type, payload } = action
+
+    switch (type) {
         case INIT_SELECTED_ANSWERS: {
-            for (let i = 0; i < action.payload.length; i++) {
+            for (let i = 0; i < payload.length; i++) {
 
                 if (action.payload[i].type === 0) {
                     state.selectedAnswers.push(-1)
@@ -119,10 +123,10 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
                     state.selectedAnswers.push([-1, -1, -1, -1])
                 }
 
-                if (action.payload[i].type === 2) {
+                if (payload[i].type === 2) {
                     let array = []
 
-                    for (let j = 0; j < action.payload[i].answer.length; j++) {
+                    for (let j = 0; j < payload[i].answer.length; j++) {
                         array.push('')
                     }
 
@@ -135,39 +139,41 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
             }
         }
         case SAVE_SELECTED_ANSWER: {
-            state.selectedAnswers[action.payload.testId] = action.payload.answer
+            state.selectedAnswers[payload.testId] = payload.answer
 
             return {
                 ...state,
             }
         }
         case SAVE_SELECTED_RELATION_ANSWER: {
-            state.selectedAnswers[action.payload.testId][action.payload.index] = action.payload.answer
+            state.selectedAnswers[payload.testId][payload.index] = payload.answer
 
             return {
                 ...state
             }
         }
         case SAVE_SELECTED_TEXT_ANSWER: {
-            state.selectedAnswers[action.payload.testId][action.payload.index] = action.payload.answer
+            state.selectedAnswers[payload.testId][payload.index] = payload.answer
 
             return {
                 ...state
             }
         }
         case NULLIFY_SELECTED_ANSWER: {
-            if (action.payload.type === 0) {
-                state.selectedAnswers[action.payload.testId] = -1
+            if (payload.type === 0) {
+                state.selectedAnswers[payload.testId] = -1
             }
 
-            if (action.payload.type === 1) {
-                state.selectedAnswers[action.payload.testId] = [-1, -1, -1, -1]
+            if (payload.type === 1) {
+                state.selectedAnswers[payload.testId] = [-1, -1, -1, -1]
             }
 
-            if (action.payload.type === 2) {
-                for (let i = 0; i < state.selectedAnswers[action.payload.testId].length; i++) {
-                    state.selectedAnswers[action.payload.testId][i] = ''
+            if (payload.type === 2) {
+                const fields = []
+                for (let i = 0; i < state.selectedAnswers[payload.testId].length; i++) {
+                    fields.push("")
                 }
+                state.selectedAnswers[payload.testId] = fields
             }
 
             return {

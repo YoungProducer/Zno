@@ -25,7 +25,8 @@ class RelationsAnswers extends React.Component {
         super(props)
 
         this.state = {
-            selectedAnswer: [-1, -1, -1, -1]
+            selectedAnswer: [-1, -1, -1, -1],
+            inited: false
         }
     }
 
@@ -46,17 +47,29 @@ class RelationsAnswers extends React.Component {
         }
     }
 
+    componentDidMount() {
+        this.setState({inited: true})
+        this.props.updateAnswer()
+    }
+
     componentDidUpdate() {
         this.updateAnswers()
     }
 
     render() {
+        const {
+            inited
+        } = this.state
+
         const { 
             onSaveSelectedRelationAnswer,
             testId,
             selectedAnswers,
             updateAnswer,
-            givedAnswers
+            givedAnswers,
+            showAnswersAfterTest,
+            rightAnswer,
+            isTestFinished
         } = this.props
 
         return(
@@ -76,20 +89,56 @@ class RelationsAnswers extends React.Component {
                                         key={hindex}
                                         onClick={
                                             () => {
-                                                if (givedAnswers[testId][0] === -1 &&
-                                                    givedAnswers[testId][1] === -1 &&
-                                                    givedAnswers[testId][2] === -1 &&
-                                                    givedAnswers[testId][3] === -1
-                                                ) {
-                                                    this.setState({selectedAnswer: hindex + 1}),
-                                                    onSaveSelectedRelationAnswer(testId, vindex, hindex + 1)
+                                                if (!isTestFinished) {
+                                                    if (givedAnswers[testId][0] === -1 &&
+                                                        givedAnswers[testId][1] === -1 &&
+                                                        givedAnswers[testId][2] === -1 &&
+                                                        givedAnswers[testId][3] === -1
+                                                    ) {
+                                                        this.setState({selectedAnswer: hindex + 1}),
+                                                        onSaveSelectedRelationAnswer(testId, vindex, hindex + 1)
+                                                    }
+                                                    if (selectedAnswers[testId][0] !== -1 &&
+                                                        selectedAnswers[testId][1] !== -1 &&
+                                                        selectedAnswers[testId][2] !== -1 &&
+                                                        selectedAnswers[testId][3] !== -1
+                                                    ) {
+                                                        updateAnswer(true, 'selected')
+                                                    }
                                                 }
-                                                if (selectedAnswers[testId][0] !== -1 &&
-                                                    selectedAnswers[testId][1] !== -1 &&
-                                                    selectedAnswers[testId][2] !== -1 &&
-                                                    selectedAnswers[testId][3] !== -1
-                                                ) {
-                                                    updateAnswer(true, 'selected')
+                                            }
+                                        }
+
+                                        bgColor={
+                                            () => {
+                                                if (inited) {
+                                                    if (showAnswersAfterTest) {
+                                                        return '#eee';
+                                                    } else {
+                                                        if (isTestFinished) {
+                                                            if (hindex + 1 === rightAnswer[vindex]) {
+                                                                return '#BADC58';
+                                                            } else {
+                                                                if (givedAnswers[testId][vindex] === hindex + 1) {
+                                                                    return '#FF6A5C';
+                                                                }
+                                                                return '#eee';
+                                                            }
+                                                        } else {
+                                                            if (givedAnswers[testId][vindex] !== -1) {
+                                                                if (hindex + 1 === rightAnswer[vindex]) {
+                                                                    return '#BADC58';
+                                                                } else {
+                                                                    if (givedAnswers[testId][vindex] === hindex + 1) {
+                                                                        return '#FF6A5C';
+                                                                    }
+                                                                    return '#eee';
+                                                                }
+                                                            } else {
+                                                                return '#eee;'
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }

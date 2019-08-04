@@ -1,6 +1,19 @@
 import posed from 'react-pose'
 import styled from 'styled-components'
 
+export const Header = styled.div`
+    width: 100%;
+    height: 70px;
+`
+
+export const NameWrapper = styled.div`
+    float: left;
+`
+
+export const CountDownWrapper = styled.div`
+    float: right;
+`
+
 export const SubName = styled.p`
     font-family: 'ProductSans';
     font-size: 18px;
@@ -105,4 +118,8 @@ export const Button = styled.button`
         background-color: ${props => props.primary ? '#AFCF52' : '#E74C3C'};
         transition: background-color .2s ease-in-out;
     }
+`
+
+export const ShowAnswersSwitcher = styled.input`
+    
 `

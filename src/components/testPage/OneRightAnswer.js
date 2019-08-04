@@ -18,8 +18,15 @@ class OneRightAnswer extends React.Component {
         super(props) 
 
         this.state = {
-            selectedAnswer: -1
+            selectedAnswer: -1,
+            inited: false,
         }
+    }
+
+    componentDidMount() {
+        this.setState({
+            inited: true,
+        })
     }
 
     componentDidUpdate() {
@@ -43,7 +50,10 @@ class OneRightAnswer extends React.Component {
             testId,
             selectedAnswers,
             updateAnswer,
-            givedAnswers
+            givedAnswers,
+            showAnswersAfterTest,
+            rightAnswer,
+            isTestFinished,
         } = this.props
 
         return(
@@ -54,10 +64,46 @@ class OneRightAnswer extends React.Component {
                             key={index}
                             onClick={
                                 () => {
-                                    if (givedAnswers[testId] === -1) {
-                                        this.setState({selectedAnswer: index + 1}),
-                                        onSaveSelectedAnswer(testId, index + 1)
-                                        updateAnswer(true)
+                                    if (!isTestFinished) {
+                                        if (givedAnswers[testId] === -1) {
+                                            this.setState({selectedAnswer: index + 1}),
+                                            onSaveSelectedAnswer(testId, index + 1)
+                                            updateAnswer(true)
+                                        }
+                                    }
+                                }
+                            }
+                            bgColor={
+
+                                () => {
+                                    if (this.state.inited) {
+                                        if (showAnswersAfterTest) {
+                                            return '#eee';
+                                        } else {
+                                            if (isTestFinished) {
+                                                if (index + 1 === rightAnswer) {
+                                                    return '#BADC58';
+                                                } else {
+                                                    if (givedAnswers[testId] === index + 1) { 
+                                                        return '#FF6A5C';
+                                                    }
+                                                    return '#eee';
+                                                }
+                                            } else {
+                                                if (givedAnswers[testId] !== -1) {
+                                                    if (index + 1 === rightAnswer) {
+                                                        return '#BADC58';
+                                                    } else {
+                                                        if (givedAnswers[testId] === index + 1) { 
+                                                            return '#FF6A5C';
+                                                        } 
+                                                        return '#eee';
+                                                    }
+                                                } else {
+                                                    return '#eee';
+                                                }
+                                            }
+                                        }
                                     }
                                 }
                             }

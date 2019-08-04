@@ -17,11 +17,12 @@ export const Square = styled.div`
 
     border-radius: 4px;
 
-    background-color: #eee;
 
     display: inline-block;
    
     cursor: pointer;
+
+    background-color: ${props => props.bgColor || '#eee'};
 `
 
 export const Indices = styled.p`
