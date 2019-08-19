@@ -63,7 +63,7 @@ export const Name = styled.h1`
 
     font-family: 'ProductSans';
     font-weight: lighter;
-    font-size: 18px;
+    font-size: 22px;
 
     text-align: center;
 

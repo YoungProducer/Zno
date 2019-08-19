@@ -1,7 +1,13 @@
 import React from 'react'
+import { NavLink } from 'react-router-dom'
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
 import ThemeProvider from '@material-ui/styles/ThemeProvider'
+import Radio from '@material-ui/core/Radio';
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormControl from '@material-ui/core/FormControl';
+import FormLabel from '@material-ui/core/FormLabel';
 
 import Selection from './Selection'
 
@@ -12,16 +18,24 @@ import {
 import {
     theme,
     Header,
-    SubName,
-    SelectionsWrapper,
+    PopUpWrapper,
+    Eclispe,
+    ButtonsWrapper,
+    ListWrapper,
+    ModeWrapper,
+    Input,
+    SwitcherWrapper,
+    SwitcherBg,
+    SwitcherButton
 } from './Content.styled'
 
-class Content extends React.Component {
+class PopUpWindow extends React.Component {
 
     constructor(props) {
         super(props)
 
         this.state = {
+            inited: false,
             subjectName: '',
             years: [
                 2019,
@@ -29,7 +43,17 @@ class Content extends React.Component {
                 2017,
                 2016
             ],
-            selectedYear: 2019
+            selectedYear: 2019,
+            selectedType: '',
+            selectedPart: '',
+            selectedTheme: '',
+            currentThemes: [],
+            showThemes: false,
+            showDeepRadioButtons: false,
+            selectedDeepType: '',
+            showDeepList: false,
+            selectedDeepListItem: '',
+            showAnswersAfterTest: true
         }
     }
 
@@ -37,6 +61,31 @@ class Content extends React.Component {
         this.setState({
             subjectName: this.getSubName()
         })
+    }
+
+    componentDidMount() {
+        this.setState({
+            inited: true,
+            selectedPart: this.props.subSubjects[0]
+        })
+    }
+
+    updateThemes = (partName) => {
+        const { themes } = this.props
+
+        this.setState({
+            currentThemes: themes[partName] === undefined ? [] : themes[partName],
+            selectedTheme: themes[partName] === undefined ? '' : themes[partName][0]
+        })
+
+        window.setTimeout(() => {
+            console.log(this.state.currentThemes)
+            if (this.state.selectedType === 'ВИБІР ТЕМИ') {
+                if (this.state.currentThemes.length !== 0) {
+                    this.setState({showThemes: true})
+                } else this.setState({showThemes: false})
+            } else this.setState({showThemes: false})
+        }, 10)
     }
 
     getSubName = () => {
@@ -49,78 +98,268 @@ class Content extends React.Component {
         return url;
     }
 
-    _inputHandle = (event) => {
+    _inputYearHandle = (event) => {
         this.setState({
             selectedYear: event.target.value
         })
     }
 
+    _inputPartHandle = (event) => {
+        this.setState({
+            selectedPart: event.target.value,
+        })
+
+        this.updateThemes(event.target.value)
+    }
+
+    _inputThemeHandle = (event) => {
+        this.setState({
+            selectedTheme: event.target.value
+        })
+    }
+
+    _radioHandle = (event) => {
+        this.setState({
+            selectedType: event.target.value
+        })
+
+        if (event.target.value === 'ВИБІР ТЕМИ') {
+            this.updateThemes(this.state.selectedPart)
+            this.setState({showDeepRadioButtons: false, showDeepList: false})
+        }
+
+        if (event.target.value === 'ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО') {            
+            this.setState({
+                showDeepRadioButtons: true,
+                showThemes: false,
+                showDeepList: false,
+                selectedDeepListItem: this.state.selectedDeepType !== 'ТРЕНУВАЛЬНІ ВАРІАНТИ' ? this.props.testingCases[0] : this.props.mainSession[0]
+            })
+        }
+
+    }
+
+    _deepRadioHandle = (event) => {
+        this.setState({
+            selectedDeepType: event.target.value,
+            showDeepList: true,
+            selectedDeepListItem: this.state.selectedDeepType !== 'ТРЕНУВАЛЬНІ ВАРІАНТИ' ? this.props.testingCases[0] : this.props.mainSession[0]
+        })
+    }
+
+    _deepListInputHandle = (event) => {
+        this.setState({
+            selectedDeepListItem: event.target.value
+        })
+    }
+
+    componentWillReceiveProps(nextProps) {
+        if (nextProps.subSubjects !== undefined) {
+            this.setState({
+                selectedPart: nextProps.subSubjects[0],
+            })
+        }
+    }
+
+    componentDidUpdate() {
+        
+    }
+
     render() {
         const { 
-            subjectName, 
-            years, 
-            selectedYear, 
+            selectedPart, 
+            selectedType,
+            selectedTheme,
+            currentThemes,
+            showThemes,
+            showDeepRadioButtons,
+            selectedDeepType,
+            showDeepList,
+            selectedDeepListItem,
+            showAnswersAfterTest
         } = this.state
 
-        return(
-            <ContentWrapper>
-                <Header>Вибір тесту</Header>
-                <SubName>{subjectName}</SubName>
+        const {
+            active,
+            changePopUpState,
+            subSubjects,
+            mainSession,
+            testingCases
+        } = this.props
 
-                <div
-                    style={{
-                        position: 'absolute',
-                        top: 0,
-                        right: 16
-                    }}
-                >
+        const deepList = selectedDeepType === 'ТРЕНУВАЛЬНІ ВАРІАНТИ' ? testingCases : mainSession
+        const showSwithcers = selectedDeepType === 'ОСНОВНА СЕССІЯ ЗНО' ? true : false
+
+        return(
+            <Eclispe
+                pose={active ? 'visible' : 'hidden'}
+            >
+                <PopUpWrapper>
+                    <Header>Вибір тесту</Header>
+
                     <ThemeProvider
                         theme={theme}
                     >
-                        <TextField
-                            id="standard-select-currency"
-                            select
-                            value={selectedYear}
-                            onChange={this._inputHandle}
-                            helperText="Оберіть рік тесту"
-                            margin="none"
-                            variant="outlined"
-                        >
-                            {years.map(year => (
-                                <MenuItem key={year} value={year}>
-                                    {year}
-                                </MenuItem>
-                            ))}
-                        </TextField>
-                    </ThemeProvider>
-                </div>
+                        <FormControl component="fieldset">
+                            <FormLabel component="legend">Оберіть тип тесту</FormLabel>
+                            <RadioGroup aria-label="position" name="position" value={selectedType} onChange={this._radioHandle} >
+                                <FormControlLabel
+                                    value="ВИБІР ТЕМИ"
+                                    control={<Radio color="primary" />}
+                                    label="ВИБІР ТЕМИ"
+                                    labelPlacement="end"
+                                />
+                                <FormControlLabel
+                                    value="ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО"
+                                    control={<Radio color="primary" />}
+                                    label="ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО"
+                                    labelPlacement="end"
+                                />
+                            </RadioGroup>
+                        </FormControl>
 
-                <SelectionsWrapper>
-                    <Selection 
-                        leftColor='#FF7979'
-                        rightColor='#E74C3C'
-                        selName='НАВЧАННЯ'
-                        subName={subjectName}
-                        year={selectedYear}
-                    />
-                    <Selection 
-                        leftColor='#FF7979'
-                        rightColor='#E74C3C'
-                        selName='ПРОБНИЙ ТЕСТ'
-                        subName={subjectName}
-                        year={selectedYear}
-                    />
-                    <Selection 
-                        leftColor='#FF7979'
-                        rightColor='#E74C3C'
-                        selName='ОСНОВНА СЕССІЯ'
-                        subName={subjectName}
-                        year={selectedYear}
-                    />
-                </SelectionsWrapper>
-            </ContentWrapper>
+                        {
+                            subSubjects.length !== 0 && selectedType === 'ВИБІР ТЕМИ' ? (
+                                    <FormControl
+                                        component='div'
+                                    >
+                                        <FormLabel component="legend">Оберіть частину</FormLabel>
+                                        <TextField
+                                            id="standard-select-currency"
+                                            select
+                                            value={selectedPart}
+                                            onChange={this._inputPartHandle}
+                                            margin="none"
+                                            variant="outlined"
+                                        >
+                                            {subSubjects.map(subSubject => (
+                                                <MenuItem key={subSubject} value={subSubject}>
+                                                    {subSubject}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </FormControl>
+                            ) : <></>
+                        }
+
+                        {
+                            showThemes ? (
+                                    <FormControl
+                                        component='div'
+                                    >
+                                        <FormLabel component="legend">Оберіть тему</FormLabel>
+                                        <TextField
+                                            id="standard-select-currency"
+                                            select
+                                            value={selectedTheme}
+                                            onChange={this._inputThemeHandle}
+                                            margin="none"
+                                            variant="outlined"
+                                        >
+                                            {currentThemes.map(theme => (
+                                                <MenuItem key={theme} value={theme}>
+                                                    {theme}
+                                                </MenuItem>
+                                            ))}
+                                        </TextField>
+                                    </FormControl>
+                            ) : <></>
+                        }
+
+                        { 
+                            showDeepRadioButtons ? 
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend">Оберіть тип тесту</FormLabel>
+                                    <RadioGroup aria-label="position" name="position" value={selectedDeepType} onChange={this._deepRadioHandle} >
+                                        <FormControlLabel
+                                            value="ТРЕНУВАЛЬНІ ВАРІАНТИ"
+                                            control={<Radio color="primary" />}
+                                            label="ТРЕНУВАЛЬНІ ВАРІАНТИ"
+                                            labelPlacement="end"
+                                        />
+                                        <FormControlLabel
+                                            value="ОСНОВНА СЕССІЯ ЗНО"
+                                            control={<Radio color="primary" />}
+                                            label="ОСНОВНА СЕССІЯ ЗНО"
+                                            labelPlacement="end"
+                                        />
+                                    </RadioGroup>
+                                </FormControl> : 
+                                <></>
+                        }
+
+                        {
+                            showDeepList ? 
+                                <FormControl
+                                    component='div'
+                                >
+                                    <FormLabel component="legend">{selectedDeepType === 'ТРЕНУВАЛЬНІ ВАРІАНТИ' ? 'Виберіть тренувальний варіант' : 'Виберіть варіант ЗНО'}</FormLabel>
+                                    <TextField
+                                        id="standard-select-currency"
+                                        select
+                                        value={selectedDeepListItem}
+                                        onChange={this._deepListInputHandle}
+                                        margin="none"
+                                        variant="outlined"
+                                    >
+                                       
+                                        {deepList.map(item => (
+                                            <MenuItem key={item} value={item}>
+                                                {item}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </FormControl> :
+                                <></>
+                        }
+
+                        {
+                            showSwithcers ? (
+                                <ModeWrapper>
+                                    <SwitcherWrapper>
+                                        <Input type='checkbox' id='mode'/>
+                                        <label
+                                            htmlFor='mode'
+                                            onClick={
+                                                () => {
+                                                    this.setState({showAnswersAfterTest: !showAnswersAfterTest})
+                                                }
+                                            }
+                                        >
+                                            <SwitcherBg>
+                                                <SwitcherButton pose={!showAnswersAfterTest ? 'offline' : 'online'}/>
+                                            </SwitcherBg>
+                                        </label>
+                                    </SwitcherWrapper>
+                                    <h1>Показувати відповіді під час тесту</h1>
+                                </ModeWrapper>
+                            ) : <></>
+                        }
+                    </ThemeProvider>
+
+                    <ButtonsWrapper>
+                        <NavLink
+                            // to={'/test/' + subject + '/' + selectedYear + '/' + selectedType}
+                        >
+                            <h1 style={{float: 'left'}}>
+                                Розпочати тест
+                            </h1>
+                        </NavLink>
+                        <h1 
+                            style={{float: 'right'}}
+                            onClick={
+                                () => { 
+                                    changePopUpState(false) 
+                                }
+                            }
+                        >
+                            Скасувати
+                        </h1>
+                    </ButtonsWrapper>
+                </PopUpWrapper>
+            </Eclispe>
         )
     }
 }
 
-export default Content
+export default PopUpWindow

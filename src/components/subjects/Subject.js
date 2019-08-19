@@ -11,27 +11,24 @@ const Subject = (props) => {
     const [pose, setPose] = useState('init')
 
     return(
-        <NavLink
-            to={'/selection/' + props.subName}
+        <Wrapper
+            onMouseEnter={() => setPose('hover')}
+            onMouseLeave={() => setPose('init')}
+            onClick={() => { props.changePopUpState(true), props.changeSubject(props.subName, props.index)}}
         >
-            <Wrapper
-                onMouseEnter={() => setPose('hover')}
-                onMouseLeave={() => setPose('init')}
+            <WrapperBg 
+                pose={pose} 
+                lColor={props.leftColor}
+                rColor={props.rightColor}
+            />
+            <Name
+                style={{
+                    color: pose === 'init' ? '#333' : '#fff'
+                }}
             >
-                <WrapperBg 
-                    pose={pose} 
-                    lColor={props.leftColor}
-                    rColor={props.rightColor}
-                />
-                <Name
-                    style={{
-                        color: pose === 'init' ? '#333' : '#fff'
-                    }}
-                >
-                    {props.subName}
-                </Name>
-            </Wrapper>
-        </NavLink>
+                {props.subName}
+            </Name>
+        </Wrapper>
     )
 }
 

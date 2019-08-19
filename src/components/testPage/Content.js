@@ -19,24 +19,29 @@ import {
     ShowAnswersSwitcher,
     Header,
     NameWrapper,
-    CountDownWrapper
+    CountDownWrapper,
+    ModeWrapper,
+    Input,
+    SwitcherWrapper,
+    SwitcherBg,
+    SwitcherButton
 } from './Content.styled'
 
 const colors = {
     green: {
-        default: '#BADC58',
-        hover: '#AFCF52'
+        default: '#4CAF50',
+        hover: '#449D48'
     },
     red: {
-        default: '#FF6A5C',
-        hover: '#ff5747'
+        default: '#F44336',
+        hover: '#D23B30'
     },
     blue: {
-        default: '#038cfc',
-        hover: '#037bfc'
+        default: '#424242',
+        hover: '#3E3E3E'
     },
     yellow: {
-        default: '#FFC400',
+        default: '#FFC107',
         hover: '#FFAA00'
     }
 }
@@ -74,7 +79,8 @@ class Content extends React.Component {
             updateComponents: 0,
             showAnswersAfterTest: false,
             testFinished: false,
-            timeForTestInMinutes: 180
+            timeForTestInMinutes: 180,
+            switcherPose: false
         }
     }
 
@@ -260,7 +266,8 @@ class Content extends React.Component {
     setTestFinished = () => {
         this.setState({
             testFinished: true,
-            timeForTestInMinutes: 0
+            timeForTestInMinutes: 0,
+            showAnswersAfterTest: false
         })
     }
 
@@ -274,7 +281,8 @@ class Content extends React.Component {
             isAnswerGived,
             showAnswersAfterTest,
             testFinished,
-            timeForTestInMinutes
+            timeForTestInMinutes,
+            switcherPose
         } = this.state
 
         const { 
@@ -303,16 +311,40 @@ class Content extends React.Component {
                             Тест {selectedTest} з {tasks.length}
                         </Counter>
                     </NameWrapper>
-                    {
-                        type === 'ОСНОВНА СЕССІЯ' ? (
-                            <CountDownWrapper>
-                                <CountDownTimer 
-                                    startTimeInMinutes={timeForTestInMinutes}
-                                    setTestFinished={this.setTestFinished}
-                                />
-                            </CountDownWrapper>
-                        ) : (<></>)
-                    }
+                    <CountDownWrapper>
+                        {
+                            type === 'ОСНОВНА СЕССІЯ' ? (
+                                    <CountDownTimer 
+                                        startTimeInMinutes={timeForTestInMinutes}
+                                        setTestFinished={this.setTestFinished}
+                                    />
+                            ) : (<></>)
+                        }
+                        <Button
+                            onClick={this.setTestFinished}
+                        >
+                            Завершити
+                        </Button>
+                        <ModeWrapper>
+                            <h1>Показувати відповіді під час тесту</h1>
+
+                            <SwitcherWrapper>
+                                <Input type='checkbox' id='mode'/>
+                                <label
+                                    htmlFor='mode'
+                                    onClick={
+                                        () => {
+                                            this.setState({showAnswersAfterTest: !showAnswersAfterTest})
+                                        }
+                                    }
+                                >
+                                    <SwitcherBg>
+                                        <SwitcherButton pose={showAnswersAfterTest ? 'offline' : 'online'}/>
+                                    </SwitcherBg>
+                                </label>
+                            </SwitcherWrapper>
+                        </ModeWrapper>
+                    </CountDownWrapper>
                 </Header>
                 <TestNumberSelWrapper>
                     {
@@ -691,7 +723,6 @@ class Content extends React.Component {
                     </Button>
 
                     <Button
-                        primary
                         onClick={
                             () => {
                                 if (isAnswerGived) {
@@ -714,7 +745,7 @@ class Content extends React.Component {
                     >
                         Змінити відповідь
                     </Button>
-                    <label>
+                    {/* <label>
                         показувати відповіді після проходження тесту чи під час:
                         <input
                             name="showAnswersAfterTest"
@@ -726,12 +757,8 @@ class Content extends React.Component {
                                 }
                             }
                         />
-                    </label>
-                    <Button
-                        onClick={this.setTestFinished}
-                    >
-                        Завершити
-                    </Button>
+                    </label> */}
+                    
                 </ButtonsWrapper>
             </ContentWrapper>
         )

@@ -16,7 +16,7 @@ const Sidebar = (props) => {
         <Wrapper
             pose={pose}
         >
-            <ArrowContainer
+            {/* <ArrowContainer
                 onClick={
                     () => setPose(pose === 'init' ? 'active' : 'init')
                 }
@@ -24,7 +24,7 @@ const Sidebar = (props) => {
                 <Arrow 
                     src='./img/arrow-icon.png' 
                 />
-            </ArrowContainer>
+            </ArrowContainer> */}
 
             <Content />
         </Wrapper>

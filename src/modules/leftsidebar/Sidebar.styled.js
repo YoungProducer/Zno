@@ -18,15 +18,13 @@ const PosedWrapper = posed.div({
     }
 })
 
-export const Wrapper = styled(PosedWrapper)`
-    width: 330px;
+export const Wrapper = styled.div`
+    width: 280px;
     height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
     z-index: 10;
+    top: 0;
+
+    position: absolute;
 
     background-color: #333;
 `
