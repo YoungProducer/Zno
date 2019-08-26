@@ -25,7 +25,7 @@ class Routes extends React.Component {
                 <Switch>
                     <Route path='/' component={Subjects} exact />
                     {/* <Route path='/selection/:name' component={SubSelect} /> */}
-                    <Route path='/test/:name/:year/:type' component={TestsPage} />
+                    <Route path='/test' component={TestsPage} />
                 </Switch>
             </HashRouter>
         )

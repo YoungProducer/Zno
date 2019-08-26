@@ -8,6 +8,7 @@ import TextAnswer from '../../containers/TextAnswer'
 
 import { ContentWrapper } from '../subjects/Content.styled'
 
+
 import { 
     SubName, 
     Counter,
@@ -26,6 +27,11 @@ import {
     SwitcherBg,
     SwitcherButton
 } from './Content.styled'
+
+const path = require('path')
+const rootPath = path.resolve(__dirname, 'web/WebSites/Zno/src')
+
+
 
 const colors = {
     green: {
@@ -72,7 +78,7 @@ class Content extends React.Component {
             year: 0,
             type: '',
             selectedTest: 1,
-            tasks: tasks,
+            tasks: [],
             isAnswerSelected: false,
             isAnswerGived: false,
             inited: false,
@@ -86,29 +92,37 @@ class Content extends React.Component {
 
     componentWillMount() {
         this.props.onPushQuestions(this.state.tasks)
+        this.setState({
+            tasks: require('../../tasks/Математика/Алгебра/v1.json')
+        })
     }
 
     componentDidMount() {
         this.getInfo(decodeURI(window.location.hash))
         this.props.onInitAnswers(this.state.tasks)
         this.props.onInitSelectedAnswers(this.state.tasks)
-        this.setState({inited: true})
+        // this.setState({inited: true})
+        // console.log(rootPath + '\\exercises')
+        // this.setState({tasks: require('../../tasks/Математика/Алгебра/v1.json')})
+
+        // console.log(rootPath)
+        // this.readDir()
     }
 
     getInfo = (url) => {
-        let temp = url
+        // let temp = url
 
-        const type = this.getLastParam(temp)
-        temp = this.cutToSlash(temp)
-        const year = this.getLastParam(temp)
-        temp = this.cutToSlash(temp)
-        const subject = this.getLastParam(temp)
+        // const type = this.getLastParam(temp)
+        // temp = this.cutToSlash(temp)
+        // const year = this.getLastParam(temp)
+        // temp = this.cutToSlash(temp)
+        // const subject = this.getLastParam(temp)
 
-        this.setState({
-            subject: subject,
-            year: year,
-            type: type
-        })
+        // this.setState({
+        //     subject: subject,
+        //     year: year,
+        //     type: type
+        // })
     }
 
     checkIsSelected = (selectedAnswers, testId, type) => {
@@ -279,7 +293,6 @@ class Content extends React.Component {
             selectedTest, 
             isAnswerSelected, 
             isAnswerGived,
-            showAnswersAfterTest,
             testFinished,
             timeForTestInMinutes,
             switcherPose
@@ -289,8 +302,11 @@ class Content extends React.Component {
             onNullifyAnswer,
             onNullifySelectedAnswer, 
             onGiveAnAnswer, 
+            onSetAnswersDisplay,
             selectedAnswers,
-            givedAnswers
+            givedAnswers,
+            isDisplayable,
+            isTimeLimited
         } = this.props
 
         const {
@@ -299,6 +315,9 @@ class Content extends React.Component {
             blue, 
             yellow
         } = colors
+
+        // console.log(global)
+        console.log(this.state.tasks)
 
         return(
             <ContentWrapper>
@@ -313,7 +332,7 @@ class Content extends React.Component {
                     </NameWrapper>
                     <CountDownWrapper>
                         {
-                            type === 'ОСНОВНА СЕССІЯ' ? (
+                            isTimeLimited ? (
                                     <CountDownTimer 
                                         startTimeInMinutes={timeForTestInMinutes}
                                         setTestFinished={this.setTestFinished}
@@ -321,29 +340,11 @@ class Content extends React.Component {
                             ) : (<></>)
                         }
                         <Button
-                            onClick={this.setTestFinished}
+                            onClick={() => { this.setTestFinished(), onSetAnswersDisplay(false) }}
                         >
                             Завершити
                         </Button>
-                        <ModeWrapper>
-                            <h1>Показувати відповіді під час тесту</h1>
-
-                            <SwitcherWrapper>
-                                <Input type='checkbox' id='mode'/>
-                                <label
-                                    htmlFor='mode'
-                                    onClick={
-                                        () => {
-                                            this.setState({showAnswersAfterTest: !showAnswersAfterTest})
-                                        }
-                                    }
-                                >
-                                    <SwitcherBg>
-                                        <SwitcherButton pose={showAnswersAfterTest ? 'offline' : 'online'}/>
-                                    </SwitcherBg>
-                                </label>
-                            </SwitcherWrapper>
-                        </ModeWrapper>
+                        
                     </CountDownWrapper>
                 </Header>
                 <TestNumberSelWrapper>
@@ -361,7 +362,7 @@ class Content extends React.Component {
                                                         return colors.green.default;
                                                     } else return red.default;
                                                 } else {
-                                                    if (!showAnswersAfterTest) {
+                                                    if (!isDisplayable) {
                                                         if (givedAnswers[index] !== -1) {
                                                             if (givedAnswers[index] === task.answer) {
                                                                 return green.default;
@@ -387,7 +388,7 @@ class Content extends React.Component {
                                                 if (testFinished) {
                                                     return '#fff';
                                                 } else {
-                                                    if (!showAnswersAfterTest) {
+                                                    if (!isDisplayable) {
                                                         if (givedAnswers[index] !== -1) {
                                                             return '#fff';
                                                         } else {
@@ -413,7 +414,7 @@ class Content extends React.Component {
                                                         return green.hover;
                                                     } else return red.hover;
                                                 } else {
-                                                    if (!showAnswersAfterTest) {
+                                                    if (!isDisplayable) {
                                                         if (givedAnswers[index] !== -1) {
                                                             if (givedAnswers[index] === task.answer) {
                                                                 return green.hover;
@@ -454,7 +455,7 @@ class Content extends React.Component {
                                                     if (testFinished) {
                                                         return this.checkIsRight(givedAnswers, index, 1) ? green.default : red.default;
                                                     } else {
-                                                        if (!showAnswersAfterTest) {
+                                                        if (!isDisplayable) {
                                                             if (this.checkIsGived(givedAnswers, index, 1)) {
                                                                 return this.checkIsRight(givedAnswers, index, 1) ? green.default : red.default;
                                                             } else {
@@ -485,7 +486,7 @@ class Content extends React.Component {
                                                     if (testFinished) {
                                                         return '#fff';
                                                     } else {
-                                                        if (!showAnswersAfterTest) {
+                                                        if (!isDisplayable) {
                                                             if (this.checkIsGived(givedAnswers, index, 1)) {
                                                                 return '#fff';
                                                             } else {
@@ -516,7 +517,7 @@ class Content extends React.Component {
                                                     if (testFinished) {
                                                         return this.checkIsRight(givedAnswers, index, 1) ? green.hover : red.hover;
                                                     } else {
-                                                        if (!showAnswersAfterTest) {
+                                                        if (!isDisplayable) {
                                                             if (this.checkIsGived(givedAnswers, index, 1)) {
                                                                 return this.checkIsRight(givedAnswers, index, 1) ? green.hover : red.hover;
                                                             } else {
@@ -567,7 +568,7 @@ class Content extends React.Component {
                                                     if (testFinished) {
                                                         return this.checkIsRight(givedAnswers, index, 2) ? green.default : red.default;
                                                     } else {
-                                                        if (!showAnswersAfterTest) {
+                                                        if (!isDisplayable) {
                                                             if (this.checkIsGived(givedAnswers, index, 2)) {
                                                                 return this.checkIsRight(givedAnswers, index, 2) ? green.default : red.default;
                                                             } else {
@@ -599,7 +600,7 @@ class Content extends React.Component {
                                                     if (testFinished) {
                                                         return '#fff';
                                                     } else {
-                                                        if (!showAnswersAfterTest) {
+                                                        if (!isDisplayable) {
                                                             if (this.checkIsGived(givedAnswers, index, 2)) {
                                                                 return '#fff';
                                                             } else {
@@ -631,7 +632,7 @@ class Content extends React.Component {
                                                     if (testFinished) {
                                                         return this.checkIsRight(givedAnswers, index, 2) ? green.hover : red.hover;
                                                     } else {
-                                                        if (!showAnswersAfterTest) {
+                                                        if (!isDisplayable) {
                                                             if (this.checkIsGived(givedAnswers, index, 2)) {
                                                                 return this.checkIsRight(givedAnswers, index, 2) ? green.hover : red.hover;
                                                             } else {
@@ -674,7 +675,7 @@ class Content extends React.Component {
                             testId={selectedTest - 1}
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
-                            showAnswersAfterTest={showAnswersAfterTest}
+                            showAnswersAfterTest={isDisplayable}
                             isTestFinished={testFinished}
                         />
                     ) : tasks[selectedTest - 1].type === 1 ? (
@@ -683,7 +684,7 @@ class Content extends React.Component {
                             testId={selectedTest - 1}
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
-                            showAnswersAfterTest={showAnswersAfterTest}
+                            showAnswersAfterTest={isDisplayable}
                             isTestFinished={testFinished}
                         /> 
                     ) : (
@@ -692,7 +693,7 @@ class Content extends React.Component {
                             testId={selectedTest - 1}
                             updateAnswer={this.updateAnswer}
                             updateComponent={this.state.updateComponents}
-                            showAnswersAfterTest={showAnswersAfterTest}
+                            showAnswersAfterTest={isDisplayable}
                             isTestFinished={testFinished}
                         />
                     )
@@ -705,7 +706,7 @@ class Content extends React.Component {
                                 if (isAnswerSelected) {
                                     onGiveAnAnswer(selectedTest - 1, selectedAnswers[selectedTest - 1])
 
-                                    if (showAnswersAfterTest) {
+                                    if (isDisplayable) {
                                         this.nextQuestion(selectedTest)
                                     }
                                     this.updateAnswer(false, 'gived')
@@ -719,46 +720,8 @@ class Content extends React.Component {
                             }
                         }
                     >
-                        {isAnswerSelected ? 'Відповісти' : 'Пропустити'}
+                        {isAnswerGived ? 'Наступний' : isAnswerSelected ? 'Відповісти' : 'Пропустити'}
                     </Button>
-
-                    <Button
-                        onClick={
-                            () => {
-                                if (isAnswerGived) {
-                                    if (tasks[selectedTest - 1].type === 0) {
-                                        onNullifyAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
-                                        onNullifySelectedAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
-                                    }
-                                    if (tasks[selectedTest - 1].type === 1) {
-                                        onNullifyAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
-                                        onNullifySelectedAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
-                                    }
-                                    if (tasks[selectedTest - 1].type === 2) {
-                                        onNullifyAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
-                                        onNullifySelectedAnswer(selectedTest - 1, tasks[selectedTest - 1].type)
-                                    }
-                                    this.setState({updateComponents: Math.random()})
-                                }
-                            }
-                        }
-                    >
-                        Змінити відповідь
-                    </Button>
-                    {/* <label>
-                        показувати відповіді після проходження тесту чи під час:
-                        <input
-                            name="showAnswersAfterTest"
-                            type="checkbox"
-                            checked={showAnswersAfterTest}
-                            onChange={
-                                event => {
-                                    this.setState({showAnswersAfterTest: event.target.checked})
-                                }
-                            }
-                        />
-                    </label> */}
-                    
                 </ButtonsWrapper>
             </ContentWrapper>
         )
@@ -773,9 +736,12 @@ Content.propTypes = {
     onNullifySelectedAnswer: PropTypes.func.isRequired,
     onGiveAnAnswer: PropTypes.func.isRequired,
     onGiveAnRelationAnswer: PropTypes.func.isRequired,
+    onSetAnswersDisplay: PropTypes.func.isRequired,
     questions: PropTypes.array.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
-    givedAnswers: PropTypes.array.isRequired
+    givedAnswers: PropTypes.array.isRequired,
+    isDisplayable: PropTypes.bool.isRequired,
+    isTimeLimited: PropTypes.bool.isRequired
 }
 
 

@@ -69,7 +69,11 @@ class RelationsAnswers extends React.Component {
             givedAnswers,
             showAnswersAfterTest,
             rightAnswer,
-            isTestFinished
+            isTestFinished,
+            onNullifyAnswer,
+            onNullifySelectedAnswer,
+            onNullifyRelationAnswerByIndex,
+            onNullifySelecetedRelationAnswerByIndex
         } = this.props
 
         return(
@@ -90,14 +94,15 @@ class RelationsAnswers extends React.Component {
                                         onClick={
                                             () => {
                                                 if (!isTestFinished) {
-                                                    if (givedAnswers[testId][0] === -1 &&
-                                                        givedAnswers[testId][1] === -1 &&
-                                                        givedAnswers[testId][2] === -1 &&
-                                                        givedAnswers[testId][3] === -1
-                                                    ) {
-                                                        this.setState({selectedAnswer: hindex + 1}),
-                                                        onSaveSelectedRelationAnswer(testId, vindex, hindex + 1)
+                                                    if (hindex + 1 !== selectedAnswers[testId][vindex]) {
+                                                        if (givedAnswers[testId][vindex] !== -1) {
+                                                            onNullifyAnswer(testId, 1)
+                                                            onNullifySelecetedRelationAnswerByIndex(testId, vindex)
+                                                        }
                                                     }
+                                                    this.setState({selectedAnswer: hindex + 1}),
+                                                    onSaveSelectedRelationAnswer(testId, vindex, hindex + 1)
+                                                    console.log(selectedAnswers[testId][vindex])
                                                     if (selectedAnswers[testId][0] !== -1 &&
                                                         selectedAnswers[testId][1] !== -1 &&
                                                         selectedAnswers[testId][2] !== -1 &&
@@ -105,6 +110,8 @@ class RelationsAnswers extends React.Component {
                                                     ) {
                                                         updateAnswer(true, 'selected')
                                                     }
+                                                    this.setState({selectedAnswer: hindex + 1}),
+                                                    onSaveSelectedRelationAnswer(testId, vindex, hindex + 1)
                                                 }
                                             }
                                         }
@@ -166,7 +173,11 @@ class RelationsAnswers extends React.Component {
 RelationsAnswers.propTypes = {
     onSaveSelectedRelationAnswer: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
-    givedAnswers: PropTypes.array.isRequired
+    givedAnswers: PropTypes.array.isRequired,
+    onNullifyAnswer: PropTypes.func.isRequired,
+    onNullifySelectedAnswer: PropTypes.func.isRequired,
+    onNullifyRelationAnswerByIndex: PropTypes.func.isRequired,
+    onNullifySelecetedRelationAnswerByIndex: PropTypes.func.isRequired
 }
 
 export default RelationsAnswers

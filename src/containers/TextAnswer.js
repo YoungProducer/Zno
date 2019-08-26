@@ -4,7 +4,9 @@ import { connect } from 'react-redux'
 import TextAnswer from '../components/testPage/TextAnswer'
 
 import {
-    saveSelectedTextAnswer
+    saveSelectedTextAnswer,
+    nullifySelectedTextAnswerByIndex,
+    nullifyAnswer
 } from '../store/answers/actions'
 
 const putStateToProps = (state) => ({
@@ -13,7 +15,9 @@ const putStateToProps = (state) => ({
 })
 
 const putDispatchToProps = (dispatch) => ({
-    onSaveSelectedTextAnswer: bindActionCreators(saveSelectedTextAnswer, dispatch)
+    onSaveSelectedTextAnswer: bindActionCreators(saveSelectedTextAnswer, dispatch),
+    onNullifySelectedTextAnswerByIndex: bindActionCreators(nullifySelectedTextAnswerByIndex, dispatch),
+    onNullifyAnswer: bindActionCreators(nullifyAnswer, dispatch)
 })
 
 export default connect(

@@ -9,7 +9,12 @@ import {
     SAVE_SELECTED_RELATION_ANSWER,
     SAVE_SELECTED_TEXT_ANSWER,
     NULLIFY_ANSWER,
-    NULLIFY_SELECTED_ANSWER
+    NULLIFY_SELECTED_ANSWER,
+    NULLIFY_RELATION_ANSWER_BY_INDEX,
+    NULLIFY_SELECTED_RELATION_ANSWER_BY_INDEX,
+    NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX,
+    SET_ANSWERS_DISPLAY,
+    LIMIT_TIME
 } from './constants'
 
 export const pushQuestions = (data) => ({
@@ -60,4 +65,29 @@ export const nullifyAnswer = (testId, type) => ({
 export const nullifySelectedAnswer = (testId, type) => ({
     type: NULLIFY_SELECTED_ANSWER,
     payload: { testId, type }
+})
+
+export const nullifyRelationAnswerByIndex = (testId, index) => ({
+    type: NULLIFY_RELATION_ANSWER_BY_INDEX,
+    payload: { testId, index }
+})
+
+export const nullifySelectedRelationAnswerByIndex = (testId, index) => ({
+    type: NULLIFY_SELECTED_RELATION_ANSWER_BY_INDEX,
+    payload: { testId, index }
+})
+
+export const nullifySelectedTextAnswerByIndex = (testId, index) => ({
+    type: NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX,
+    payload: { testId, index }
+})
+
+export const setAnswersDisplay = (isDisplayable) => ({
+    type: SET_ANSWERS_DISPLAY,
+    payload: isDisplayable
+})
+
+export const limitTime = (isLimited) => ({
+    type: LIMIT_TIME,
+    payload: isLimited
 })

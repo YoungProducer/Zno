@@ -1,7 +1,7 @@
 import React from 'react'
 import Subject from './Subject'
 
-import PopUpWindow from '../subSelect/Content.js'
+import PopUpWindow from '../../containers/PopUpWindow'
 
 import { 
     ContentWrapper,

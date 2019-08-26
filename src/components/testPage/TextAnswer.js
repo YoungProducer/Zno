@@ -66,7 +66,13 @@ class TextAnswer extends React.Component {
     }
 
     inputOnChange = (event, index, testId) => {
-        const { onSaveSelectedTextAnswer, updateAnswer } = this.props
+        const { 
+            onSaveSelectedTextAnswer, 
+            onNullifySelectedTextAnswerByIndex, 
+            onNullifyAnswer, 
+            updateAnswer, 
+            selectedAnswers 
+        } = this.props
         const value = event.target.value
 
         this.setState(state => {
@@ -77,6 +83,13 @@ class TextAnswer extends React.Component {
                     return answer;
                 }
             })
+            if (value !== selectedAnswers[testId]) {
+                if (selectedAnswers[testId][index] !== '') {
+                    onNullifySelectedTextAnswerByIndex(testId, index)
+                    onNullifyAnswer(testId, 2)
+                }
+            }
+
             updateAnswer(true, 'selected')
             onSaveSelectedTextAnswer(testId, index, list[index])
 
@@ -107,7 +120,7 @@ class TextAnswer extends React.Component {
             selectedAnswers,
             givedAnswers,
             showAnswersAfterTest,
-            isTestFinished
+            isTestFinished,
         } = this.props
 
         return(
@@ -128,9 +141,7 @@ class TextAnswer extends React.Component {
                                 onChange={
                                     event => {
                                         if (!isTestFinished) {
-                                            if (!this.checkIsGived(givedAnswers, testId)) {
-                                                this.inputOnChange(event, index, testId)
-                                            } 
+                                            this.inputOnChange(event, index, testId)
                                         }
                                     }
                                 }
@@ -146,6 +157,8 @@ class TextAnswer extends React.Component {
 
 TextAnswer.propTypes = {
     onSaveSelectedTextAnswer: PropTypes.func.isRequired,
+    onNullifySelectedTextAnswerByIndex: PropTypes.func.isRequired,
+    onNullifyAnswer: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
     givedAnswers: PropTypes.array.isRequired
 }

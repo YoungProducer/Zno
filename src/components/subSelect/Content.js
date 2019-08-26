@@ -1,4 +1,5 @@
 import React from 'react'
+import PropTypes from 'prop-types'
 import { NavLink } from 'react-router-dom'
 import MenuItem from '@material-ui/core/MenuItem';
 import TextField from '@material-ui/core/TextField';
@@ -161,10 +162,6 @@ class PopUpWindow extends React.Component {
         }
     }
 
-    componentDidUpdate() {
-        
-    }
-
     render() {
         const { 
             selectedPart, 
@@ -184,7 +181,11 @@ class PopUpWindow extends React.Component {
             changePopUpState,
             subSubjects,
             mainSession,
-            testingCases
+            testingCases,
+            onSetAnswersDisplay,
+            isDisplayable,
+            onLimitTime,
+            isTimeLimited
         } = this.props
 
         const deepList = selectedDeepType === 'ТРЕНУВАЛЬНІ ВАРІАНТИ' ? testingCases : mainSession
@@ -220,49 +221,49 @@ class PopUpWindow extends React.Component {
 
                         {
                             subSubjects.length !== 0 && selectedType === 'ВИБІР ТЕМИ' ? (
-                                    <FormControl
-                                        component='div'
+                                <FormControl
+                                    component='div'
+                                >
+                                    <FormLabel component="legend">Оберіть частину</FormLabel>
+                                    <TextField
+                                        id="standard-select-currency"
+                                        select
+                                        value={selectedPart}
+                                        onChange={this._inputPartHandle}
+                                        margin="none"
+                                        variant="outlined"
                                     >
-                                        <FormLabel component="legend">Оберіть частину</FormLabel>
-                                        <TextField
-                                            id="standard-select-currency"
-                                            select
-                                            value={selectedPart}
-                                            onChange={this._inputPartHandle}
-                                            margin="none"
-                                            variant="outlined"
-                                        >
-                                            {subSubjects.map(subSubject => (
-                                                <MenuItem key={subSubject} value={subSubject}>
-                                                    {subSubject}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </FormControl>
+                                        {subSubjects.map(subSubject => (
+                                            <MenuItem key={subSubject} value={subSubject}>
+                                                {subSubject}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </FormControl>
                             ) : <></>
                         }
 
                         {
                             showThemes ? (
-                                    <FormControl
-                                        component='div'
+                                <FormControl
+                                    component='div'
+                                >
+                                    <FormLabel component="legend">Оберіть тему</FormLabel>
+                                    <TextField
+                                        id="standard-select-currency"
+                                        select
+                                        value={selectedTheme}
+                                        onChange={this._inputThemeHandle}
+                                        margin="none"
+                                        variant="outlined"
                                     >
-                                        <FormLabel component="legend">Оберіть тему</FormLabel>
-                                        <TextField
-                                            id="standard-select-currency"
-                                            select
-                                            value={selectedTheme}
-                                            onChange={this._inputThemeHandle}
-                                            margin="none"
-                                            variant="outlined"
-                                        >
-                                            {currentThemes.map(theme => (
-                                                <MenuItem key={theme} value={theme}>
-                                                    {theme}
-                                                </MenuItem>
-                                            ))}
-                                        </TextField>
-                                    </FormControl>
+                                        {currentThemes.map(theme => (
+                                            <MenuItem key={theme} value={theme}>
+                                                {theme}
+                                            </MenuItem>
+                                        ))}
+                                    </TextField>
+                                </FormControl>
                             ) : <></>
                         }
 
@@ -315,31 +316,52 @@ class PopUpWindow extends React.Component {
 
                         {
                             showSwithcers ? (
-                                <ModeWrapper>
-                                    <SwitcherWrapper>
-                                        <Input type='checkbox' id='mode'/>
-                                        <label
-                                            htmlFor='mode'
-                                            onClick={
-                                                () => {
-                                                    this.setState({showAnswersAfterTest: !showAnswersAfterTest})
+                                <>
+                                    <ModeWrapper>
+                                        <SwitcherWrapper>
+                                            <Input type='checkbox' id='mode'/>
+                                            <label
+                                                htmlFor='mode'
+                                                onClick={
+                                                    () => {
+                                                        onSetAnswersDisplay(!isDisplayable)
+                                                    }
                                                 }
-                                            }
-                                        >
-                                            <SwitcherBg>
-                                                <SwitcherButton pose={!showAnswersAfterTest ? 'offline' : 'online'}/>
-                                            </SwitcherBg>
-                                        </label>
-                                    </SwitcherWrapper>
-                                    <h1>Показувати відповіді під час тесту</h1>
-                                </ModeWrapper>
+                                            >
+                                                <SwitcherBg>
+                                                    <SwitcherButton pose={isDisplayable ? 'offline' : 'online'}/>
+                                                </SwitcherBg>
+                                            </label>
+                                        </SwitcherWrapper>
+                                        <h1>Показувати відповіді під час тесту</h1>
+                                    </ModeWrapper>
+
+                                    <ModeWrapper>
+                                        <SwitcherWrapper>
+                                            <Input type='checkbox' id='mode'/>
+                                            <label
+                                                htmlFor='mode'
+                                                onClick={
+                                                    () => {
+                                                        onLimitTime(!isTimeLimited)
+                                                    }
+                                                }
+                                            >
+                                                <SwitcherBg>
+                                                    <SwitcherButton pose={!isTimeLimited ? 'offline' : 'online'}/>
+                                                </SwitcherBg>
+                                            </label>
+                                        </SwitcherWrapper>
+                                        <h1>Обмежений час</h1>
+                                    </ModeWrapper>
+                                </>
                             ) : <></>
                         }
                     </ThemeProvider>
 
                     <ButtonsWrapper>
                         <NavLink
-                            // to={'/test/' + subject + '/' + selectedYear + '/' + selectedType}
+                            to={'/test'}
                         >
                             <h1 style={{float: 'left'}}>
                                 Розпочати тест
@@ -360,6 +382,13 @@ class PopUpWindow extends React.Component {
             </Eclispe>
         )
     }
+}
+
+PopUpWindow.propTypes = {
+    onSetAnswersDisplay: PropTypes.func.isRequired,
+    isDisplayable: PropTypes.bool.isRequired,
+    onLimitTime: PropTypes.func.isRequired,
+    isTimeLimited: PropTypes.bool.isRequired
 }
 
 export default PopUpWindow

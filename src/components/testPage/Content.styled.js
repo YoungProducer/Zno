@@ -14,7 +14,7 @@ export const CountDownWrapper = styled.div`
     float: right;
     text-align: right;
 
-    button {
+    ${'' /* button {
         color: #E57373;
         background-color: #fff;
 
@@ -22,7 +22,7 @@ export const CountDownWrapper = styled.div`
             color: #E54F4F;
             background-color: #fff;
         }
-    }
+    } */}
 `
 
 export const SubName = styled.p`
@@ -108,9 +108,10 @@ export const Button = styled.button`
 
     border-radius: 4px;
 
-    ${'' /* background-color: ${props => props.primary ? '#BADC58' : '#FF7979'}; */}
-    background-color: #fff;
-    color: ${props => props.primary ? '#FFD54F' : '#333'};
+    background-color: ${props => props.primary ? '#4CAF50' : '#F44336'};
+    ${'' /* background-color: #fff; */}
+    ${'' /* color: ${props => props.primary ? '#FFD54F' : '#333'}; */}
+    color: #fff;
 
     font-family: 'ProductSans';
     font-size: 16px;
@@ -118,7 +119,7 @@ export const Button = styled.button`
     text-align: center;
 
     ${'' /* padding: 11px 0 11px 0; */}
-    text-align: ${props => props.primary ? 'left' : 'right'};
+    ${'' /* text-align: ${props => props.primary ? 'left' : 'right'}; */}
 
     cursor: pointer;
 
@@ -128,8 +129,9 @@ export const Button = styled.button`
     transition: color .2s ease-in-out;
 
     &:hover {
-        ${'' /* background-color: ${props => props.primary ? '#AFCF52' : '#E74C3C'}; */}
-        color: ${props => props.primary ? '#FFC107' : '#222'};
+        ${'' /* background-color: ${props => props.primary ? '#449D48' : '#D23B30'}; */}
+        ${'' /* color: ${props => props.primary ? '#FFC107' : '#222'}; */}
+        color: #fff;
         transition: color .2s ease-in-out;
     }
 `

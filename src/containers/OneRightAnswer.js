@@ -5,7 +5,9 @@ import OneRightAnswer from '../components/testPage/OneRightAnswer'
 
 import {
     saveSelectedAnswer,
-    giveAnAnswer
+    giveAnAnswer,
+    nullifyAnswer,
+    nullifySelectedAnswer
 } from '../store/answers/actions'
 
 const putStateToProps = (state) => ({
@@ -15,7 +17,9 @@ const putStateToProps = (state) => ({
 
 const putDispatchToProps = (dispatch) => ({
     onSaveSelectedAnswer: bindActionCreators(saveSelectedAnswer, dispatch),
-    onGiveAnAnswer: bindActionCreators(giveAnAnswer, dispatch)
+    onGiveAnAnswer: bindActionCreators(giveAnAnswer, dispatch),
+    onNullifyAnswer: bindActionCreators(nullifyAnswer, dispatch),
+    onNullifySelectedAnswer: bindActionCreators(nullifySelectedAnswer, dispatch)
 })
 
 export default connect(

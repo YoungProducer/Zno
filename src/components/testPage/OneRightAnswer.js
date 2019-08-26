@@ -19,6 +19,7 @@ class OneRightAnswer extends React.Component {
 
         this.state = {
             selectedAnswer: -1,
+            previousAnswer: -2,
             inited: false,
         }
     }
@@ -44,6 +45,10 @@ class OneRightAnswer extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        console.log(this.props, nextProps)
+    }
+
     render() {
         const { 
             onSaveSelectedAnswer, 
@@ -54,6 +59,8 @@ class OneRightAnswer extends React.Component {
             showAnswersAfterTest,
             rightAnswer,
             isTestFinished,
+            onNullifyAnswer,
+            onNullifySelectedAnswer,
         } = this.props
 
         return(
@@ -65,11 +72,15 @@ class OneRightAnswer extends React.Component {
                             onClick={
                                 () => {
                                     if (!isTestFinished) {
-                                        if (givedAnswers[testId] === -1) {
-                                            this.setState({selectedAnswer: index + 1}),
-                                            onSaveSelectedAnswer(testId, index + 1)
-                                            updateAnswer(true)
+                                        if (index + 1 !== selectedAnswers[testId]) {
+                                            if (givedAnswers[testId] !== -1) {
+                                                onNullifyAnswer(testId, 0)
+                                                onNullifySelectedAnswer(testId, 0)
+                                            }
                                         }
+                                        this.setState({selectedAnswer: index + 1}),
+                                        onSaveSelectedAnswer(testId, index + 1)
+                                        updateAnswer(true, 'selected')
                                     }
                                 }
                             }
@@ -124,6 +135,8 @@ class OneRightAnswer extends React.Component {
 OneRightAnswer.propTypes = {
     onSaveSelectedAnswer: PropTypes.func.isRequired,
     onGiveAnAnswer: PropTypes.func.isRequired,
+    onNullifyAnswer: PropTypes.func.isRequired,
+    onNullifySelectedAnswer: PropTypes.func.isRequired,
     selectedAnswers: PropTypes.array.isRequired,
     givedAnswers: PropTypes.array.isRequired
 }

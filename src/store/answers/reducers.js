@@ -8,8 +8,37 @@ import {
     SAVE_SELECTED_RELATION_ANSWER,
     NULLIFY_ANSWER,
     NULLIFY_SELECTED_ANSWER,
-    SAVE_SELECTED_TEXT_ANSWER
+    NULLIFY_RELATION_ANSWER_BY_INDEX,
+    NULLIFY_SELECTED_RELATION_ANSWER_BY_INDEX,
+    NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX,
+    SAVE_SELECTED_TEXT_ANSWER,
+    SET_ANSWERS_DISPLAY,
+    LIMIT_TIME
 } from './constants'
+
+const testSetUpInitialState = {
+    isDisplayable: true,
+    isTimeLimited: false
+}
+
+export const testSetUpReducer = (state = testSetUpInitialState, action) => {
+    switch (action.type) {
+        case SET_ANSWERS_DISPLAY: {
+            return {
+                ...state,
+                isDisplayable: action.payload
+            }
+        }
+        case LIMIT_TIME: {
+            return {
+                ...state,
+                isTimeLimited: action.payload
+            }
+        }
+        default: 
+            return { ...state }
+    }
+}
 
 const questionsInitialState = {
     questions: []
@@ -38,6 +67,8 @@ const givedAnswersInitialState = {
 export const givedAnswersReducer = (state = givedAnswersInitialState, action) => {
     switch (action.type) {
         case INIT_ANSWERS: {
+            state.givedAnswers = []
+
             for (let i = 0; i < action.payload.length; i++) {
 
                 if (action.payload[i].type === 0) {
@@ -96,6 +127,17 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
                 ...state
             }
         }
+        case NULLIFY_RELATION_ANSWER_BY_INDEX: {
+            let fields = state.givedAnswers[action.payload.testId]
+
+            fields[action.payload.index] = -1
+
+            state.givedAnswers[action.payload.testId] = fields
+
+            return { 
+                ...state
+            }
+        } 
         default: {
             return {
                 ...state
@@ -113,6 +155,8 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
 
     switch (type) {
         case INIT_SELECTED_ANSWERS: {
+            state.selectedAnswers = []
+
             for (let i = 0; i < payload.length; i++) {
 
                 if (action.payload[i].type === 0) {
@@ -175,6 +219,28 @@ export const selectedAnswersReducer = (state = selectedAnswersInitialState, acti
                 }
                 state.selectedAnswers[payload.testId] = fields
             }
+
+            return {
+                ...state
+            }
+        }
+        case NULLIFY_SELECTED_RELATION_ANSWER_BY_INDEX: {
+            let fields = state.selectedAnswers[payload.testId]
+
+            fields[payload.index] = -1
+
+            state.selectedAnswers[payload.testId] = fields
+
+            return {
+                ...state
+            }
+        }
+        case NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX: {
+            let fields = state.selectedAnswers[payload.testId]
+
+            fields[payload.index] = ''
+
+            state.selectedAnswers[payload.testId] = fields
 
             return {
                 ...state

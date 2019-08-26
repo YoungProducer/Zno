@@ -6,7 +6,11 @@ import RelationsAnswer from '../components/testPage/RelationsAnswer'
 import {
     saveSelectedAnswer,
     saveSelectedRelationAnswer,
-    giveAnAnswer
+    giveAnAnswer,
+    nullifyAnswer,
+    nullifySelectedAnswer,
+    nullifyRelationAnswerByIndex,
+    nullifySelectedRelationAnswerByIndex
 } from '../store/answers/actions'
 
 const putStateToProps = (state) => ({
@@ -17,7 +21,11 @@ const putStateToProps = (state) => ({
 const putDispatchToProps = (dispatch) => ({
     onSaveSelectedAnswer: bindActionCreators(saveSelectedAnswer, dispatch),
     onSaveSelectedRelationAnswer: bindActionCreators(saveSelectedRelationAnswer, dispatch),
-    onGiveAnAnswer: bindActionCreators(giveAnAnswer, dispatch)
+    onGiveAnAnswer: bindActionCreators(giveAnAnswer, dispatch),
+    onNullifyAnswer: bindActionCreators(nullifyAnswer, dispatch),
+    onNullifySelectedAnswer: bindActionCreators(nullifySelectedAnswer, dispatch),
+    onNullifyRelationAnswerByIndex: bindActionCreators(nullifyRelationAnswerByIndex, dispatch),
+    onNullifySelecetedRelationAnswerByIndex: bindActionCreators(nullifySelectedRelationAnswerByIndex, dispatch)
 })
 
 export default connect(
