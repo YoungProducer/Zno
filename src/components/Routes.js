@@ -21,7 +21,7 @@ class Routes extends React.Component {
     render() {
         return(
             <HashRouter onChange={this.historyHandler}>
-                <Left />
+                {/* <Left /> */}
                 <Switch>
                     <Route path='/' component={Subjects} exact />
                     {/* <Route path='/selection/:name' component={SubSelect} /> */}

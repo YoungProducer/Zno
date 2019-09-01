@@ -24,7 +24,7 @@ export const Wrapper = styled.div`
     z-index: 10;
     top: 0;
 
-    position: absolute;
+    ${'' /* position: absolute; */}
 
     background-color: #333;
 `

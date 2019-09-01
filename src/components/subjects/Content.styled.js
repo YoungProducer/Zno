@@ -6,6 +6,7 @@ export const ContentWrapper = styled.div`
     width: calc(100vw - 120px);
     max-width: 1200px;
     margin-top: 90px;
+    margin-left: 16px;
     ${'' /* position: relative; */}
 `
 

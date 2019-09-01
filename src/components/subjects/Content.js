@@ -1,6 +1,7 @@
 import React from 'react'
 import Subject from './Subject'
 
+import Sidebar from '../../modules/leftsidebar/Sidebar'
 import PopUpWindow from '../../containers/PopUpWindow'
 
 import { 
@@ -94,37 +95,44 @@ class Content extends React.Component {
 
     render() {
         return(
-            <ContentWrapper>
-                <Header>Предмети</Header>
-    
-                <PopUpWindow 
-                    active={this.state.popUpWindowVisible} 
-                    changePopUpState={this.changePopUpWindowState}
-                    subject={this.state.subject}
-                    subSubjects={subSubjects[this.state.subIndex]}
-                    themes={themes}
-                    mainSession={mainSession}
-                    testingCases={testingCases}
-                />
-    
-                <SubjectsWrapper>
-                    {
-                        subjects.map((subject, index) => {
-                            return(
-                                <Subject 
-                                    key={index}
-                                    index={index}
-                                    leftColor={'#FFBE76'}
-                                    rightColor={'#F0932B'}
-                                    subName={subject}
-                                    changePopUpState={this.changePopUpWindowState}
-                                    changeSubject={this.changeSubject}
-                                />
-                            )
-                        }) 
-                    }
-                </SubjectsWrapper>
-            </ContentWrapper>
+            <div
+                style={{
+                    display: 'flex',
+                }}
+            >
+                <Sidebar />
+                <ContentWrapper>
+                    <Header>Предмети</Header>
+        
+                    <PopUpWindow 
+                        active={this.state.popUpWindowVisible} 
+                        changePopUpState={this.changePopUpWindowState}
+                        subject={this.state.subject}
+                        subSubjects={subSubjects[this.state.subIndex]}
+                        themes={themes}
+                        mainSession={mainSession}
+                        testingCases={testingCases}
+                    />
+        
+                    <SubjectsWrapper>
+                        {
+                            subjects.map((subject, index) => {
+                                return(
+                                    <Subject 
+                                        key={index}
+                                        index={index}
+                                        leftColor={'#FFBE76'}
+                                        rightColor={'#F0932B'}
+                                        subName={subject}
+                                        changePopUpState={this.changePopUpWindowState}
+                                        changeSubject={this.changeSubject}
+                                    />
+                                )
+                            }) 
+                        }
+                    </SubjectsWrapper>
+                </ContentWrapper>
+            </div>
         )
     }
 }
