@@ -59,7 +59,7 @@ class PopUpWindow extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.subject)
+    // console.log(this.props.subject)
     this.setState({
       inited: true,
       selectedPart: this.props.subSubjects[0],
@@ -67,6 +67,19 @@ class PopUpWindow extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log(this.props);
+    if (this.props.active) {
+      const link = '../../../dist/tasks/' + this.props.subject[0] + this.props.subject.slice(1, this.props.subject.length).toLowerCase() + '/parts.json'
+      console.log(link)
+      console.log('../../../dist/tasks/' + this.props.subject[0] + this.props.subject.slice(1, this.props.subject.length).toLowerCase() + '/parts.json')
+      // console.log(require(link))
+      console.log(require('../../../dist/tasks/' + this.props.subject[0] + this.props.subject.slice(1, this.props.subject.length).toLowerCase() + '/parts.json'))
+      console.log(require('../../../dist/tasks/Математика/parts.json'))
+    }
+    // console.log(this.props.subject)
+    // const link = '../../../dist/tasks/' + this.props.subject + '/parts.json'
+    // console.log(link)
+    // console.log(require(link))
     // if (prevProps.active === false) {
     //   this.setState({
     //     selectedType: '',
@@ -74,7 +87,7 @@ class PopUpWindow extends React.Component {
     //     selectedTheme: '',
     //     showThemes: false,
     //     showDeepRadioButtons: false,
-    //     selectedDeepType: '',
+    //     selectedDeepType: ''
     //     showDeepList: false,
     //     selectedDeepListItem: '',
     //     // parts: require('../../../dist/tasks/' + this.props.subject + '/parts.json')
@@ -96,9 +109,9 @@ class PopUpWindow extends React.Component {
         selectedDeepType: '',
         showDeepList: false,
         selectedDeepListItem: '',
-        parts: require('../../../dist/tasks/' + this.props.subject + '/parts.json')
+        // parts: require('../../../dist/tasks/' + this.props.subject + '/parts.json')
       })
-      console.log(require('../../../dist/tasks/' + this.props.subject + '/parts.json'))
+      // console.log(require('../../../dist/tasks/' + this.props.subject + '/parts.json'))
     }
   }
 
