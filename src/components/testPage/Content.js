@@ -10,8 +10,8 @@ import TextAnswer from '../../containers/TextAnswer'
 import { ContentWrapper } from '../subjects/Content.styled'
 
 
-import { 
-    SubName, 
+import {
+    SubName,
     Counter,
     TestNumberSelWrapper,
     Option,
@@ -94,7 +94,7 @@ class Content extends React.Component {
     componentWillMount() {
         this.props.onPushQuestions(this.state.tasks)
         this.setState({
-            tasks: require('../../tasks/Математика/Алгебра/v1.json')
+            // tasks: require('../../../dist/tasks/Математика/Алгебра/v1.json')
         })
     }
 
@@ -127,7 +127,7 @@ class Content extends React.Component {
     }
 
     checkIsSelected = (selectedAnswers, testId, type) => {
-        let selected = false
+        let selected = false;
 
         if (type === 1) {
             for (let i = 0; i < 4; i++) {
@@ -141,7 +141,7 @@ class Content extends React.Component {
         if (type === 2) {
             for (let i = 0; i < selectedAnswers[testId].length; i++) {
                 if (selectedAnswers[testId][i] !== '') {
-                    selected = true
+                    selected = true;
                     break;
                 }
             }
@@ -151,7 +151,7 @@ class Content extends React.Component {
     }
 
     checkIsGived = (givedAnswers, testId, type) => {
-        let gived = true
+        let gived = true;
 
         if (type === 1) {
             for (let i = 0; i < 4; i++) {
@@ -161,11 +161,11 @@ class Content extends React.Component {
                 }
             }
         }
-        
+
         if (type === 2) {
             for (let i = 0; i < givedAnswers[testId].length; i++) {
                 if (givedAnswers[testId][i] === '') {
-                    gived = false
+                    gived = false;
                     break;
                 }
             }
@@ -287,22 +287,22 @@ class Content extends React.Component {
     }
 
     render() {
-        const { 
+        const {
             type,
-            subject, 
-            tasks, 
-            selectedTest, 
-            isAnswerSelected, 
+            subject,
+            tasks,
+            selectedTest,
+            isAnswerSelected,
             isAnswerGived,
             testFinished,
             timeForTestInMinutes,
             switcherPose
         } = this.state
 
-        const { 
+        const {
             onNullifyAnswer,
-            onNullifySelectedAnswer, 
-            onGiveAnAnswer, 
+            onNullifySelectedAnswer,
+            onGiveAnAnswer,
             onSetAnswersDisplay,
             selectedAnswers,
             givedAnswers,
@@ -312,13 +312,10 @@ class Content extends React.Component {
 
         const {
             green,
-            red, 
-            blue, 
+            red,
+            blue,
             yellow
         } = colors
-
-        // console.log(global)
-        console.log(selectedAnswers)
 
         return(
             <div
@@ -345,7 +342,7 @@ class Content extends React.Component {
                         <CountDownWrapper>
                             {
                                 isTimeLimited ? (
-                                        <CountDownTimer 
+                                        <CountDownTimer
                                             startTimeInMinutes={timeForTestInMinutes}
                                             setTestFinished={this.setTestFinished}
                                         />
@@ -356,7 +353,7 @@ class Content extends React.Component {
                             >
                                 Завершити
                             </Button>
-                            
+
                         </CountDownWrapper>
                     </Header>
                     <TestNumberSelWrapper>
@@ -385,7 +382,7 @@ class Content extends React.Component {
                                                                 } else {
                                                                     if (selectedAnswers[index] !== -1) {
                                                                         return yellow.default;
-                                                                    }   
+                                                                    }
                                                                     return '#eee';
                                                                 }
                                                             }
@@ -409,7 +406,7 @@ class Content extends React.Component {
                                                                 } else {
                                                                     if (selectedAnswers[index] !== -1) {
                                                                         return '#fff';
-                                                                    }   
+                                                                    }
                                                                     return '#343434';
                                                                 }
                                                             }
@@ -437,7 +434,7 @@ class Content extends React.Component {
                                                                 } else {
                                                                     if (selectedAnswers[index] !== -1) {
                                                                         return yellow.default;
-                                                                    }   
+                                                                    }
                                                                     return blue.hover;
                                                                 }
                                                             }
@@ -447,7 +444,7 @@ class Content extends React.Component {
                                                     }
                                                 }
                                             }
-                                            onClick={() => 
+                                            onClick={() =>
                                                 {
                                                     this.setState({selectedTest: index + 1})
                                                     this.updateAnswer(false, 'selected')
@@ -457,7 +454,7 @@ class Content extends React.Component {
                                         >
                                             {index + 1}
                                         </Option>
-                                    ) : 
+                                    ) :
                                     task.type === 1 ? (
                                         <Option
                                             key={index + 1}
@@ -482,9 +479,9 @@ class Content extends React.Component {
                                                                 }
                                                             } else {
                                                                 return this.checkIsGived(givedAnswers, index, 1) ? green.default :
-                                                                this.checkIsSelected(selectedAnswers, index, 1) ? 
+                                                                this.checkIsSelected(selectedAnswers, index, 1) ?
                                                                 yellow.default :
-                                                                index + 1 !== selectedTest ? '#eee' : 
+                                                                index + 1 !== selectedTest ? '#eee' :
                                                                 blue.default;
                                                             }
                                                         }
@@ -508,15 +505,14 @@ class Content extends React.Component {
                                                                         if (this.checkIsSelected(selectedAnswers, index, 1)) {
                                                                             return '#fff';
                                                                         }
-                                                                        console.log('grey')
                                                                         return '#343434';
                                                                     }
                                                                 }
                                                             } else {
                                                                 return this.checkIsGived(givedAnswers, index, 1) ? '#fff' :
-                                                                this.checkIsSelected(selectedAnswers, index, 1) ? 
+                                                                this.checkIsSelected(selectedAnswers, index, 1) ?
                                                                 '#fff' :
-                                                                index + 1 !== selectedTest ? '#343434' : 
+                                                                index + 1 !== selectedTest ? '#343434' :
                                                                 '#fff';
                                                             }
                                                         }
@@ -545,9 +541,9 @@ class Content extends React.Component {
                                                                 }
                                                             } else {
                                                                 return this.checkIsGived(givedAnswers, index, 1) ? green.hover :
-                                                                this.checkIsSelected(selectedAnswers, index, 1) ? 
+                                                                this.checkIsSelected(selectedAnswers, index, 1) ?
                                                                 yellow.default :
-                                                                index + 1 !== selectedTest ? blue.hover : 
+                                                                index + 1 !== selectedTest ? blue.hover :
                                                                 blue.hover;
                                                             }
                                                         }
@@ -555,7 +551,7 @@ class Content extends React.Component {
                                                     else return '#eee';
                                                 }
                                             }
-                                            onClick={() => 
+                                            onClick={() =>
                                                 {
                                                     this.setState({selectedTest: index + 1})
                                                     this.updateAnswer(false, 'selected')
@@ -568,7 +564,7 @@ class Content extends React.Component {
                                     ) : (
                                         <Option
                                             key={index + 1}
-                                            onClick={() => 
+                                            onClick={() =>
                                                 {
                                                     this.setState({selectedTest: index + 1})
                                                     this.updateAnswer(false, 'selected')
@@ -683,7 +679,7 @@ class Content extends React.Component {
                     <Image src={tasks[selectedTest - 1].img}/>
                     {
                         tasks[selectedTest - 1].type === 0 ? (
-                            <OneRightAnswer 
+                            <OneRightAnswer
                                 rightAnswer={tasks[selectedTest - 1].answer}
                                 testId={selectedTest - 1}
                                 updateAnswer={this.updateAnswer}
@@ -692,16 +688,16 @@ class Content extends React.Component {
                                 isTestFinished={testFinished}
                             />
                         ) : tasks[selectedTest - 1].type === 1 ? (
-                            <RelationAnswers 
+                            <RelationAnswers
                                 rightAnswer={tasks[selectedTest - 1].answer}
                                 testId={selectedTest - 1}
                                 updateAnswer={this.updateAnswer}
                                 updateComponent={this.state.updateComponents}
                                 showAnswersAfterTest={isDisplayable}
                                 isTestFinished={testFinished}
-                            /> 
+                            />
                         ) : (
-                            <TextAnswer 
+                            <TextAnswer
                                 rightAnswer={tasks[selectedTest - 1].answer}
                                 testId={selectedTest - 1}
                                 updateAnswer={this.updateAnswer}
@@ -712,10 +708,17 @@ class Content extends React.Component {
                         )
                     }
                     <ButtonsWrapper>
-                        <Button 
+                        <Button
                             primary
                             onClick={
                                 () => {
+                                    if (isAnswerGived) {
+                                      this.nextQuestion(selectedTest)
+                                      this.updateAnswer(false, 'gived')
+                                      this.updateAnswer(false, 'selected')
+                                      this.setState({updateComponents: Math.random()})
+                                    }
+
                                     if (isAnswerSelected) {
                                         onGiveAnAnswer(selectedTest - 1, selectedAnswers[selectedTest - 1])
 

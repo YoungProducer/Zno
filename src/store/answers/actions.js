@@ -14,7 +14,8 @@ import {
     NULLIFY_SELECTED_RELATION_ANSWER_BY_INDEX,
     NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX,
     SET_ANSWERS_DISPLAY,
-    LIMIT_TIME
+    LIMIT_TIME,
+    SET_UP_TASKS
 } from './constants'
 
 export const pushQuestions = (data) => ({
@@ -90,4 +91,10 @@ export const setAnswersDisplay = (isDisplayable) => ({
 export const limitTime = (isLimited) => ({
     type: LIMIT_TIME,
     payload: isLimited
-})
+});
+
+export const setUpTasks = (subject, subSubject, deepType, theme, testName) => ({
+  type: SET_UP_TASKS,
+  payload: { subject, subSubject, deepType, theme, testName}
+});
+

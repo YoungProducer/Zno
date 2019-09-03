@@ -4,8 +4,9 @@ import { connect } from 'react-redux'
 import PopUpWindow from '../components/subSelect/Content'
 
 import {
-    setAnswersDisplay,
-    limitTime
+  setAnswersDisplay,
+  limitTime,
+  setUpTasks
 } from '../store/answers/actions'
 
 const putStateToProps = (state) => ({
@@ -15,7 +16,8 @@ const putStateToProps = (state) => ({
 
 const putDispatchToProps = (dispatch) => ({
     onSetAnswersDisplay: bindActionCreators(setAnswersDisplay, dispatch),
-    onLimitTime: bindActionCreators(limitTime, dispatch)
+    onLimitTime: bindActionCreators(limitTime, dispatch),
+  onSetUpTasks: bindActionCreators(setUpTasks, dispatch)
 })
 
 export default connect(

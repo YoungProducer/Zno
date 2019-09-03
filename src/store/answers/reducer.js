@@ -13,12 +13,18 @@ import {
     NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX,
     SAVE_SELECTED_TEXT_ANSWER,
     SET_ANSWERS_DISPLAY,
-    LIMIT_TIME
+    LIMIT_TIME,
+    SET_UP_TASKS
 } from './constants'
 
 const testSetUpInitialState = {
     isDisplayable: true,
-    isTimeLimited: false
+    isTimeLimited: false,
+    selectedSubject: '',
+    selectedSubSubject: '',
+    selectedTheme: '',
+    selectedTestName: '',
+    selectedDeepType: ''
 }
 
 export const testSetUpReducer = (state = testSetUpInitialState, action) => {
@@ -35,7 +41,25 @@ export const testSetUpReducer = (state = testSetUpInitialState, action) => {
                 isTimeLimited: action.payload
             }
         }
-        default: 
+      case SET_UP_TASKS: {
+            const {
+              subject,
+              subSubject,
+              deepType,
+              theme,
+              testName
+            } = action.payload
+
+            return {
+              ...state,
+              selectedSubject: subject,
+              selectedSubSubject: subSubject,
+              selectedTheme: theme,
+              selectedTestName: testName,
+              selectedDeepType: deepType
+            }
+      }
+        default:
             return { ...state }
     }
 }
@@ -123,7 +147,7 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
                 state.givedAnswers[action.payload.testId] = fields
             }
 
-            return { 
+            return {
                 ...state
             }
         }
@@ -134,10 +158,10 @@ export const givedAnswersReducer = (state = givedAnswersInitialState, action) =>
 
             state.givedAnswers[action.payload.testId] = fields
 
-            return { 
+            return {
                 ...state
             }
-        } 
+        }
         default: {
             return {
                 ...state

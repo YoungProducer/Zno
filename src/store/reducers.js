@@ -6,7 +6,7 @@ import {
     givedAnswersReducer,
     selectedAnswersReducer,
     testSetUpReducer
-} from './answers/reducers'
+} from './answers/reducer'
 
 const rootReducer = combineReducers({
     history: historyReducer,

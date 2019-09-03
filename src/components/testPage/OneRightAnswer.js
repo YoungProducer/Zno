@@ -15,7 +15,7 @@ export const horizontalNumeration = [
 class OneRightAnswer extends React.Component {
 
     constructor(props) {
-        super(props) 
+        super(props)
 
         this.state = {
             selectedAnswer: -1,
@@ -46,12 +46,11 @@ class OneRightAnswer extends React.Component {
     }
 
     componentWillReceiveProps(nextProps) {
-        console.log(this.props, nextProps)
     }
 
     render() {
-        const { 
-            onSaveSelectedAnswer, 
+        const {
+            onSaveSelectedAnswer,
             testId,
             selectedAnswers,
             updateAnswer,
@@ -95,7 +94,7 @@ class OneRightAnswer extends React.Component {
                                                 if (index + 1 === rightAnswer) {
                                                     return '#BADC58';
                                                 } else {
-                                                    if (givedAnswers[testId] === index + 1) { 
+                                                    if (givedAnswers[testId] === index + 1) {
                                                         return '#FF6A5C';
                                                     }
                                                     return '#eee';
@@ -105,9 +104,9 @@ class OneRightAnswer extends React.Component {
                                                     if (index + 1 === rightAnswer) {
                                                         return '#BADC58';
                                                     } else {
-                                                        if (givedAnswers[testId] === index + 1) { 
+                                                        if (givedAnswers[testId] === index + 1) {
                                                             return '#FF6A5C';
-                                                        } 
+                                                        }
                                                         return '#eee';
                                                     }
                                                 } else {
@@ -120,13 +119,13 @@ class OneRightAnswer extends React.Component {
                             }
                         >
                             <Indices>{obj}</Indices>
-                            <Cross 
-                                src='./img/grey-cross.png' 
+                            <Cross
+                                src='./img/grey-cross.png'
                                 opacity={selectedAnswers[testId] === index + 1 ? 1 : 0}
                             />
                         </Square>
                     ))
-                }          
+                }
             </Wrapper>
         )
     }

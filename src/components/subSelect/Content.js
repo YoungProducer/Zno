@@ -36,6 +36,7 @@ class PopUpWindow extends React.Component {
       inited: false,
       subjectName: '',
       years: [2019, 2018, 2017, 2016],
+      parts: [],
       selectedYear: 2019,
       selectedType: '',
       selectedPart: '',
@@ -52,18 +53,39 @@ class PopUpWindow extends React.Component {
 
   componentWillMount() {
     this.setState({
-      subjectName: this.getSubName()
+      subjectName: this.getSubName(),
+
     })
   }
 
   componentDidMount() {
+    console.log(this.props.subject)
     this.setState({
       inited: true,
-      selectedPart: this.props.subSubjects[0]
+      selectedPart: this.props.subSubjects[0],
     })
   }
 
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    // if (prevProps.active === false) {
+    //   this.setState({
+    //     selectedType: '',
+    //     selectedPart: '',
+    //     selectedTheme: '',
+    //     showThemes: false,
+    //     showDeepRadioButtons: false,
+    //     selectedDeepType: '',
+    //     showDeepList: false,
+    //     selectedDeepListItem: '',
+    //     // parts: require('../../../dist/tasks/' + this.props.subject + '/parts.json')
+    //   })
+    // }
+
+    console.log(prevProps)
+  }
+
   componentWillReceiveProps(nextProps) {
+    console.log(nextProps.active)
     if (nextProps.active === true) {
       this.setState({
         selectedType: '',
@@ -73,8 +95,10 @@ class PopUpWindow extends React.Component {
         showDeepRadioButtons: false,
         selectedDeepType: '',
         showDeepList: false,
-        selectedDeepListItem: ''
+        selectedDeepListItem: '',
+        parts: require('../../../dist/tasks/' + this.props.subject + '/parts.json')
       })
+      console.log(require('../../../dist/tasks/' + this.props.subject + '/parts.json'))
     }
   }
 
@@ -212,7 +236,9 @@ class PopUpWindow extends React.Component {
       onSetAnswersDisplay,
       isDisplayable,
       onLimitTime,
-      isTimeLimited
+      isTimeLimited,
+      onSetUpTasks,
+      subject
     } = this.props
 
     const deepList =
@@ -260,7 +286,7 @@ class PopUpWindow extends React.Component {
                   margin='none'
                   variant='outlined'
                 >
-                  {subSubjects.map(subSubject => (
+                  {this.state.parts.map(subSubject => (
                     <MenuItem key={subSubject} value={subSubject}>
                       {subSubject}
                     </MenuItem>
@@ -399,6 +425,7 @@ class PopUpWindow extends React.Component {
               style={{ float: 'right' }}
               onClick={() => {
                 changePopUpState(false)
+                onSetUpTasks(subject, selectedPart, selectedDeepType, selectedTheme, selectedDeepListItem)
               }}
             >
               Скасувати
@@ -414,7 +441,8 @@ PopUpWindow.propTypes = {
   onSetAnswersDisplay: PropTypes.func.isRequired,
   isDisplayable: PropTypes.bool.isRequired,
   onLimitTime: PropTypes.func.isRequired,
-  isTimeLimited: PropTypes.bool.isRequired
+  isTimeLimited: PropTypes.bool.isRequired,
+  onSetUpTasks: PropTypes.func.isRequired
 }
 
 export default PopUpWindow
