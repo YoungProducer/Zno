@@ -84,6 +84,23 @@ class PopUpWindow extends React.Component {
     console.log(prevProps)
   }
 
+  updateThemes = partName => {
+    const { themes } = this.props
+
+    this.setState({
+      currentThemes: themes[partName] === undefined ? [] : themes[partName],
+      selectedTheme: themes[partName] === undefined ? '' : themes[partName][0]
+    })
+
+    window.setTimeout(() => {
+      if (this.state.selectedType === 'ВИБІР ТЕМИ') {
+        if (this.state.currentThemes.length !== 0) {
+          this.setState({ showThemes: true })
+        } else this.setState({ showThemes: false })
+      } else this.setState({ showThemes: false })
+    }, 10)
+  }
+
   componentWillReceiveProps(nextProps) {
     console.log(nextProps.active)
     if (nextProps.active === true) {
@@ -100,23 +117,6 @@ class PopUpWindow extends React.Component {
       })
       console.log(require('../../../dist/tasks/' + this.props.subject + '/parts.json'))
     }
-  }
-
-  updateThemes = partName => {
-    const { themes } = this.props
-
-    this.setState({
-      currentThemes: themes[partName] === undefined ? [] : themes[partName],
-      selectedTheme: themes[partName] === undefined ? '' : themes[partName][0]
-    })
-
-    window.setTimeout(() => {
-      if (this.state.selectedType === 'ВИБІР ТЕМИ') {
-        if (this.state.currentThemes.length !== 0) {
-          this.setState({ showThemes: true })
-        } else this.setState({ showThemes: false })
-      } else this.setState({ showThemes: false })
-    }, 10)
   }
 
   getSubName = () => {
