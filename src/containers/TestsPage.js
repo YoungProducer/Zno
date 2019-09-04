@@ -20,7 +20,7 @@ const putStateToProps = (state) => ({
   givedAnswers: state.givedAnswers.givedAnswers,
   isDisplayable: state.testSetUp.isDisplayable,
   isTimeLimited: state.testSetUp.isTimeLimited,
-  selectedSubject: state.testSetUp.selectedSubSubject,
+  selectedSubject: state.testSetUp.selectedSubject,
   selectedSubSubject: state.testSetUp.selectedSubSubject,
   selectedTheme: state.testSetUp.selectedTheme,
   selectedTestName: state.testSetUp.selectedTestName,

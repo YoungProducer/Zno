@@ -1,18 +1,15 @@
-import React from 'react'
-import PropTypes from 'prop-types'
-import { NavLink } from 'react-router-dom'
-import MenuItem from '@material-ui/core/MenuItem'
-import TextField from '@material-ui/core/TextField'
-import ThemeProvider from '@material-ui/styles/ThemeProvider'
-import Radio from '@material-ui/core/Radio'
-import RadioGroup from '@material-ui/core/RadioGroup'
-import FormControlLabel from '@material-ui/core/FormControlLabel'
-import FormControl from '@material-ui/core/FormControl'
-import FormLabel from '@material-ui/core/FormLabel'
-
-import Selection from './Selection'
-
-import { ContentWrapper } from '../subjects/Content.styled'
+import React from "react";
+import PropTypes from "prop-types";
+import { NavLink } from "react-router-dom";
+import MenuItem from "@material-ui/core/MenuItem";
+import TextField from "@material-ui/core/TextField";
+import ThemeProvider from "@material-ui/styles/ThemeProvider";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import FormControl from "@material-ui/core/FormControl";
+import FormLabel from "@material-ui/core/FormLabel";
+import { readJson } from "../../utils/readJson";
 
 import {
   theme,
@@ -26,205 +23,166 @@ import {
   SwitcherWrapper,
   SwitcherBg,
   SwitcherButton
-} from './Content.styled'
+} from "./Content.styled";
 
 class PopUpWindow extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       inited: false,
-      subjectName: '',
-      years: [2019, 2018, 2017, 2016],
+      subjectName: "",
       parts: [],
-      selectedYear: 2019,
-      selectedType: '',
-      selectedPart: '',
-      selectedTheme: '',
+      selectedType: "",
+      selectedPart: "",
+      selectedTheme: "",
       currentThemes: [],
       showThemes: false,
       showDeepRadioButtons: false,
-      selectedDeepType: '',
+      selectedDeepType: "",
       showDeepList: false,
-      selectedDeepListItem: '',
+      deepList: [],
+      selectedDeepListItem: "",
       showAnswersAfterTest: true
-    }
+    };
   }
 
   componentWillMount() {
     this.setState({
-      subjectName: this.getSubName(),
-
-    })
+      subjectName: this.getSubName()
+    });
   }
 
   componentDidMount() {
-    // console.log(this.props.subject)
     this.setState({
       inited: true,
-      selectedPart: this.props.subSubjects[0],
-    })
+      selectedPart: this.props.subSubjects[0]
+    });
   }
 
   componentDidUpdate(prevProps, prevState, snapshot) {
-    console.log(this.props);
-    if (this.props.active) {
-      const link = '../../../dist/tasks/' + this.props.subject[0] + this.props.subject.slice(1, this.props.subject.length).toLowerCase() + '/parts.json'
-      console.log(link)
-      console.log('../../../dist/tasks/' + this.props.subject[0] + this.props.subject.slice(1, this.props.subject.length).toLowerCase() + '/parts.json')
-      // console.log(require(link))
-      console.log(require('../../../dist/tasks/' + this.props.subject[0] + this.props.subject.slice(1, this.props.subject.length).toLowerCase() + '/parts.json'))
-      console.log(require('../../../dist/tasks/Математика/parts.json'))
+    if (prevProps.active !== this.props.active) {
+      console.log('updated')
+      readJson(
+        "dist/tasks/" +
+          this.props.subject[0] +
+          this.props.subject.slice(1, this.props.subject.length).toLowerCase() +
+          "/parts.json"
+      ).then(response => {
+        this.setState({
+          selectedType: "",
+          selectedTheme: "",
+          showThemes: false,
+          showDeepRadioButtons: false,
+          selectedDeepType: "",
+          showDeepList: false,
+          selectedDeepListItem: "",
+          parts: response,
+          selectedPart: response[0]
+        });
+      });
     }
-    // console.log(this.props.subject)
-    // const link = '../../../dist/tasks/' + this.props.subject + '/parts.json'
-    // console.log(link)
-    // console.log(require(link))
-    // if (prevProps.active === false) {
-    //   this.setState({
-    //     selectedType: '',
-    //     selectedPart: '',
-    //     selectedTheme: '',
-    //     showThemes: false,
-    //     showDeepRadioButtons: false,
-    //     selectedDeepType: ''
-    //     showDeepList: false,
-    //     selectedDeepListItem: '',
-    //     // parts: require('../../../dist/tasks/' + this.props.subject + '/parts.json')
-    //   })
-    // }
-
-    console.log(prevProps)
   }
 
   updateThemes = partName => {
-    const { themes } = this.props
+    const { subject } = this.props;
 
-    this.setState({
-      currentThemes: themes[partName] === undefined ? [] : themes[partName],
-      selectedTheme: themes[partName] === undefined ? '' : themes[partName][0]
-    })
+    const sub = subject[0] + subject.slice(1, subject.length).toLowerCase();
 
-    window.setTimeout(() => {
-      if (this.state.selectedType === 'ВИБІР ТЕМИ') {
-        if (this.state.currentThemes.length !== 0) {
-          this.setState({ showThemes: true })
-        } else this.setState({ showThemes: false })
-      } else this.setState({ showThemes: false })
-    }, 10)
-  }
+    readJson("dist/tasks/" + sub + "/" + partName + "/Теми/themes.json").then(
+      response => {
+        this.setState({
+          currentThemes: response,
+          selectedTheme: !response.length ? "" : response[0]
+        });
 
-  componentWillReceiveProps(nextProps) {
-    console.log(nextProps.active)
-    if (nextProps.active === true) {
-      this.setState({
-        selectedType: '',
-        selectedPart: '',
-        selectedTheme: '',
-        showThemes: false,
-        showDeepRadioButtons: false,
-        selectedDeepType: '',
-        showDeepList: false,
-        selectedDeepListItem: '',
-        // parts: require('../../../dist/tasks/' + this.props.subject + '/parts.json')
-      })
-      // console.log(require('../../../dist/tasks/' + this.props.subject + '/parts.json'))
-    }
-  }
+        if (this.state.selectedType === "ВИБІР ТЕМИ") {
+          if (response.length !== 0) {
+            this.setState({ showThemes: true });
+          } else this.setState({ showThemes: false });
+        } else this.setState({ showThemes: false });
+      }
+    );
+  };
 
   getSubName = () => {
-    let url = decodeURI(window.location.hash)
+    let url = decodeURI(window.location.hash);
 
     url = url
-      .split('')
+      .split("")
       .reverse()
-      .join('')
-    url = url.slice(0, url.indexOf('/'))
+      .join("");
+    url = url.slice(0, url.indexOf("/"));
     url = url
-      .split('')
+      .split("")
       .reverse()
-      .join('')
+      .join("");
 
-    return url
-  }
-
-  _inputYearHandle = event => {
-    this.setState({
-      selectedYear: event.target.value
-    })
-  }
+    return url;
+  };
 
   _inputPartHandle = event => {
     this.setState({
       selectedPart: event.target.value
-    })
+    });
 
-    this.updateThemes(event.target.value)
-  }
+    this.updateThemes(event.target.value);
+  };
 
   _inputThemeHandle = event => {
     this.setState({
       selectedTheme: event.target.value
-    })
-  }
+    });
+  };
 
   _radioHandle = event => {
     this.setState({
       selectedType: event.target.value
-    })
+    });
 
-    if (event.target.value === 'ВИБІР ТЕМИ') {
-      this.updateThemes(this.state.selectedPart)
-      this.setState({ showDeepRadioButtons: false, showDeepList: false })
+    if (event.target.value === "ВИБІР ТЕМИ") {
+      this.updateThemes(this.state.selectedPart);
+      this.setState({ showDeepRadioButtons: false, showDeepList: false });
     }
 
-    if (event.target.value === 'ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО') {
+    if (event.target.value === "ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО") {
       this.setState({
         showDeepRadioButtons: true,
         showThemes: false,
         showDeepList: false,
         selectedDeepListItem:
-          this.state.selectedDeepType !== 'ТРЕНУВАЛЬНІ ВАРІАНТИ'
+          this.state.selectedDeepType !== "ТРЕНУВАЛЬНІ ВАРІАНТИ"
             ? this.props.testingCases[0]
             : this.props.mainSession[0]
-      })
+      });
     }
-  }
+  };
 
   _deepRadioHandle = event => {
-    if (event.target.value === 'ОСНОВНА СЕССІЯ ЗНО') {
+    const { subject } = this.props;
+    const value = event.target.value;
+    const source =
+      value === "ТРЕНУВАЛЬНІ ВАРІАНТИ"
+        ? "Тренувальні варіанти/variants.json"
+        : "Сессії ЗНО/sessions.json";
+    const sub = subject[0] + subject.slice(1, subject.length).toLowerCase();
+    const link = "dist/tasks/" + sub + "/ЗНО/" + source;
+
+    readJson(link).then(response => {
       this.setState({
-        selectedDeepListItem: this.props.mainSession[0]
-      })
-    }
-    if (event.target.value === 'ТРЕНУВАЛЬНІ ВАРІАНТИ') {
-      this.setState({
-        selectedDeepListItem: this.props.testingCases[0]
-      })
-    }
-    this.setState({
-      selectedDeepType: event.target.value,
-      showDeepList: true
-      //   selectedDeepListItem:
-      //     this.state.selectedDeepType !== 'ТРЕНУВАЛЬНІ ВАРІАНТИ'
-      //       ? this.props.testingCases[0]
-      //       : this.props.mainSession[0]
-    })
-  }
+        selectedDeepType: value,
+        showDeepList: true,
+        deepList: response,
+        selectedDeepListItem: response[0]
+      });
+    });
+  };
 
   _deepListInputHandle = event => {
     this.setState({
       selectedDeepListItem: event.target.value
-    })
-  }
-
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.subSubjects !== undefined) {
-      this.setState({
-        selectedPart: nextProps.subSubjects[0]
-      })
-    }
-  }
+    });
+  };
 
   render() {
     const {
@@ -237,67 +195,62 @@ class PopUpWindow extends React.Component {
       selectedDeepType,
       showDeepList,
       selectedDeepListItem,
-      showAnswersAfterTest
-    } = this.state
+      deepList
+    } = this.state;
 
     const {
       active,
       changePopUpState,
-      subSubjects,
-      mainSession,
-      testingCases,
       onSetAnswersDisplay,
       isDisplayable,
       onLimitTime,
       isTimeLimited,
       onSetUpTasks,
       subject
-    } = this.props
+    } = this.props;
 
-    const deepList =
-      selectedDeepType === 'ТРЕНУВАЛЬНІ ВАРІАНТИ' ? testingCases : mainSession
     const showSwithcers =
-      selectedDeepType === 'ОСНОВНА СЕССІЯ ЗНО' ? true : false
+      selectedDeepType === "ОСНОВНА СЕССІЯ ЗНО" ? true : false;
 
     return (
-      <Eclispe pose={active ? 'visible' : 'hidden'}>
+      <Eclispe pose={active ? "visible" : "hidden"}>
         <PopUpWrapper>
           <Header>Вибір тесту</Header>
 
           <ThemeProvider theme={theme}>
-            <FormControl component='fieldset'>
-              <FormLabel component='legend'>Оберіть тип тесту</FormLabel>
+            <FormControl component="fieldset">
+              <FormLabel component="legend">Оберіть тип тесту</FormLabel>
               <RadioGroup
-                aria-label='position'
-                name='position'
+                aria-label="position"
+                name="position"
                 value={selectedType}
                 onChange={this._radioHandle}
               >
                 <FormControlLabel
-                  value='ВИБІР ТЕМИ'
-                  control={<Radio color='primary' />}
-                  label='ВИБІР ТЕМИ'
-                  labelPlacement='end'
+                  value="ВИБІР ТЕМИ"
+                  control={<Radio color="primary" />}
+                  label="ВИБІР ТЕМИ"
+                  labelPlacement="end"
                 />
                 <FormControlLabel
-                  value='ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО'
-                  control={<Radio color='primary' />}
-                  label='ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО'
-                  labelPlacement='end'
+                  value="ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО"
+                  control={<Radio color="primary" />}
+                  label="ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО"
+                  labelPlacement="end"
                 />
               </RadioGroup>
             </FormControl>
 
-            {subSubjects.length !== 0 && selectedType === 'ВИБІР ТЕМИ' ? (
-              <FormControl component='div'>
-                <FormLabel component='legend'>Оберіть частину</FormLabel>
+            {this.state.parts.length !== 0 && selectedType === "ВИБІР ТЕМИ" ? (
+              <FormControl component="div">
+                <FormLabel component="legend">Оберіть частину</FormLabel>
                 <TextField
-                  id='standard-select-currency'
+                  id="standard-select-currency"
                   select
                   value={selectedPart}
                   onChange={this._inputPartHandle}
-                  margin='none'
-                  variant='outlined'
+                  margin="none"
+                  variant="outlined"
                 >
                   {this.state.parts.map(subSubject => (
                     <MenuItem key={subSubject} value={subSubject}>
@@ -311,15 +264,15 @@ class PopUpWindow extends React.Component {
             )}
 
             {showThemes ? (
-              <FormControl component='div'>
-                <FormLabel component='legend'>Оберіть тему</FormLabel>
+              <FormControl component="div">
+                <FormLabel component="legend">Оберіть тему</FormLabel>
                 <TextField
-                  id='standard-select-currency'
+                  id="standard-select-currency"
                   select
                   value={selectedTheme}
                   onChange={this._inputThemeHandle}
-                  margin='none'
-                  variant='outlined'
+                  margin="none"
+                  variant="outlined"
                 >
                   {currentThemes.map(theme => (
                     <MenuItem key={theme} value={theme}>
@@ -333,25 +286,25 @@ class PopUpWindow extends React.Component {
             )}
 
             {showDeepRadioButtons ? (
-              <FormControl component='fieldset'>
-                <FormLabel component='legend'>Оберіть тип тесту</FormLabel>
+              <FormControl component="fieldset">
+                <FormLabel component="legend">Оберіть тип тесту</FormLabel>
                 <RadioGroup
-                  aria-label='position'
-                  name='position'
+                  aria-label="position"
+                  name="position"
                   value={selectedDeepType}
                   onChange={this._deepRadioHandle}
                 >
                   <FormControlLabel
-                    value='ТРЕНУВАЛЬНІ ВАРІАНТИ'
-                    control={<Radio color='primary' />}
-                    label='ТРЕНУВАЛЬНІ ВАРІАНТИ'
-                    labelPlacement='end'
+                    value="ТРЕНУВАЛЬНІ ВАРІАНТИ"
+                    control={<Radio color="primary" />}
+                    label="ТРЕНУВАЛЬНІ ВАРІАНТИ"
+                    labelPlacement="end"
                   />
                   <FormControlLabel
-                    value='ОСНОВНА СЕССІЯ ЗНО'
-                    control={<Radio color='primary' />}
-                    label='ОСНОВНА СЕССІЯ ЗНО'
-                    labelPlacement='end'
+                    value="ОСНОВНА СЕССІЯ ЗНО"
+                    control={<Radio color="primary" />}
+                    label="ОСНОВНА СЕССІЯ ЗНО"
+                    labelPlacement="end"
                   />
                 </RadioGroup>
               </FormControl>
@@ -360,19 +313,19 @@ class PopUpWindow extends React.Component {
             )}
 
             {showDeepList ? (
-              <FormControl component='div'>
-                <FormLabel component='legend'>
-                  {selectedDeepType === 'ТРЕНУВАЛЬНІ ВАРІАНТИ'
-                    ? 'Виберіть тренувальний варіант'
-                    : 'Виберіть варіант ЗНО'}
+              <FormControl component="div">
+                <FormLabel component="legend">
+                  {selectedDeepType === "ТРЕНУВАЛЬНІ ВАРІАНТИ"
+                    ? "Виберіть тренувальний варіант"
+                    : "Виберіть варіант ЗНО"}
                 </FormLabel>
                 <TextField
-                  id='standard-select-currency'
+                  id="standard-select-currency"
                   select
                   value={selectedDeepListItem}
                   onChange={this._deepListInputHandle}
-                  margin='none'
-                  variant='outlined'
+                  margin="none"
+                  variant="outlined"
                 >
                   {deepList.map(item => (
                     <MenuItem key={item} value={item}>
@@ -389,16 +342,16 @@ class PopUpWindow extends React.Component {
               <>
                 <ModeWrapper>
                   <SwitcherWrapper>
-                    <Input type='checkbox' id='mode' />
+                    <Input type="checkbox" id="mode" />
                     <label
-                      htmlFor='mode'
+                      htmlFor="mode"
                       onClick={() => {
-                        onSetAnswersDisplay(!isDisplayable)
+                        onSetAnswersDisplay(!isDisplayable);
                       }}
                     >
                       <SwitcherBg>
                         <SwitcherButton
-                          pose={isDisplayable ? 'offline' : 'online'}
+                          pose={isDisplayable ? "offline" : "online"}
                         />
                       </SwitcherBg>
                     </label>
@@ -408,16 +361,16 @@ class PopUpWindow extends React.Component {
 
                 <ModeWrapper>
                   <SwitcherWrapper>
-                    <Input type='checkbox' id='mode' />
+                    <Input type="checkbox" id="mode" />
                     <label
-                      htmlFor='mode'
+                      htmlFor="mode"
                       onClick={() => {
-                        onLimitTime(!isTimeLimited)
+                        onLimitTime(!isTimeLimited);
                       }}
                     >
                       <SwitcherBg>
                         <SwitcherButton
-                          pose={!isTimeLimited ? 'offline' : 'online'}
+                          pose={!isTimeLimited ? "offline" : "online"}
                         />
                       </SwitcherBg>
                     </label>
@@ -431,14 +384,26 @@ class PopUpWindow extends React.Component {
           </ThemeProvider>
 
           <ButtonsWrapper>
-            <NavLink to={'/test'}>
-              <h1 style={{ float: 'left' }}>Розпочати тест</h1>
+            <NavLink to={"/test"}>
+              <h1
+                style={{ float: "left" }}
+                onClick={() => {
+                  onSetUpTasks(
+                    subject,
+                    showDeepList ? '' : selectedPart,
+                    selectedDeepType,
+                    selectedTheme,
+                    selectedDeepListItem
+                  );
+                }}
+              >
+                Розпочати тест
+              </h1>
             </NavLink>
             <h1
-              style={{ float: 'right' }}
+              style={{ float: "right" }}
               onClick={() => {
-                changePopUpState(false)
-                onSetUpTasks(subject, selectedPart, selectedDeepType, selectedTheme, selectedDeepListItem)
+                changePopUpState(false);
               }}
             >
               Скасувати
@@ -446,7 +411,7 @@ class PopUpWindow extends React.Component {
           </ButtonsWrapper>
         </PopUpWrapper>
       </Eclispe>
-    )
+    );
   }
 }
 
@@ -456,6 +421,6 @@ PopUpWindow.propTypes = {
   onLimitTime: PropTypes.func.isRequired,
   isTimeLimited: PropTypes.bool.isRequired,
   onSetUpTasks: PropTypes.func.isRequired
-}
+};
 
-export default PopUpWindow
+export default PopUpWindow;

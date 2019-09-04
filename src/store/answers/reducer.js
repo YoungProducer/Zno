@@ -52,7 +52,7 @@ export const testSetUpReducer = (state = testSetUpInitialState, action) => {
 
             return {
               ...state,
-              selectedSubject: subject,
+              selectedSubject: subject[0] + subject.slice(1, subject.length).toLowerCase(),
               selectedSubSubject: subSubject,
               selectedTheme: theme,
               selectedTestName: testName,
