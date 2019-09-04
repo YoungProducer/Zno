@@ -1,34 +1,34 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const GlobalWrapper = styled.div`
-    width: 100%;
-    height: 100%;
+  width: 100%;
+  height: 100%;
 
-    margin-top: 55px;
-    margin-left: 40px;
+  margin-top: 55px;
+  margin-left: 40px;
 
-    position: relative;
-`
+  position: relative;
+`;
 
 export const RowIndices = styled.p`
-    width: 40px;
-    height: 40px;
-    position: absolute;
+  width: 40px;
+  height: 40px;
+  position: absolute;
 
-    margin-bottom: 6px;
+  margin-bottom: 6px;
 
-    border-radius: 4px;
+  border-radius: 4px;
 
-    color: #343434;
+  color: #343434;
 
-    display: inline-block;  
+  display: inline-block;
 
-    font-family: 'ProductSans';
-    font-weight: lighter;
-    font-size: 16px;
+  font-family: "ProductSans";
+  font-weight: lighter;
+  font-size: 16px;
 
-    text-align: center;
+  text-align: center;
 
-    left: -40px;
-    top: 10px;
-`
+  left: -40px;
+  top: 10px;
+`;

@@ -1,20 +1,20 @@
-import posed from 'react-pose'
-import styled from 'styled-components'
+import posed from "react-pose";
+import styled from "styled-components";
 
 export const Header = styled.div`
   width: 100%;
   height: 70px;
-`
+`;
 
 export const NameWrapper = styled.div`
   float: left;
-`
+`;
 
 export const CountDownWrapper = styled.div`
   float: right;
   text-align: right;
 
-  ${'' /* button {
+  ${"" /* button {
         color: #E57373;
         background-color: #fff;
 
@@ -23,40 +23,40 @@ export const CountDownWrapper = styled.div`
             background-color: #fff;
         }
     } */}
-`
+`;
 
 export const SubName = styled.p`
-  font-family: 'ProductSans';
+  font-family: "ProductSans";
   font-size: 18px;
   font-weight: lighter;
 
   color: #333;
 
   margin-bottom: 5px;
-`
+`;
 
 export const Counter = styled.p`
-  font-family: 'ProductSans';
+  font-family: "ProductSans";
   font-size: 14px;
   font-weight: lighter;
 
   color: #6f6f6f;
 
   margin-bottom: 20px;
-`
+`;
 
 export const TestNumberSelWrapper = styled.div`
   width: 100%;
   height: auto;
-`
+`;
 
 export const Option = styled.p`
-  font-family: 'ProductSans';
+  font-family: "ProductSans";
   font-size: 16px;
   font-weight: lighter;
 
-  color: ${props => props.tcolor || '#343434'};
-  background-color: ${props => props.bgColor || '#eeeeee'};
+  color: ${props => props.tcolor || "#343434"};
+  background-color: ${props => props.bgColor || "#eeeeee"};
 
   border-radius: 4px;
 
@@ -77,11 +77,11 @@ export const Option = styled.p`
 
   &:hover {
     color: #fff;
-    background-color: ${props => props.hbgColor || '#FF6A5C'};
+    background-color: ${props => props.hbgColor || "#FF6A5C"};
 
     transition: all 0.2s ease-in-out;
   }
-`
+`;
 
 export const Image = styled.img`
   width: 100%;
@@ -90,7 +90,7 @@ export const Image = styled.img`
 
   border: 2px solid #f7f5f2;
   border-radius: 4px;
-`
+`;
 
 export const ButtonsWrapper = styled.div`
   width: 100%;
@@ -100,7 +100,7 @@ export const ButtonsWrapper = styled.div`
   justify-content: space-between;
 
   margin-top: 70px;
-`
+`;
 
 export const Button = styled.button`
   height: 40px;
@@ -108,18 +108,18 @@ export const Button = styled.button`
 
   border-radius: 4px;
 
-  background-color: ${props => (props.primary ? '#4CAF50' : '#F44336')};
-  ${'' /* background-color: #fff; */}
-  ${'' /* color: ${props => props.primary ? '#FFD54F' : '#333'}; */}
+  background-color: ${props => (props.primary ? "#4CAF50" : "#F44336")};
+  ${"" /* background-color: #fff; */}
+  ${"" /* color: ${props => props.primary ? '#FFD54F' : '#333'}; */}
     color: #fff;
 
-  font-family: 'ProductSans';
+  font-family: "ProductSans";
   font-size: 16px;
   font-weight: lighter;
   text-align: center;
 
-  ${'' /* padding: 11px 0 11px 0; */}
-  ${'' /* text-align: ${props => props.primary ? 'left' : 'right'}; */}
+  ${"" /* padding: 11px 0 11px 0; */}
+  ${"" /* text-align: ${props => props.primary ? 'left' : 'right'}; */}
 
     cursor: pointer;
 
@@ -129,14 +129,14 @@ export const Button = styled.button`
   transition: color 0.2s ease-in-out;
 
   &:hover {
-    ${'' /* background-color: ${props => props.primary ? '#449D48' : '#D23B30'}; */}
-    ${'' /* color: ${props => props.primary ? '#FFC107' : '#222'}; */}
+    ${"" /* background-color: ${props => props.primary ? '#449D48' : '#D23B30'}; */}
+    ${"" /* color: ${props => props.primary ? '#FFC107' : '#222'}; */}
         color: #fff;
     transition: color 0.2s ease-in-out;
   }
-`
+`;
 
-export const ShowAnswersSwitcher = styled.input``
+export const ShowAnswersSwitcher = styled.input``;
 
 export const ModeWrapper = styled.div`
   width: 260px;
@@ -146,23 +146,23 @@ export const ModeWrapper = styled.div`
   justify-content: flex-end;
 
   h1 {
-    font-family: 'ProductSans';
+    font-family: "ProductSans";
     font-weight: lighter;
     font-size: 14px;
   }
-`
+`;
 
 export const Input = styled.input`
   display: none;
-`
+`;
 
 export const SwitcherWrapper = styled.div`
-  ${'' /* height: 16px;
+  ${"" /* height: 16px;
     width: 32px;
     border-radius: 4px;
     background-color: #E5E7E9; */}
   display: inline-block;
-`
+`;
 
 export const SwitcherBg = styled.div`
   height: 16px;
@@ -171,21 +171,21 @@ export const SwitcherBg = styled.div`
   background-color: #e5e7e9;
   padding: 2px;
   cursor: pointer;
-`
+`;
 
 const PosedSwitcherButton = posed.div({
   offline: {
-    background: '#FF6A5C',
+    background: "#FF6A5C",
     x: 0
   },
   online: {
-    background: '#BADC58',
+    background: "#BADC58",
     x: 16
   }
-})
+});
 
 export const SwitcherButton = styled(PosedSwitcherButton)`
   width: 12px;
   height: 12px;
   border-radius: 3px;
-`
+`;

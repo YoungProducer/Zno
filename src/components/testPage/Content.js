@@ -64,49 +64,50 @@ class Content extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props);
     const {
       selectedSubject,
       selectedSubSubject,
       selectedDeepType,
       selectedTestName,
       selectedTheme
-    } = this.props
-    let link = 'dist/tasks/';
+    } = this.props;
+    let link = "dist/tasks/";
 
-    link = link.concat(selectedSubject + '/')
-    if (selectedSubSubject !== '') {
-      link = link.concat(selectedSubSubject + '/')
+    link = link.concat(selectedSubject + "/");
+    if (selectedSubSubject !== "") {
+      link = link.concat(selectedSubSubject + "/");
     }
 
-    if (selectedTheme !== '') {
-      link = link.concat('Теми/' + selectedTheme + '/tasks.json')
+    if (selectedTheme !== "") {
+      link = link.concat("Теми/" + selectedTheme + "/tasks.json");
     }
 
-    if (selectedDeepType !== '') {
-      link = link.concat('ЗНО/')
+    if (selectedDeepType !== "") {
+      link = link.concat("ЗНО/");
 
-      if (selectedDeepType === 'ТРЕНУВАЛЬНІ ВАРІАНТИ') {
-        link = link.concat(selectedDeepType[0] + selectedDeepType.slice(1, selectedDeepType.length).toLowerCase() + '/variants.json')
+      if (selectedDeepType === "ТРЕНУВАЛЬНІ ВАРІАНТИ") {
+        link = link.concat(
+          selectedDeepType[0] +
+            selectedDeepType.slice(1, selectedDeepType.length).toLowerCase() +
+            "/" +
+            selectedTestName +
+            "/tasks.json"
+        );
       }
 
-      if (selectedDeepType === 'ОСНОВНА СЕССІЯ ЗНО') {
-        link = link.concat('Сессії ЗНО/sessions.json')
+      if (selectedDeepType === "ОСНОВНА СЕССІЯ ЗНО") {
+        link = link.concat("Сессії ЗНО/" + selectedTestName + "/tasks.json");
       }
     }
 
-    console.log(link)
-
-    readJson("dist/tasks/Математика/Алгебра/Теми/Функції/tasks.json").then(
-      response => {
-        this.props.onPushQuestions(response);
-        this.props.onInitAnswers(response);
-        this.props.onInitSelectedAnswers(response);
-        this.setState({
-          tasks: response
-        });
-      }
-    );
+    readJson(link).then(response => {
+      this.props.onPushQuestions(response);
+      this.props.onInitAnswers(response);
+      this.props.onInitSelectedAnswers(response);
+      this.setState({
+        tasks: response
+      });
+    });
     this.setState({ inited: true });
   }
 
@@ -296,7 +297,8 @@ class Content extends React.Component {
       onSetAnswersDisplay,
       selectedAnswers,
       givedAnswers,
-      isDisplayable,
+      showIsRight,
+      showRight,
       isTimeLimited
     } = this.props;
 
@@ -351,7 +353,7 @@ class Content extends React.Component {
                           return colors.green.default;
                         } else return red.default;
                       } else {
-                        if (!isDisplayable) {
+                        if (!showIsRight) {
                           if (givedAnswers[index] !== -1) {
                             if (givedAnswers[index] === task.answer) {
                               return green.default;
@@ -381,7 +383,7 @@ class Content extends React.Component {
                       if (testFinished) {
                         return "#fff";
                       } else {
-                        if (!isDisplayable) {
+                        if (!showIsRight) {
                           if (givedAnswers[index] !== -1) {
                             return "#fff";
                           } else {
@@ -411,7 +413,7 @@ class Content extends React.Component {
                           return green.hover;
                         } else return red.hover;
                       } else {
-                        if (!isDisplayable) {
+                        if (!showIsRight) {
                           if (givedAnswers[index] !== -1) {
                             if (givedAnswers[index] === task.answer) {
                               return green.hover;
@@ -455,7 +457,7 @@ class Content extends React.Component {
                             ? green.default
                             : red.default;
                         } else {
-                          if (!isDisplayable) {
+                          if (!showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 1)) {
                               return this.checkIsRight(givedAnswers, index, 1)
                                 ? green.default
@@ -493,7 +495,7 @@ class Content extends React.Component {
                         if (testFinished) {
                           return "#fff";
                         } else {
-                          if (!isDisplayable) {
+                          if (!showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 1)) {
                               return "#fff";
                             } else {
@@ -531,7 +533,7 @@ class Content extends React.Component {
                             ? green.hover
                             : red.hover;
                         } else {
-                          if (!isDisplayable) {
+                          if (!showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 1)) {
                               return this.checkIsRight(givedAnswers, index, 1)
                                 ? green.hover
@@ -587,7 +589,7 @@ class Content extends React.Component {
                             ? green.default
                             : red.default;
                         } else {
-                          if (!isDisplayable) {
+                          if (!showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 2)) {
                               return this.checkIsRight(givedAnswers, index, 2)
                                 ? green.default
@@ -626,7 +628,7 @@ class Content extends React.Component {
                         if (testFinished) {
                           return "#fff";
                         } else {
-                          if (!isDisplayable) {
+                          if (!showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 2)) {
                               return "#fff";
                             } else {
@@ -659,7 +661,7 @@ class Content extends React.Component {
                             ? green.hover
                             : red.hover;
                         } else {
-                          if (!isDisplayable) {
+                          if (!showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 2)) {
                               return this.checkIsRight(givedAnswers, index, 2)
                                 ? green.hover
@@ -709,7 +711,8 @@ class Content extends React.Component {
                   testId={selectedTest - 1}
                   updateAnswer={this.updateAnswer}
                   updateComponent={this.state.updateComponents}
-                  showAnswersAfterTest={isDisplayable}
+                  showIsRight={showIsRight}
+                  showRight={showRight}
                   isTestFinished={testFinished}
                 />
               ) : tasks[selectedTest - 1].type === 1 ? (
@@ -718,7 +721,8 @@ class Content extends React.Component {
                   testId={selectedTest - 1}
                   updateAnswer={this.updateAnswer}
                   updateComponent={this.state.updateComponents}
-                  showAnswersAfterTest={isDisplayable}
+                  showIsRight={showIsRight}
+                  showRight={showRight}
                   isTestFinished={testFinished}
                 />
               ) : (
@@ -727,7 +731,8 @@ class Content extends React.Component {
                   testId={selectedTest - 1}
                   updateAnswer={this.updateAnswer}
                   updateComponent={this.state.updateComponents}
-                  showAnswersAfterTest={isDisplayable}
+                  showIsRight={showIsRight}
+                  showRight={showRight}
                   isTestFinished={testFinished}
                 />
               )}
@@ -752,7 +757,7 @@ class Content extends React.Component {
                     selectedAnswers[selectedTest - 1]
                   );
 
-                  if (isDisplayable) {
+                  if (showIsRight) {
                     this.nextQuestion(selectedTest);
                   }
                   this.updateAnswer(false, "gived");
@@ -790,7 +795,8 @@ Content.propTypes = {
   questions: PropTypes.array.isRequired,
   selectedAnswers: PropTypes.array.isRequired,
   givedAnswers: PropTypes.array.isRequired,
-  isDisplayable: PropTypes.bool.isRequired,
+  showIsRight: PropTypes.bool.isRequired,
+  showRight: PropTypes.bool.isRequired,
   isTimeLimited: PropTypes.bool.isRequired
 };
 

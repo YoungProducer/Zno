@@ -62,7 +62,6 @@ class PopUpWindow extends React.Component {
 
   componentDidUpdate(prevProps, prevState, snapshot) {
     if (prevProps.active !== this.props.active) {
-      console.log('updated')
       readJson(
         "dist/tasks/" +
           this.props.subject[0] +
@@ -202,15 +201,17 @@ class PopUpWindow extends React.Component {
       active,
       changePopUpState,
       onSetAnswersDisplay,
-      isDisplayable,
+      showIsRight,
+      onSetRightAnswerDisplay,
+      showRight,
       onLimitTime,
       isTimeLimited,
       onSetUpTasks,
       subject
     } = this.props;
 
-    const showSwithcers =
-      selectedDeepType === "ОСНОВНА СЕССІЯ ЗНО" ? true : false;
+    const showTimeLimiter = selectedType === 'ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО' && selectedDeepType === "ОСНОВНА СЕССІЯ ЗНО" ? true : false;
+    const showSwithcers = selectedType.length !== 0 ? true : false;
 
     return (
       <Eclispe pose={active ? "visible" : "hidden"}>
@@ -346,19 +347,44 @@ class PopUpWindow extends React.Component {
                     <label
                       htmlFor="mode"
                       onClick={() => {
-                        onSetAnswersDisplay(!isDisplayable);
+                        onSetAnswersDisplay(!showIsRight);
                       }}
                     >
                       <SwitcherBg>
                         <SwitcherButton
-                          pose={isDisplayable ? "offline" : "online"}
+                          pose={showIsRight ? "offline" : "online"}
                         />
                       </SwitcherBg>
                     </label>
                   </SwitcherWrapper>
-                  <h1>Показувати відповіді під час тесту</h1>
+                  <h1>Показувати, чи відповідь правильна</h1>
                 </ModeWrapper>
 
+                <ModeWrapper>
+                  <SwitcherWrapper>
+                    <Input type="checkbox" id="mode" />
+                    <label
+                      htmlFor="mode"
+                      onClick={() => {
+                        onSetRightAnswerDisplay(!showRight);
+                      }}
+                    >
+                      <SwitcherBg>
+                        <SwitcherButton
+                          pose={showRight ? "online" : "offline"}
+                        />
+                      </SwitcherBg>
+                    </label>
+                  </SwitcherWrapper>
+                  <h1>Показувати правильну відповідь</h1>
+                </ModeWrapper>
+              </>
+            ) : (
+              <></>
+            )}
+
+            {
+              showTimeLimiter ? (
                 <ModeWrapper>
                   <SwitcherWrapper>
                     <Input type="checkbox" id="mode" />
@@ -377,10 +403,8 @@ class PopUpWindow extends React.Component {
                   </SwitcherWrapper>
                   <h1>Обмежений час</h1>
                 </ModeWrapper>
-              </>
-            ) : (
-              <></>
-            )}
+              ) : <></>
+            }
           </ThemeProvider>
 
           <ButtonsWrapper>
@@ -390,7 +414,7 @@ class PopUpWindow extends React.Component {
                 onClick={() => {
                   onSetUpTasks(
                     subject,
-                    showDeepList ? '' : selectedPart,
+                    showDeepList ? "" : selectedPart,
                     selectedDeepType,
                     selectedTheme,
                     selectedDeepListItem
@@ -417,7 +441,9 @@ class PopUpWindow extends React.Component {
 
 PopUpWindow.propTypes = {
   onSetAnswersDisplay: PropTypes.func.isRequired,
-  isDisplayable: PropTypes.bool.isRequired,
+  showIsRight: PropTypes.bool.isRequired,
+  onSetRightAnswerDisplay: PropTypes.func.isRequired,
+  showRight: PropTypes.bool.isRequired,
   onLimitTime: PropTypes.func.isRequired,
   isTimeLimited: PropTypes.bool.isRequired,
   onSetUpTasks: PropTypes.func.isRequired

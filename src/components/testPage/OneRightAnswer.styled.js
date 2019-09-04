@@ -1,4 +1,4 @@
-import styled from 'styled-components'
+import styled from "styled-components";
 
 export const Wrapper = styled.div`
   width: 100%;
@@ -7,7 +7,7 @@ export const Wrapper = styled.div`
   margin-top: 55px;
   position: relative;
   display: inline-block;
-`
+`;
 
 export const Square = styled.div`
   width: 40px;
@@ -22,8 +22,8 @@ export const Square = styled.div`
 
   cursor: pointer;
 
-  background-color: ${props => props.bgColor || '#eee'};
-`
+  background-color: ${props => props.bgColor || "#eee"};
+`;
 
 export const Indices = styled.p`
   width: 40px;
@@ -38,14 +38,14 @@ export const Indices = styled.p`
 
   display: inline-block;
 
-  font-family: 'ProductSans';
+  font-family: "ProductSans";
   font-weight: lighter;
   font-size: 16px;
 
   text-align: center;
 
   top: -26px;
-`
+`;
 
 export const Cross = styled.img`
   width: 38px;
@@ -63,4 +63,4 @@ export const Cross = styled.img`
     opacity: 1;
     transition: all 0.1s ease-in-out;
   }
-`
+`;

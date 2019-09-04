@@ -1,22 +1,22 @@
-import React from 'react'
-import PropTypes from 'prop-types'
+import React from "react";
+import PropTypes from "prop-types";
 
-import { Wrapper, Square, Cross, Indices } from './OneRightAnswer.styled'
+import { Wrapper, Square, Cross, Indices } from "./OneRightAnswer.styled";
 
-import { GlobalWrapper, RowIndices } from './RelationsAnswer.styled'
+import { GlobalWrapper, RowIndices } from "./RelationsAnswer.styled";
 
-import { horizontalNumeration } from './OneRightAnswer'
+import { horizontalNumeration } from "./OneRightAnswer";
 
-const verticalNumeration = ['1', '2', '3', '4']
+const verticalNumeration = ["1", "2", "3", "4"];
 
 class RelationsAnswers extends React.Component {
   constructor(props) {
-    super(props)
+    super(props);
 
     this.state = {
       selectedAnswer: [-1, -1, -1, -1],
       inited: false
-    }
+    };
   }
 
   updateAnswers = () => {
@@ -26,7 +26,7 @@ class RelationsAnswers extends React.Component {
       this.props.selectedAnswers[this.props.testId][2] !== -1 &&
       this.props.selectedAnswers[this.props.testId][3] !== -1
     ) {
-      this.props.updateAnswer(true, 'selected')
+      this.props.updateAnswer(true, "selected");
     }
     if (
       this.props.givedAnswers[this.props.testId][0] !== -1 &&
@@ -34,39 +34,39 @@ class RelationsAnswers extends React.Component {
       this.props.givedAnswers[this.props.testId][2] !== -1 &&
       this.props.givedAnswers[this.props.testId][3] !== -1
     ) {
-      this.props.updateAnswer(true, 'gived')
+      this.props.updateAnswer(true, "gived");
     }
-  }
+  };
 
   componentDidMount() {
-    this.setState({ inited: true })
-    this.props.updateAnswer()
+    this.setState({ inited: true });
+    this.props.updateAnswer();
   }
 
   componentDidUpdate() {
-    this.updateAnswers()
+    this.updateAnswers();
   }
 
   checkAnswerByVertical = index => {
-    const { selectedAnswers, testId } = this.props
+    const { selectedAnswers, testId } = this.props;
 
-    let selected = true
+    let selected = true;
 
-    console.log(selectedAnswers[testId], index)
+    console.log(selectedAnswers[testId], index);
 
     for (let i = 0; i < 4; i++) {
       if (selectedAnswers[testId][i] === index) {
-        selected = false
+        selected = false;
       }
     }
 
-    console.log(selected)
+    console.log(selected);
 
-    return selected
-  }
+    return selected;
+  };
 
   render() {
-    const { inited } = this.state
+    const { inited } = this.state;
 
     const {
       onSaveSelectedRelationAnswer,
@@ -74,14 +74,15 @@ class RelationsAnswers extends React.Component {
       selectedAnswers,
       updateAnswer,
       givedAnswers,
-      showAnswersAfterTest,
+      showIsRight,
+      showRight,
       rightAnswer,
       isTestFinished,
       onNullifyAnswer,
       onNullifySelectedAnswer,
       onNullifyRelationAnswerByIndex,
       onNullifySelecetedRelationAnswerByIndex
-    } = this.props
+    } = this.props;
 
     return (
       <GlobalWrapper>
@@ -101,55 +102,68 @@ class RelationsAnswers extends React.Component {
                     if (this.checkAnswerByVertical(hindex + 1)) {
                       if (hindex + 1 !== selectedAnswers[testId][vindex]) {
                         if (givedAnswers[testId][vindex] !== -1) {
-                          onNullifyAnswer(testId, 1)
+                          onNullifyAnswer(testId, 1);
                           onNullifySelecetedRelationAnswerByIndex(
                             testId,
                             vindex
-                          )
+                          );
                         }
                       }
-                      this.setState({ selectedAnswer: hindex + 1 })
-                      onSaveSelectedRelationAnswer(testId, vindex, hindex + 1)
-                      console.log(selectedAnswers[testId][vindex])
+                      this.setState({ selectedAnswer: hindex + 1 });
+                      onSaveSelectedRelationAnswer(testId, vindex, hindex + 1);
+                      console.log(selectedAnswers[testId][vindex]);
                       if (
                         selectedAnswers[testId][0] !== -1 &&
                         selectedAnswers[testId][1] !== -1 &&
                         selectedAnswers[testId][2] !== -1 &&
                         selectedAnswers[testId][3] !== -1
                       ) {
-                        updateAnswer(true, 'selected')
+                        updateAnswer(true, "selected");
                       }
                       this.setState({ selectedAnswer: hindex + 1 }),
-                        onSaveSelectedRelationAnswer(testId, vindex, hindex + 1)
+                        onSaveSelectedRelationAnswer(
+                          testId,
+                          vindex,
+                          hindex + 1
+                        );
                     }
                   }
                 }}
                 bgColor={() => {
                   if (inited) {
-                    if (showAnswersAfterTest) {
-                      return '#eee'
-                    } else {
-                      if (isTestFinished) {
-                        if (hindex + 1 === rightAnswer[vindex]) {
-                          return '#BADC58'
-                        } else {
-                          if (givedAnswers[testId][vindex] === hindex + 1) {
-                            return '#FF6A5C'
-                          }
-                          return '#eee'
-                        }
+                    if (showRight) {
+                      if (hindex + 1 === rightAnswer[vindex]) {
+                        return "#BADC58";
                       } else {
-                        if (givedAnswers[testId][vindex] !== -1) {
-                          if (hindex + 1 === rightAnswer[vindex]) {
-                            return '#BADC58'
-                          } else {
-                            if (givedAnswers[testId][vindex] === hindex + 1) {
-                              return '#FF6A5C'
-                            }
-                            return '#eee'
-                          }
+                        if (showIsRight) {
+                          return "#eee";
                         } else {
-                          return '#eee;'
+                          if (isTestFinished) {
+                            if (hindex + 1 === rightAnswer[vindex]) {
+                              return "#BADC58";
+                            } else {
+                              if (givedAnswers[testId][vindex] === hindex + 1) {
+                                return "#FF6A5C";
+                              }
+                              return "#eee";
+                            }
+                          } else {
+                            if (givedAnswers[testId][vindex] !== -1) {
+                              if (hindex + 1 === rightAnswer[vindex]) {
+                                return "#BADC58";
+                              } else {
+                                if (
+                                  givedAnswers[testId][vindex] ===
+                                  hindex + 1
+                                ) {
+                                  return "#FF6A5C";
+                                }
+                                return "#eee";
+                              }
+                            } else {
+                              return "#eee;";
+                            }
+                          }
                         }
                       }
                     }
@@ -158,7 +172,7 @@ class RelationsAnswers extends React.Component {
               >
                 {vindex === 0 ? <Indices>{hor}</Indices> : <></>}
                 <Cross
-                  src='./img/grey-cross.png'
+                  src="./img/grey-cross.png"
                   opacity={
                     selectedAnswers[testId][vindex] === hindex + 1 ? 1 : 0
                   }
@@ -168,7 +182,7 @@ class RelationsAnswers extends React.Component {
           </Wrapper>
         ))}
       </GlobalWrapper>
-    )
+    );
   }
 }
 
@@ -180,6 +194,6 @@ RelationsAnswers.propTypes = {
   onNullifySelectedAnswer: PropTypes.func.isRequired,
   onNullifyRelationAnswerByIndex: PropTypes.func.isRequired,
   onNullifySelecetedRelationAnswerByIndex: PropTypes.func.isRequired
-}
+};
 
-export default RelationsAnswers
+export default RelationsAnswers;
