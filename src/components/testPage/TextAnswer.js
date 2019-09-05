@@ -6,6 +6,7 @@ import {
   TextField,
   TextFieldWrapper
 } from "./TextAnswer.styled";
+import OneRightAnswer from "./OneRightAnswer";
 
 class TextAnswer extends React.Component {
   constructor(props) {
@@ -120,6 +121,7 @@ class TextAnswer extends React.Component {
       selectedAnswers,
       givedAnswers,
       showIsRight,
+      showRight,
       isTestFinished
     } = this.props;
 
@@ -132,6 +134,12 @@ class TextAnswer extends React.Component {
                 <></>
               ) : isTestFinished ? (
                 <p>{rightAnswer[index]}</p>
+              ) : showRight ? (
+                this.checkIsGived(givedAnswers, testId) ? (
+                  <p>{rightAnswer[index]}</p>
+                ) : (
+                  <p>{rightAnswer[index]}</p>
+                )
               ) : this.checkIsGived(givedAnswers, testId) ? (
                 <p>{rightAnswer[index]}</p>
               ) : (
@@ -140,6 +148,20 @@ class TextAnswer extends React.Component {
             ) : (
               <></>
             )}
+
+            {/*{inited ? (*/}
+            {/*  showIsRight ? (*/}
+            {/*    <></>*/}
+            {/*  ) : isTestFinished ? (*/}
+            {/*    <p>{rightAnswer[index]}</p>*/}
+            {/*  ) : this.checkIsGived(givedAnswers, testId) ? (*/}
+            {/*    <p>{rightAnswer[index]}</p>*/}
+            {/*  ) : (*/}
+            {/*    <></>*/}
+            {/*  )*/}
+            {/*) : (*/}
+            {/*  <></>*/}
+            {/*)}*/}
             <TextField
               onChange={event => {
                 if (!isTestFinished) {
@@ -160,7 +182,9 @@ TextAnswer.propTypes = {
   onNullifySelectedTextAnswerByIndex: PropTypes.func.isRequired,
   onNullifyAnswer: PropTypes.func.isRequired,
   selectedAnswers: PropTypes.array.isRequired,
-  givedAnswers: PropTypes.array.isRequired
+  givedAnswers: PropTypes.array.isRequired,
+  showIsRight: PropTypes.bool.isRequired,
+  showRight: PropTypes.bool.isRequired
 };
 
 export default TextAnswer;

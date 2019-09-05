@@ -11,7 +11,9 @@ import {
 
 const putStateToProps = (state) => ({
     selectedAnswers: state.selectedAnswers.selectedAnswers,
-    givedAnswers: state.givedAnswers.givedAnswers
+    givedAnswers: state.givedAnswers.givedAnswers,
+    showIsRight: state.testSetUp.showIsRight,
+    showRight: state.testSetUp.showRight
 })
 
 const putDispatchToProps = (dispatch) => ({

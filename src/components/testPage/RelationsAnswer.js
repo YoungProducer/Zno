@@ -148,6 +148,28 @@ class RelationsAnswers extends React.Component {
                               return "#eee";
                             }
                           } else {
+                            if (showRight) {
+                              if (givedAnswers[testId][vindex] !== -1) {
+                                if (hindex + 1 === rightAnswer[vindex]) {
+                                  return "#BADC58";
+                                } else {
+                                  if (
+                                    givedAnswers[testId][vindex] ===
+                                    hindex + 1
+                                  ) {
+                                    return "#FF6A5C";
+                                  }
+                                  return "#eee";
+                                }
+                              } else {
+                                return "#eee";
+                              }
+                            } else {
+                              if (hindex + 1 === rightAnswer[vindex]) {
+                                return "#BADC58";
+                              } else return "#eee";
+                            }
+
                             if (givedAnswers[testId][vindex] !== -1) {
                               if (hindex + 1 === rightAnswer[vindex]) {
                                 return "#BADC58";
@@ -193,7 +215,9 @@ RelationsAnswers.propTypes = {
   onNullifyAnswer: PropTypes.func.isRequired,
   onNullifySelectedAnswer: PropTypes.func.isRequired,
   onNullifyRelationAnswerByIndex: PropTypes.func.isRequired,
-  onNullifySelecetedRelationAnswerByIndex: PropTypes.func.isRequired
+  onNullifySelecetedRelationAnswerByIndex: PropTypes.func.isRequired,
+  showIsRight: PropTypes.bool.isRequired,
+  showRight: PropTypes.bool.isRequired
 };
 
 export default RelationsAnswers;

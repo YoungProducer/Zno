@@ -72,24 +72,33 @@ class OneRightAnswer extends React.Component {
             }}
             bgColor={() => {
               if (this.state.inited) {
-                if (isTestFinished) {
-                  if (showRight) {
+                if (showIsRight) {
+                  return "#eee";
+                } else {
+                  if (isTestFinished) {
                     if (index + 1 === rightAnswer) {
                       return "#BADC58";
-                    } else return "#eee";
-                  }
-                } else {
-                  if (!showIsRight) {
-                    return "#eee";
+                    } else {
+                      if (givedAnswers[testId] === index + 1) {
+                        return "#FF6A5C";
+                      }
+                      return "#eee";
+                    }
                   } else {
-                    if (isTestFinished) {
-                      if (index + 1 === rightAnswer) {
-                        return "#BADC58";
-                      } else {
-                        if (givedAnswers[testId] === index + 1) {
-                          return "#FF6A5C";
+                    if (showRight) {
+                      if (givedAnswers[testId] !== -1) {
+                        if (index + 1 === rightAnswer) {
+                          return "#BADC58";
+                        } else {
+                          if (givedAnswers[testId] === index + 1) {
+                            return "#FF6A5C";
+                          }
+                          return "#eee";
                         }
-                        return "#eee";
+                      } else {
+                        if (index + 1 === rightAnswer) {
+                          return "#BADC58";
+                        } else return "#eee";
                       }
                     } else {
                       if (givedAnswers[testId] !== -1) {
