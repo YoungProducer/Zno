@@ -1,11 +1,24 @@
 import styled from "styled-components";
+import posed from "react-pose";
 
 export const TextFieldsWrapper = styled.div`
   widith: 100%;
   height: 100%;
 `;
 
-export const TextField = styled.input`
+const PosedTextField = posed.input({
+  init: {
+    borderColor: "#eee"
+  },
+  right: {
+    borderColor: "#4CAF50"
+  },
+  wrong: {
+    borderColor: "#F44336"
+  }
+});
+
+export const TextField = styled(PosedTextField)`
   width: 200px;
   height: 40px;
   margin-right: 20px;

@@ -163,6 +163,26 @@ class TextAnswer extends React.Component {
             {/*  <></>*/}
             {/*)}*/}
             <TextField
+              // pose={() => {
+              //   if (inited) {
+              //     if (showIsRight) {
+              //       return 'init';
+              //     } else {
+              //       if (isTestFinished) {
+              //         if (givedAnswers[testId][index] === rightAnswer[index]) {
+              //           return 'right';
+              //         } else return 'wrong';
+              //       } else {
+              //         if (this.checkIsGived(givedAnswers, testId)) {
+              //           if (givedAnswers[index] === rightAnswer[index]) {
+              //             return 'right';
+              //           } else return 'wrong';
+              //         }
+              //       }
+              //     }
+              //   }
+              // }}
+              pose={'right'}
               onChange={event => {
                 if (!isTestFinished) {
                   this.inputOnChange(event, index, testId);
