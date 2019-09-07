@@ -46,7 +46,7 @@ class TextAnswer extends React.Component {
     return selected;
   };
 
-  checkIsGived = (givedAnswers, testId) => {
+  checkIsGived = (givedAnswers, testId, index) => {
     let gived = true;
     for (let i = 0; i < givedAnswers[testId].length; i++) {
       if (givedAnswers[testId][i] === "") {
@@ -54,6 +54,11 @@ class TextAnswer extends React.Component {
         break;
       }
     }
+
+    const { rightAnswer } = this.props;
+
+    console.log(givedAnswers[testId], rightAnswer[0], index);
+    console.log(gived);
 
     return gived;
   };
@@ -182,7 +187,21 @@ class TextAnswer extends React.Component {
               //     }
               //   }
               // }}
-              pose={'right'}
+              pose={
+                inited
+                  ? showIsRight
+                    ? "init"
+                    : isTestFinished
+                    ? givedAnswers[testId][index] == rightAnswer[index]
+                      ? "right"
+                      : "wrong"
+                    : this.checkIsGived(givedAnswers, testId, index)
+                    ? givedAnswers[testId][index] == rightAnswer[index]
+                      ? "right"
+                      : "wrong"
+                    : "init"
+                  : "init"
+              }
               onChange={event => {
                 if (!isTestFinished) {
                   this.inputOnChange(event, index, testId);

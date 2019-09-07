@@ -173,7 +173,10 @@ class Content extends React.Component {
 
     if (type === 2) {
       for (let i = 0; i < givedAnswers[testId].length; i++) {
-        if (givedAnswers[testId][i] !== this.state.tasks[testId].answer[i]) {
+        if (
+          parseInt(givedAnswers[testId][i], 10) !==
+          this.state.tasks[testId].answer[i]
+        ) {
           right = false;
           break;
         }
@@ -635,7 +638,13 @@ class Content extends React.Component {
                               if (index + 1 === selectedTest) {
                                 return "#fff";
                               } else {
-                                return "#343434";
+                                return this.checkIsSelected(
+                                  selectedAnswers,
+                                  index,
+                                  2
+                                )
+                                  ? "#fff"
+                                  : "#343434";
                               }
                             }
                           } else {

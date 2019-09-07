@@ -23,6 +23,7 @@ export const TextField = styled(PosedTextField)`
   height: 40px;
   margin-right: 20px;
 
+  border: solid 1px #eee;
   outline: none;
 `;
 
