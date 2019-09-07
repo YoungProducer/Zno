@@ -137,6 +137,7 @@ export const PopUpWrapper = styled.div`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  transform-style: preserve-3d;
 `;
 
 export const Header = styled.h1`

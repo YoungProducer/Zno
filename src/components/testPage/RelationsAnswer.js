@@ -131,14 +131,21 @@ class RelationsAnswers extends React.Component {
                 }}
                 bgColor={() => {
                   if (inited) {
-                    if (showRight) {
-                      if (hindex + 1 === rightAnswer[vindex]) {
-                        return "#BADC58";
-                      } else {
-                        if (showIsRight) {
-                          return "#eee";
+                    if (showIsRight) {
+                      return "#eee";
+                    } else {
+                      if (isTestFinished) {
+                        if (hindex + 1 === rightAnswer[vindex]) {
+                          return "#BADC58";
                         } else {
-                          if (isTestFinished) {
+                          if (givedAnswers[testId][vindex] === hindex + 1) {
+                            return "#FF6A5C";
+                          }
+                          return "#eee";
+                        }
+                      } else {
+                        if (showRight) {
+                          if (givedAnswers[testId][vindex] !== -1) {
                             if (hindex + 1 === rightAnswer[vindex]) {
                               return "#BADC58";
                             } else {
@@ -148,44 +155,25 @@ class RelationsAnswers extends React.Component {
                               return "#eee";
                             }
                           } else {
-                            if (showRight) {
-                              if (givedAnswers[testId][vindex] !== -1) {
-                                if (hindex + 1 === rightAnswer[vindex]) {
-                                  return "#BADC58";
-                                } else {
-                                  if (
-                                    givedAnswers[testId][vindex] ===
-                                    hindex + 1
-                                  ) {
-                                    return "#FF6A5C";
-                                  }
-                                  return "#eee";
-                                }
-                              } else {
-                                return "#eee";
-                              }
-                            } else {
-                              if (hindex + 1 === rightAnswer[vindex]) {
-                                return "#BADC58";
-                              } else return "#eee";
-                            }
-
-                            if (givedAnswers[testId][vindex] !== -1) {
-                              if (hindex + 1 === rightAnswer[vindex]) {
-                                return "#BADC58";
-                              } else {
-                                if (
-                                  givedAnswers[testId][vindex] ===
-                                  hindex + 1
-                                ) {
-                                  return "#FF6A5C";
-                                }
-                                return "#eee";
-                              }
-                            } else {
-                              return "#eee;";
-                            }
+                            return "#eee";
                           }
+                        } else {
+                          if (hindex + 1 === rightAnswer[vindex]) {
+                            return "#BADC58";
+                          } else return "#eee";
+                        }
+
+                        if (givedAnswers[testId][vindex] !== -1) {
+                          if (hindex + 1 === rightAnswer[vindex]) {
+                            return "#BADC58";
+                          } else {
+                            if (givedAnswers[testId][vindex] === hindex + 1) {
+                              return "#FF6A5C";
+                            }
+                            return "#eee";
+                          }
+                        } else {
+                          return "#eee;";
                         }
                       }
                     }

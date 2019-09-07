@@ -46,7 +46,7 @@ class TextAnswer extends React.Component {
     return selected;
   };
 
-  checkIsGived = (givedAnswers, testId, index) => {
+  checkIsGived = (givedAnswers, testId) => {
     let gived = true;
     for (let i = 0; i < givedAnswers[testId].length; i++) {
       if (givedAnswers[testId][i] === "") {
@@ -54,11 +54,6 @@ class TextAnswer extends React.Component {
         break;
       }
     }
-
-    const { rightAnswer } = this.props;
-
-    console.log(givedAnswers[testId], rightAnswer[0], index);
-    console.log(gived);
 
     return gived;
   };
@@ -153,50 +148,18 @@ class TextAnswer extends React.Component {
             ) : (
               <></>
             )}
-
-            {/*{inited ? (*/}
-            {/*  showIsRight ? (*/}
-            {/*    <></>*/}
-            {/*  ) : isTestFinished ? (*/}
-            {/*    <p>{rightAnswer[index]}</p>*/}
-            {/*  ) : this.checkIsGived(givedAnswers, testId) ? (*/}
-            {/*    <p>{rightAnswer[index]}</p>*/}
-            {/*  ) : (*/}
-            {/*    <></>*/}
-            {/*  )*/}
-            {/*) : (*/}
-            {/*  <></>*/}
-            {/*)}*/}
             <TextField
-              // pose={() => {
-              //   if (inited) {
-              //     if (showIsRight) {
-              //       return 'init';
-              //     } else {
-              //       if (isTestFinished) {
-              //         if (givedAnswers[testId][index] === rightAnswer[index]) {
-              //           return 'right';
-              //         } else return 'wrong';
-              //       } else {
-              //         if (this.checkIsGived(givedAnswers, testId)) {
-              //           if (givedAnswers[index] === rightAnswer[index]) {
-              //             return 'right';
-              //           } else return 'wrong';
-              //         }
-              //       }
-              //     }
-              //   }
-              // }}
+
               pose={
                 inited
                   ? showIsRight
                     ? "init"
                     : isTestFinished
-                    ? givedAnswers[testId][index] == rightAnswer[index]
+                    ? parseInt(givedAnswers[testId][index], 10) === rightAnswer[index]
                       ? "right"
                       : "wrong"
-                    : this.checkIsGived(givedAnswers, testId, index)
-                    ? givedAnswers[testId][index] == rightAnswer[index]
+                    : this.checkIsGived(givedAnswers, testId)
+                    ? parseInt(givedAnswers[testId][index], 10) === rightAnswer[index]
                       ? "right"
                       : "wrong"
                     : "init"
