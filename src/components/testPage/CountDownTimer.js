@@ -34,7 +34,7 @@ class CountDownTimer extends React.Component {
   componentDidMount() {
     this.state.timer = setInterval(() => {
       this.decrementTimeRemaining();
-    }, 1000);
+    }, 60000);
   }
 
   render() {
