@@ -120,8 +120,12 @@ class TextAnswer extends React.Component {
         {rightAnswer.map((obj, index) => (
           <TextFieldWrapper key={index}>
             {inited ? (
-              showIsRight && !showRight ? (
-                <></>
+              showIsRight ? (
+                this.checkIsGived(givedAnswers, testId) ? (
+                  <p>{rightAnswer[index]}</p>
+                ) : (
+                  <></>
+                )
               ) : isTestFinished ? (
                 <p>{rightAnswer[index]}</p>
               ) : showRight ? (
@@ -139,17 +143,21 @@ class TextAnswer extends React.Component {
               <></>
             )}
             <TextField
-
               pose={
                 inited
-                  ? (showIsRight && !showRight)
-                    ? "init"
+                  ? showIsRight
+                    ? this.checkIsGived(givedAnswers, testId)
+                      ? givedAnswers[testId][index] ===
+                        String(rightAnswer[index])
+                        ? "right"
+                        : "wrong"
+                      : "init"
                     : isTestFinished
-                    ? parseInt(givedAnswers[testId][index], 10) === rightAnswer[index]
+                    ? givedAnswers[testId][index] === String(rightAnswer[index])
                       ? "right"
                       : "wrong"
                     : this.checkIsGived(givedAnswers, testId)
-                    ? parseInt(givedAnswers[testId][index], 10) === rightAnswer[index]
+                    ? givedAnswers[testId][index] === String(rightAnswer[index])
                       ? "right"
                       : "wrong"
                     : "init"

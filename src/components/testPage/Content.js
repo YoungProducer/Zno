@@ -174,8 +174,7 @@ class Content extends React.Component {
     if (type === 2) {
       for (let i = 0; i < givedAnswers[testId].length; i++) {
         if (
-          parseInt(givedAnswers[testId][i], 10) !==
-          this.state.tasks[testId].answer[i]
+          givedAnswers[testId][i] !== String(this.state.tasks[testId].answer[i])
         ) {
           right = false;
           break;
@@ -184,37 +183,6 @@ class Content extends React.Component {
     }
 
     return right;
-  };
-
-  cutToSlash = url => {
-    let temp = url;
-
-    temp = temp
-      .split("")
-      .reverse()
-      .join("");
-    temp = temp.slice(temp.indexOf("/") + 1, temp.length);
-    temp = temp
-      .split("")
-      .reverse()
-      .join("");
-    return temp;
-  };
-
-  getLastParam = url => {
-    let temp = url;
-
-    temp = temp
-      .split("")
-      .reverse()
-      .join("");
-    temp = temp.slice(0, temp.indexOf("/"));
-    temp = temp
-      .split("")
-      .reverse()
-      .join("");
-
-    return temp;
   };
 
   updateAnswer = (isAnswer, type) => {
@@ -285,11 +253,11 @@ class Content extends React.Component {
   };
 
   equateGivedAndSelected = () => {
-    const { selectedAnswers, givedAnswers} = this.props
+    const { selectedAnswers, givedAnswers } = this.props;
     for (let i = 0; i < selectedAnswers.length; i++) {
-      givedAnswers[i] = selectedAnswers[i]
+      givedAnswers[i] = selectedAnswers[i];
     }
-  }
+  };
 
   render() {
     const {
@@ -364,7 +332,7 @@ class Content extends React.Component {
                           return colors.green.default;
                         } else return red.default;
                       } else {
-                        if (!showIsRight) {
+                        if (showIsRight) {
                           if (givedAnswers[index] !== -1) {
                             if (givedAnswers[index] === task.answer) {
                               return green.default;
@@ -394,7 +362,7 @@ class Content extends React.Component {
                       if (testFinished) {
                         return "#fff";
                       } else {
-                        if (!showIsRight) {
+                        if (showIsRight) {
                           if (givedAnswers[index] !== -1) {
                             return "#fff";
                           } else {
@@ -424,7 +392,7 @@ class Content extends React.Component {
                           return green.hover;
                         } else return red.hover;
                       } else {
-                        if (!showIsRight) {
+                        if (showIsRight) {
                           if (givedAnswers[index] !== -1) {
                             if (givedAnswers[index] === task.answer) {
                               return green.hover;
@@ -468,7 +436,7 @@ class Content extends React.Component {
                             ? green.default
                             : red.default;
                         } else {
-                          if (!showIsRight) {
+                          if (showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 1)) {
                               return this.checkIsRight(givedAnswers, index, 1)
                                 ? green.default
@@ -600,7 +568,7 @@ class Content extends React.Component {
                             ? green.default
                             : red.default;
                         } else {
-                          if (!showIsRight) {
+                          if (showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 2)) {
                               return this.checkIsRight(givedAnswers, index, 2)
                                 ? green.default
@@ -639,14 +607,14 @@ class Content extends React.Component {
                         if (testFinished) {
                           return "#fff";
                         } else {
-                          if (!showIsRight) {
+                          if (showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 2)) {
                               return "#fff";
                             } else {
                               if (index + 1 === selectedTest) {
                                 return "#fff";
                               } else {
-                                 return this.checkIsSelected(
+                                return this.checkIsSelected(
                                   selectedAnswers,
                                   index,
                                   2
@@ -678,7 +646,7 @@ class Content extends React.Component {
                             ? green.hover
                             : red.hover;
                         } else {
-                          if (!showIsRight) {
+                          if (showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 2)) {
                               return this.checkIsRight(givedAnswers, index, 2)
                                 ? green.hover
@@ -774,7 +742,7 @@ class Content extends React.Component {
                     selectedAnswers[selectedTest - 1]
                   );
 
-                  if (showIsRight) {
+                  if (!showIsRight) {
                     this.nextQuestion(selectedTest);
                   }
                   this.updateAnswer(false, "gived");
