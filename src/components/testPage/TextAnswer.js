@@ -102,16 +102,6 @@ class TextAnswer extends React.Component {
     });
   };
 
-  renderRightAnswers = index => {
-    if (this.state.inited) {
-      if (this.props.showIsRight) {
-        return <></>;
-      } else {
-        return <p>{this.props.rightAnswer[index]}</p>;
-      }
-    }
-  };
-
   render() {
     const { inited } = this.state;
 
@@ -130,7 +120,7 @@ class TextAnswer extends React.Component {
         {rightAnswer.map((obj, index) => (
           <TextFieldWrapper key={index}>
             {inited ? (
-              showIsRight ? (
+              showIsRight && !showRight ? (
                 <></>
               ) : isTestFinished ? (
                 <p>{rightAnswer[index]}</p>
@@ -152,7 +142,7 @@ class TextAnswer extends React.Component {
 
               pose={
                 inited
-                  ? showIsRight
+                  ? (showIsRight && !showRight)
                     ? "init"
                     : isTestFinished
                     ? parseInt(givedAnswers[testId][index], 10) === rightAnswer[index]

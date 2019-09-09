@@ -284,6 +284,13 @@ class Content extends React.Component {
     });
   };
 
+  equateGivedAndSelected = () => {
+    const { selectedAnswers, givedAnswers} = this.props
+    for (let i = 0; i < selectedAnswers.length; i++) {
+      givedAnswers[i] = selectedAnswers[i]
+    }
+  }
+
   render() {
     const {
       subject,
@@ -338,6 +345,7 @@ class Content extends React.Component {
               <Button
                 onClick={() => {
                   this.setTestFinished(), onSetAnswersDisplay(false);
+                  this.equateGivedAndSelected();
                 }}
               >
                 Завершити
@@ -638,7 +646,7 @@ class Content extends React.Component {
                               if (index + 1 === selectedTest) {
                                 return "#fff";
                               } else {
-                                return this.checkIsSelected(
+                                 return this.checkIsSelected(
                                   selectedAnswers,
                                   index,
                                   2

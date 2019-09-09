@@ -19,8 +19,8 @@ import {
 } from "./constants";
 
 const testSetUpInitialState = {
-  showIsRight: true,
-  showRight: false,
+  showIsRight: false,
+  showRight: true,
   isTimeLimited: false,
   selectedSubject: "",
   selectedSubSubject: "",
@@ -34,13 +34,15 @@ export const testSetUpReducer = (state = testSetUpInitialState, action) => {
     case SET_ANSWERS_DISPLAY: {
       return {
         ...state,
-        showIsRight: action.payload
+        showIsRight: action.payload,
+        showRight: false
       };
     }
     case SET_RIGHT_ANSWER_DISPLAY: {
       return {
         ...state,
-        showRight: action.payload
+        showRight: action.payload,
+        showIsRight: false
       }
     }
     case LIMIT_TIME: {

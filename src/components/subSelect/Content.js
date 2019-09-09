@@ -339,7 +339,7 @@ class PopUpWindow extends React.Component {
               <></>
             )}
 
-            {showSwithcers ? (
+            {showSwithcers && !showTimeLimiter ? (
               <>
                 <ModeWrapper>
                   <SwitcherWrapper>
@@ -352,7 +352,7 @@ class PopUpWindow extends React.Component {
                     >
                       <SwitcherBg>
                         <SwitcherButton
-                          pose={showIsRight ? "offline" : "online"}
+                          pose={showIsRight ? "online" : "offline"}
                         />
                       </SwitcherBg>
                     </label>

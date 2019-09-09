@@ -72,7 +72,7 @@ class OneRightAnswer extends React.Component {
             }}
             bgColor={() => {
               if (this.state.inited) {
-                if (showIsRight) {
+                if (showIsRight && !showRight) {
                   return "#eee";
                 } else {
                   if (isTestFinished) {

@@ -131,7 +131,7 @@ class RelationsAnswers extends React.Component {
                 }}
                 bgColor={() => {
                   if (inited) {
-                    if (showIsRight) {
+                    if (showIsRight && !showRight) {
                       return "#eee";
                     } else {
                       if (isTestFinished) {
@@ -145,7 +145,7 @@ class RelationsAnswers extends React.Component {
                         }
                       } else {
                         if (showRight) {
-                          if (givedAnswers[testId][vindex] !== -1) {
+                          if (givedAnswers[testId][vindex] === -1) {
                             if (hindex + 1 === rightAnswer[vindex]) {
                               return "#BADC58";
                             } else {
