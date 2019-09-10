@@ -202,16 +202,14 @@ class PopUpWindow extends React.Component {
       changePopUpState,
       onSetAnswersDisplay,
       showIsRight,
-      onSetRightAnswerDisplay,
-      showRight,
       onLimitTime,
       isTimeLimited,
       onSetUpTasks,
       subject
     } = this.props;
 
-    const showTimeLimiter = selectedType === 'ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО' && selectedDeepType === "ОСНОВНА СЕССІЯ ЗНО" ? true : false;
-    const showSwithcers = selectedType.length !== 0 ? true : false;
+    const showTimeLimiter = selectedType === 'ТРЕНУВАЛЬНИЙ ВАРІАНТ ЗНО' && selectedDeepType === "ОСНОВНА СЕССІЯ ЗНО";
+    const showSwithcers = selectedType.length !== 0;
 
     return (
       <Eclispe pose={active ? "visible" : "hidden"}>
@@ -358,25 +356,6 @@ class PopUpWindow extends React.Component {
                     </label>
                   </SwitcherWrapper>
                   <h1>Показувати, чи відповідь правильна</h1>
-                </ModeWrapper>
-
-                <ModeWrapper>
-                  <SwitcherWrapper>
-                    <Input type="checkbox" id="mode" />
-                    <label
-                      htmlFor="mode"
-                      onClick={() => {
-                        onSetRightAnswerDisplay(!showRight);
-                      }}
-                    >
-                      <SwitcherBg>
-                        <SwitcherButton
-                          pose={showRight ? "online" : "offline"}
-                        />
-                      </SwitcherBg>
-                    </label>
-                  </SwitcherWrapper>
-                  <h1>Показувати правильну відповідь</h1>
                 </ModeWrapper>
               </>
             ) : (

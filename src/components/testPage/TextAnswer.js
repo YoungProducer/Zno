@@ -7,6 +7,7 @@ import {
   TextFieldWrapper
 } from "./TextAnswer.styled";
 import OneRightAnswer from "./OneRightAnswer";
+import createTypography from "@material-ui/core/styles/createTypography";
 
 class TextAnswer extends React.Component {
   constructor(props) {
@@ -102,6 +103,10 @@ class TextAnswer extends React.Component {
     });
   };
 
+  checkIsRight = (answer, right) => {
+    return answer.replace(",", ".") === String(right);
+  };
+
   render() {
     const { inited } = this.state;
 
@@ -121,19 +126,9 @@ class TextAnswer extends React.Component {
           <TextFieldWrapper key={index}>
             {inited ? (
               showIsRight ? (
-                this.checkIsGived(givedAnswers, testId) ? (
-                  <p>{rightAnswer[index]}</p>
-                ) : (
-                  <></>
-                )
+                <></>
               ) : isTestFinished ? (
                 <p>{rightAnswer[index]}</p>
-              ) : showRight ? (
-                this.checkIsGived(givedAnswers, testId) ? (
-                  <p>{rightAnswer[index]}</p>
-                ) : (
-                  <p>{rightAnswer[index]}</p>
-                )
               ) : this.checkIsGived(givedAnswers, testId) ? (
                 <p>{rightAnswer[index]}</p>
               ) : (
@@ -142,13 +137,51 @@ class TextAnswer extends React.Component {
             ) : (
               <></>
             )}
+            {/*{inited ? (*/}
+            {/*  showIsRight ? (*/}
+            {/*    this.checkIsGived(givedAnswers, testId) ? (*/}
+            {/*      <p>{rightAnswer[index]}</p>*/}
+            {/*    ) : (*/}
+            {/*      <></>*/}
+            {/*    )*/}
+            {/*  ) : isTestFinished ? (*/}
+            {/*    <p>{rightAnswer[index]}</p>*/}
+            {/*  ) : showRight ? (*/}
+            {/*    this.checkIsGived(givedAnswers, testId) ? (*/}
+            {/*      <p>{rightAnswer[index]}</p>*/}
+            {/*    ) : (*/}
+            {/*      <p>{rightAnswer[index]}</p>*/}
+            {/*    )*/}
+            {/*  ) : this.checkIsGived(givedAnswers, testId) ? (*/}
+            {/*    <p>{rightAnswer[index]}</p>*/}
+            {/*  ) : (*/}
+            {/*    <></>*/}
+            {/*  )*/}
+            {/*) : (*/}
+            {/*  <></>*/}
+            {/*)}*/}
             <TextField
+              // pose={
+              //   inited ? (
+              //     !showIsRight ? (
+              //       "init"
+              //     ) : isTestFinished ? this.checkIsRight(givedAnswers[testId][index], rightAnswer[index]) ? "right" : "wrong"
+              //      : this.checkIsGived(givedAnswers, testId) ? this.checkIsRight(givedAnswers[testId][index], rightAnswer[index]) ? "right" : "wrong"
+              //      : (
+              //       <></>
+              //     )
+              //   ) : (
+              //     <></>
+              //   )
+              // }
               pose={
                 inited
                   ? showIsRight
                     ? this.checkIsGived(givedAnswers, testId)
-                      ? givedAnswers[testId][index] ===
-                        String(rightAnswer[index])
+                      ? this.checkIsRight(
+                          givedAnswers[testId][index],
+                          rightAnswer[index]
+                        )
                         ? "right"
                         : "wrong"
                       : "init"
@@ -157,7 +190,10 @@ class TextAnswer extends React.Component {
                       ? "right"
                       : "wrong"
                     : this.checkIsGived(givedAnswers, testId)
-                    ? givedAnswers[testId][index] === String(rightAnswer[index])
+                    ? this.checkIsRight(
+                        givedAnswers[testId][index],
+                        rightAnswer[index]
+                      )
                       ? "right"
                       : "wrong"
                     : "init"

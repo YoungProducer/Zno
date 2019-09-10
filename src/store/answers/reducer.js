@@ -13,14 +13,12 @@ import {
   NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX,
   SAVE_SELECTED_TEXT_ANSWER,
   SET_ANSWERS_DISPLAY,
-  SET_RIGHT_ANSWER_DISPLAY,
   LIMIT_TIME,
   SET_UP_TASKS
 } from "./constants";
 
 const testSetUpInitialState = {
-  showIsRight: false,
-  showRight: true,
+  showIsRight: true,
   isTimeLimited: false,
   selectedSubject: "",
   selectedSubSubject: "",
@@ -35,15 +33,7 @@ export const testSetUpReducer = (state = testSetUpInitialState, action) => {
       return {
         ...state,
         showIsRight: action.payload,
-        showRight: false
       };
-    }
-    case SET_RIGHT_ANSWER_DISPLAY: {
-      return {
-        ...state,
-        showRight: action.payload,
-        showIsRight: false
-      }
     }
     case LIMIT_TIME: {
       return {

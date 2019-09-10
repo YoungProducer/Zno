@@ -27,7 +27,7 @@ class RelationsAnswers extends React.Component {
       this.props.selectedAnswers[this.props.testId][3] !== -1
     ) {
       this.props.updateAnswer(true, "selected");
-    }
+    } else this.props.updateAnswer(false, "selected")
     if (
       this.props.givedAnswers[this.props.testId][0] !== -1 &&
       this.props.givedAnswers[this.props.testId][1] !== -1 &&
@@ -35,7 +35,7 @@ class RelationsAnswers extends React.Component {
       this.props.givedAnswers[this.props.testId][3] !== -1
     ) {
       this.props.updateAnswer(true, "gived");
-    }
+    } else this.props.updateAnswer(false, "gived")
   };
 
   componentDidMount() {
@@ -71,7 +71,6 @@ class RelationsAnswers extends React.Component {
       updateAnswer,
       givedAnswers,
       showIsRight,
-      showRight,
       rightAnswer,
       isTestFinished,
       onNullifyAnswer,
@@ -107,7 +106,6 @@ class RelationsAnswers extends React.Component {
                       }
                       this.setState({ selectedAnswer: hindex + 1 });
                       onSaveSelectedRelationAnswer(testId, vindex, hindex + 1);
-                      console.log(selectedAnswers[testId][vindex]);
                       if (
                         selectedAnswers[testId][0] !== -1 &&
                         selectedAnswers[testId][1] !== -1 &&
@@ -127,17 +125,8 @@ class RelationsAnswers extends React.Component {
                 }}
                 bgColor={() => {
                   if (inited) {
-                    if (showIsRight) {
-                      if (givedAnswers[testId][vindex] !== -1) {
-                        if (hindex + 1 === rightAnswer[vindex]) {
-                          return "#BADC58";
-                        } else {
-                          if (givedAnswers[testId][vindex] === hindex + 1) {
-                            return "#FF6A5C";
-                          }
-                          return "#eee";
-                        }
-                      } else return "#eee";
+                    if (!showIsRight) {
+                      return "#eee";
                     } else {
                       if (isTestFinished) {
                         if (hindex + 1 === rightAnswer[vindex]) {
@@ -149,38 +138,76 @@ class RelationsAnswers extends React.Component {
                           return "#eee";
                         }
                       } else {
-                        if (showRight) {
-                          if (givedAnswers[testId][vindex] !== -1) {
-                            if (hindex + 1 === rightAnswer[vindex]) {
-                              return "#BADC58";
-                            } else {
-                              if (givedAnswers[testId][vindex] === hindex + 1) {
-                                return "#FF6A5C";
-                              }
-                              return "#eee";
-                            }
+                        if (givedAnswers[testId][vindex] !== -1) {
+                          if (hindex + 1 === rightAnswer[vindex]) {
+                            return "#BADC58";
                           } else {
-                            if (hindex + 1 === rightAnswer[vindex]) {
-                              return "#BADC58";
-                            } else return "#eee";
-                          }
-                        } else {
-                          if (givedAnswers[testId][vindex] !== -1) {
-                            if (hindex + 1 === rightAnswer[vindex]) {
-                              return "#BADC58";
-                            } else {
-                              if (givedAnswers[testId][vindex] === hindex + 1) {
-                                return "#FF6A5C";
-                              }
-                              return "#eee";
+                            if (givedAnswers[testId][vindex] === hindex + 1) {
+                              return "#FF6A5C";
                             }
-                          } else {
                             return "#eee";
                           }
+                        } else {
+                          return "#eee;";
                         }
                       }
                     }
                   }
+                  // if (inited) {
+                  //   if (showIsRight) {
+                  //     if (givedAnswers[testId][vindex] !== -1) {
+                  //       if (hindex + 1 === rightAnswer[vindex]) {
+                  //         return "#4CAF50";
+                  //       } else {
+                  //         if (givedAnswers[testId][vindex] === hindex + 1) {
+                  //           return "#F44336";
+                  //         }
+                  //         return "#eee";
+                  //       }
+                  //     } else return "#eee";
+                  //   } else {
+                  //     if (isTestFinished) {
+                  //       if (hindex + 1 === rightAnswer[vindex]) {
+                  //         return "#4CAF50";
+                  //       } else {
+                  //         if (givedAnswers[testId][vindex] === hindex + 1) {
+                  //           return "#F44336";
+                  //         }
+                  //         return "#eee";
+                  //       }
+                  //     } else {
+                  //       if (showRight) {
+                  //         if (givedAnswers[testId][vindex] !== -1) {
+                  //           if (hindex + 1 === rightAnswer[vindex]) {
+                  //             return "#4CAF50";
+                  //           } else {
+                  //             if (givedAnswers[testId][vindex] === hindex + 1) {
+                  //               return "#F44336";
+                  //             }
+                  //             return "#eee";
+                  //           }
+                  //         } else {
+                  //           if (hindex + 1 === rightAnswer[vindex]) {
+                  //             return "#4CAF50";
+                  //           } else return "#eee";
+                  //         }
+                  //       } else {
+                  //         if (givedAnswers[testId][vindex] !== -1) {
+                  //           if (hindex + 1 === rightAnswer[vindex]) {
+                  //             return "#4CAF50";
+                  //           } else {
+                  //             if (givedAnswers[testId][vindex] === hindex + 1) {
+                  //               return "#F44336";
+                  //             }
+                  //             return "#eee";
+                  //           }
+                  //         } else {
+                  //           return "#eee";
+                  //         }
+                  //       }
+                  //     }
+                  //   }
+                  // }
                 }}
               >
                 {vindex === 0 ? <Indices>{hor}</Indices> : <></>}

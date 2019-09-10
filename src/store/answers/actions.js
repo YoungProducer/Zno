@@ -3,7 +3,6 @@ import {
   INIT_ANSWERS,
   GIVE_AN_ANSWER,
   GIVE_AN_RELATION_ANSWER,
-  GIVE_AN_TEXT_ANSWER,
   INIT_SELECTED_ANSWERS,
   SAVE_SELECTED_ANSWER,
   SAVE_SELECTED_RELATION_ANSWER,
@@ -14,7 +13,6 @@ import {
   NULLIFY_SELECTED_RELATION_ANSWER_BY_INDEX,
   NULLIFY_SELECTED_TEXT_ANSWER_BY_INDEX,
   SET_ANSWERS_DISPLAY,
-  SET_RIGHT_ANSWER_DISPLAY,
   LIMIT_TIME,
   SET_UP_TASKS
 } from "./constants";
@@ -87,11 +85,6 @@ export const nullifySelectedTextAnswerByIndex = (testId, index) => ({
 export const setAnswersDisplay = isDisplayable => ({
   type: SET_ANSWERS_DISPLAY,
   payload: isDisplayable
-});
-
-export const setRightAnswerDisplay = showRightAnswer => ({
-  type: SET_RIGHT_ANSWER_DISPLAY,
-  payload: showRightAnswer
 });
 
 export const limitTime = isLimited => ({

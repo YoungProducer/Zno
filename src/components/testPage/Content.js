@@ -174,7 +174,8 @@ class Content extends React.Component {
     if (type === 2) {
       for (let i = 0; i < givedAnswers[testId].length; i++) {
         if (
-          givedAnswers[testId][i] !== String(this.state.tasks[testId].answer[i])
+          givedAnswers[testId][i].replace(",", ".") !==
+          String(this.state.tasks[testId].answer[i])
         ) {
           right = false;
           break;
@@ -697,7 +698,6 @@ class Content extends React.Component {
                   updateAnswer={this.updateAnswer}
                   updateComponent={this.state.updateComponents}
                   showIsRight={showIsRight}
-                  showRight={showRight}
                   isTestFinished={testFinished}
                 />
               ) : tasks[selectedTest - 1].type === 1 ? (
@@ -707,7 +707,6 @@ class Content extends React.Component {
                   updateAnswer={this.updateAnswer}
                   updateComponent={this.state.updateComponents}
                   showIsRight={showIsRight}
-                  showRight={showRight}
                   isTestFinished={testFinished}
                 />
               ) : (
@@ -717,7 +716,6 @@ class Content extends React.Component {
                   updateAnswer={this.updateAnswer}
                   updateComponent={this.state.updateComponents}
                   showIsRight={showIsRight}
-                  showRight={showRight}
                   isTestFinished={testFinished}
                 />
               )}

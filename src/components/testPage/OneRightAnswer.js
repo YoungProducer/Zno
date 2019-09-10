@@ -44,9 +44,8 @@ class OneRightAnswer extends React.Component {
       selectedAnswers,
       updateAnswer,
       givedAnswers,
-      showIsRight,
-      showRight,
       rightAnswer,
+      showIsRight,
       isTestFinished,
       onNullifyAnswer,
       onNullifySelectedAnswer
@@ -72,59 +71,99 @@ class OneRightAnswer extends React.Component {
             }}
             bgColor={() => {
               if (this.state.inited) {
-                if (showIsRight) {
-                  if (givedAnswers[testId] !== -1) {
-                    if (index + 1 === rightAnswer) {
-                      return "#BADC58";
-                    } else {
-                      if (givedAnswers[testId] === index + 1) {
-                        return "#FF6A5C";
-                      }
-                      return "#eee";
-                    }
-                  } else return "#eee";
+                if (!showIsRight) {
+                  return "#eee";
                 } else {
                   if (isTestFinished) {
-                    if (index + 1 === rightAnswer) {
-                      return "#BADC58";
-                    } else {
-                      if (givedAnswers[testId] === index + 1) {
-                        return "#FF6A5C";
-                      }
-                      return "#eee";
-                    }
-                  } else {
-                    if (showRight) {
-                      if (givedAnswers[testId] !== -1) {
-                        if (index + 1 === rightAnswer) {
-                          return "#BADC58";
-                        } else {
-                          if (givedAnswers[testId] === index + 1) {
-                            return "#FF6A5C";
-                          }
-                          return "#eee";
-                        }
+                    console.log('finished')
+                    if (givedAnswers[testId] !== -1) {
+                      if (givedAnswers[testId] === rightAnswer) {
+                        return "#BADC58";
                       } else {
-                        if (index + 1 === rightAnswer) {
-                          return "#BADC58";
-                        } else return "#eee";
-                      }
-                    } else {
-                      if (givedAnswers[testId] !== -1) {
-                        if (index + 1 === rightAnswer) {
-                          return "#BADC58";
-                        } else {
-                          if (givedAnswers[testId] === index + 1) {
-                            return "#FF6A5C";
-                          }
-                          return "#eee";
+                        if (givedAnswers[testId] === index + 1) {
+                          return "#FF6A5C";
                         }
-                      } else {
                         return "#eee";
                       }
+                    } else {
+                      return "#eee";
+                    }
+                    // if (index + 1 === rightAnswer) {
+                    //   return "#BADC58";
+                    // } else {
+                    //   if (givedAnswers[testId] === index + 1) {
+                    //     return "#FF6A5C";
+                    //   }
+                    //   return "#eee";
+                    // }
+                  } else {
+                    if (givedAnswers[testId] !== -1) {
+                      if (index + 1 === rightAnswer) {
+                        return "#BADC58";
+                      } else {
+                        if (givedAnswers[testId] === index + 1) {
+                          return "#FF6A5C";
+                        }
+                        return "#eee";
+                      }
+                    } else {
+                      return "#eee";
                     }
                   }
                 }
+                // if (showIsRight) {
+                //   if (givedAnswers[testId] !== -1) {
+                //     if (index + 1 === rightAnswer) {
+                //       return "#4CAF50";
+                //     } else {
+                //       if (givedAnswers[testId] === index + 1) {
+                //         return "#F44336";
+                //       }
+                //       return "#eee";
+                //     }
+                //   } else return "#eee";
+                // } else {
+                //   if (isTestFinished) {
+                //     if (index + 1 === rightAnswer) {
+                //       return "#4CAF50";
+                //     } else {
+                //       if (givedAnswers[testId] === index + 1) {
+                //         return "#F44336";
+                //       }
+                //       return "#eee";
+                //     }
+                //   }
+                // else {
+                //   if (showRight) {
+                //     if (givedAnswers[testId] !== -1) {
+                //       if (index + 1 === rightAnswer) {
+                //         return "#4CAF50";
+                //       } else {
+                //         if (givedAnswers[testId] === index + 1) {
+                //           return "#F44336";
+                //         }
+                //         return "#eee";
+                //       }
+                //     } else {
+                //       if (index + 1 === rightAnswer) {
+                //         return "#4CAF50";
+                //       } else return "#eee";
+                //     }
+                //   } else {
+                //     if (givedAnswers[testId] !== -1) {
+                //       if (index + 1 === rightAnswer) {
+                //         return "#4CAF50";
+                //       } else {
+                //         if (givedAnswers[testId] === index + 1) {
+                //           return "#F44336";
+                //         }
+                //         return "#eee";
+                //       }
+                //     } else {
+                //       return "#eee";
+                //     }
+                //   }
+                // }
               }
             }}
           >

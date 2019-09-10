@@ -19,7 +19,6 @@ const putStateToProps = (state) => ({
   selectedAnswers: state.selectedAnswers.selectedAnswers,
   givedAnswers: state.givedAnswers.givedAnswers,
   showIsRight: state.testSetUp.showIsRight,
-  showRight: state.testSetUp.showRight,
   isTimeLimited: state.testSetUp.isTimeLimited,
   selectedSubject: state.testSetUp.selectedSubject,
   selectedSubSubject: state.testSetUp.selectedSubSubject,
