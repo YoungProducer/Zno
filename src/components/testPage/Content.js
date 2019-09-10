@@ -273,11 +273,9 @@ class Content extends React.Component {
 
     const {
       onGiveAnAnswer,
-      onSetAnswersDisplay,
       selectedAnswers,
       givedAnswers,
       showIsRight,
-      showRight,
       isTimeLimited
     } = this.props;
 
@@ -313,7 +311,7 @@ class Content extends React.Component {
               )}
               <Button
                 onClick={() => {
-                  this.setTestFinished(), onSetAnswersDisplay(false);
+                  this.setTestFinished();
                   this.equateGivedAndSelected();
                 }}
               >
@@ -513,7 +511,7 @@ class Content extends React.Component {
                             ? green.hover
                             : red.hover;
                         } else {
-                          if (!showIsRight) {
+                          if (showIsRight) {
                             if (this.checkIsGived(givedAnswers, index, 1)) {
                               return this.checkIsRight(givedAnswers, index, 1)
                                 ? green.hover
@@ -529,7 +527,7 @@ class Content extends React.Component {
                                     1
                                   )
                                 ) {
-                                  return yellow.default;
+                                  return yellow.hover;
                                 }
                                 return blue.hover;
                               }
@@ -538,7 +536,7 @@ class Content extends React.Component {
                             return this.checkIsGived(givedAnswers, index, 1)
                               ? green.hover
                               : this.checkIsSelected(selectedAnswers, index, 1)
-                              ? yellow.default
+                              ? yellow.hover
                               : index + 1 !== selectedTest
                               ? blue.hover
                               : blue.hover;
@@ -779,7 +777,6 @@ Content.propTypes = {
   selectedAnswers: PropTypes.array.isRequired,
   givedAnswers: PropTypes.array.isRequired,
   showIsRight: PropTypes.bool.isRequired,
-  showRight: PropTypes.bool.isRequired,
   isTimeLimited: PropTypes.bool.isRequired
 };
 

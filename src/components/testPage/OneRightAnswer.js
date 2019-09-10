@@ -35,7 +35,9 @@ class OneRightAnswer extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {}
+  componentWillReceiveProps(nextProps) {
+    console.log(nextProps.isTestFinished);
+  }
 
   render() {
     const {
@@ -71,32 +73,17 @@ class OneRightAnswer extends React.Component {
             }}
             bgColor={() => {
               if (this.state.inited) {
-                if (!showIsRight) {
-                  return "#eee";
-                } else {
-                  if (isTestFinished) {
-                    console.log('finished')
-                    if (givedAnswers[testId] !== -1) {
-                      if (givedAnswers[testId] === rightAnswer) {
-                        return "#BADC58";
-                      } else {
-                        if (givedAnswers[testId] === index + 1) {
-                          return "#FF6A5C";
-                        }
-                        return "#eee";
-                      }
-                    } else {
-                      return "#eee";
-                    }
-                    // if (index + 1 === rightAnswer) {
-                    //   return "#BADC58";
-                    // } else {
-                    //   if (givedAnswers[testId] === index + 1) {
-                    //     return "#FF6A5C";
-                    //   }
-                    //   return "#eee";
-                    // }
+                if (isTestFinished) {
+                  if (index + 1 === rightAnswer) {
+                    return "#BADC58";
                   } else {
+                    if (givedAnswers[testId] === index + 1) {
+                      return "#FF6A5C";
+                    }
+                    return "#eee";
+                  }
+                } else {
+                  if (showIsRight) {
                     if (givedAnswers[testId] !== -1) {
                       if (index + 1 === rightAnswer) {
                         return "#BADC58";
@@ -109,61 +96,8 @@ class OneRightAnswer extends React.Component {
                     } else {
                       return "#eee";
                     }
-                  }
+                  } else return "#eee";
                 }
-                // if (showIsRight) {
-                //   if (givedAnswers[testId] !== -1) {
-                //     if (index + 1 === rightAnswer) {
-                //       return "#4CAF50";
-                //     } else {
-                //       if (givedAnswers[testId] === index + 1) {
-                //         return "#F44336";
-                //       }
-                //       return "#eee";
-                //     }
-                //   } else return "#eee";
-                // } else {
-                //   if (isTestFinished) {
-                //     if (index + 1 === rightAnswer) {
-                //       return "#4CAF50";
-                //     } else {
-                //       if (givedAnswers[testId] === index + 1) {
-                //         return "#F44336";
-                //       }
-                //       return "#eee";
-                //     }
-                //   }
-                // else {
-                //   if (showRight) {
-                //     if (givedAnswers[testId] !== -1) {
-                //       if (index + 1 === rightAnswer) {
-                //         return "#4CAF50";
-                //       } else {
-                //         if (givedAnswers[testId] === index + 1) {
-                //           return "#F44336";
-                //         }
-                //         return "#eee";
-                //       }
-                //     } else {
-                //       if (index + 1 === rightAnswer) {
-                //         return "#4CAF50";
-                //       } else return "#eee";
-                //     }
-                //   } else {
-                //     if (givedAnswers[testId] !== -1) {
-                //       if (index + 1 === rightAnswer) {
-                //         return "#4CAF50";
-                //       } else {
-                //         if (givedAnswers[testId] === index + 1) {
-                //           return "#F44336";
-                //         }
-                //         return "#eee";
-                //       }
-                //     } else {
-                //       return "#eee";
-                //     }
-                //   }
-                // }
               }
             }}
           >

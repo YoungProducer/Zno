@@ -242,7 +242,7 @@ class PopUpWindow extends React.Component {
 
             {this.state.parts.length !== 0 && selectedType === "ВИБІР ТЕМИ" ? (
               <FormControl component="div">
-                <FormLabel component="legend">Оберіть частину</FormLabel>
+                <FormLabel component="legend">Оберіть предмет</FormLabel>
                 <TextField
                   id="standard-select-currency"
                   select
@@ -380,7 +380,7 @@ class PopUpWindow extends React.Component {
                       </SwitcherBg>
                     </label>
                   </SwitcherWrapper>
-                  <h1>Обмежений час</h1>
+                  <h1>Обмежений час(180 хв)</h1>
                 </ModeWrapper>
               ) : <></>
             }
@@ -421,8 +421,6 @@ class PopUpWindow extends React.Component {
 PopUpWindow.propTypes = {
   onSetAnswersDisplay: PropTypes.func.isRequired,
   showIsRight: PropTypes.bool.isRequired,
-  onSetRightAnswerDisplay: PropTypes.func.isRequired,
-  showRight: PropTypes.bool.isRequired,
   onLimitTime: PropTypes.func.isRequired,
   isTimeLimited: PropTypes.bool.isRequired,
   onSetUpTasks: PropTypes.func.isRequired

@@ -27,7 +27,7 @@ class RelationsAnswers extends React.Component {
       this.props.selectedAnswers[this.props.testId][3] !== -1
     ) {
       this.props.updateAnswer(true, "selected");
-    } else this.props.updateAnswer(false, "selected")
+    } else this.props.updateAnswer(false, "selected");
     if (
       this.props.givedAnswers[this.props.testId][0] !== -1 &&
       this.props.givedAnswers[this.props.testId][1] !== -1 &&
@@ -35,7 +35,7 @@ class RelationsAnswers extends React.Component {
       this.props.givedAnswers[this.props.testId][3] !== -1
     ) {
       this.props.updateAnswer(true, "gived");
-    } else this.props.updateAnswer(false, "gived")
+    } else this.props.updateAnswer(false, "gived");
   };
 
   componentDidMount() {
@@ -125,19 +125,17 @@ class RelationsAnswers extends React.Component {
                 }}
                 bgColor={() => {
                   if (inited) {
-                    if (!showIsRight) {
-                      return "#eee";
-                    } else {
-                      if (isTestFinished) {
-                        if (hindex + 1 === rightAnswer[vindex]) {
-                          return "#BADC58";
-                        } else {
-                          if (givedAnswers[testId][vindex] === hindex + 1) {
-                            return "#FF6A5C";
-                          }
-                          return "#eee";
-                        }
+                    if (isTestFinished) {
+                      if (hindex + 1 === rightAnswer[vindex]) {
+                        return "#BADC58";
                       } else {
+                        if (givedAnswers[testId][vindex] === hindex + 1) {
+                          return "#FF6A5C";
+                        }
+                        return "#eee";
+                      }
+                    } else {
+                      if (showIsRight) {
                         if (givedAnswers[testId][vindex] !== -1) {
                           if (hindex + 1 === rightAnswer[vindex]) {
                             return "#BADC58";
@@ -150,64 +148,9 @@ class RelationsAnswers extends React.Component {
                         } else {
                           return "#eee;";
                         }
-                      }
+                      } else return "#eee";
                     }
                   }
-                  // if (inited) {
-                  //   if (showIsRight) {
-                  //     if (givedAnswers[testId][vindex] !== -1) {
-                  //       if (hindex + 1 === rightAnswer[vindex]) {
-                  //         return "#4CAF50";
-                  //       } else {
-                  //         if (givedAnswers[testId][vindex] === hindex + 1) {
-                  //           return "#F44336";
-                  //         }
-                  //         return "#eee";
-                  //       }
-                  //     } else return "#eee";
-                  //   } else {
-                  //     if (isTestFinished) {
-                  //       if (hindex + 1 === rightAnswer[vindex]) {
-                  //         return "#4CAF50";
-                  //       } else {
-                  //         if (givedAnswers[testId][vindex] === hindex + 1) {
-                  //           return "#F44336";
-                  //         }
-                  //         return "#eee";
-                  //       }
-                  //     } else {
-                  //       if (showRight) {
-                  //         if (givedAnswers[testId][vindex] !== -1) {
-                  //           if (hindex + 1 === rightAnswer[vindex]) {
-                  //             return "#4CAF50";
-                  //           } else {
-                  //             if (givedAnswers[testId][vindex] === hindex + 1) {
-                  //               return "#F44336";
-                  //             }
-                  //             return "#eee";
-                  //           }
-                  //         } else {
-                  //           if (hindex + 1 === rightAnswer[vindex]) {
-                  //             return "#4CAF50";
-                  //           } else return "#eee";
-                  //         }
-                  //       } else {
-                  //         if (givedAnswers[testId][vindex] !== -1) {
-                  //           if (hindex + 1 === rightAnswer[vindex]) {
-                  //             return "#4CAF50";
-                  //           } else {
-                  //             if (givedAnswers[testId][vindex] === hindex + 1) {
-                  //               return "#F44336";
-                  //             }
-                  //             return "#eee";
-                  //           }
-                  //         } else {
-                  //           return "#eee";
-                  //         }
-                  //       }
-                  //     }
-                  //   }
-                  // }
                 }}
               >
                 {vindex === 0 ? <Indices>{hor}</Indices> : <></>}
@@ -235,7 +178,6 @@ RelationsAnswers.propTypes = {
   onNullifyRelationAnswerByIndex: PropTypes.func.isRequired,
   onNullifySelecetedRelationAnswerByIndex: PropTypes.func.isRequired,
   showIsRight: PropTypes.bool.isRequired,
-  showRight: PropTypes.bool.isRequired
 };
 
 export default RelationsAnswers;
