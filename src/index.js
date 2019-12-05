@@ -1,9 +1,13 @@
+import path from 'path';
 import React from 'react'
 import { render } from 'react-dom'
 import { createStore } from 'redux'
 import { Provider } from 'react-redux'
 import App from './components/App'
 import rootReducer from './store/reducers'
+import getFilesFromFolder from './utils/getFilesFromFolder'
+import sortFiles from './utils/sortFiles';
+import generateVariant from './utils/generateVariant';
 
 const store = createStore(rootReducer)
 
@@ -12,6 +16,14 @@ let root = document.createElement('div')
 
 root.id = 'root'
 document.body.appendChild(root)
+
+const dirname = 'dist/tasks/Математика/Алгебра/Теми/2/Відповіді';
+(async () => {
+    const files = await getFilesFromFolder('dist/tasks/Математика/Алгебра/Теми/2/Відповіді');
+    const sortedFiles = sortFiles(files);
+    console.log(sortedFiles);
+    generateVariant('dist/tasks/Математика/Алгебра/Теми/2', sortedFiles, 'Відповіді');
+})();
 
 // Now we can render our application into it
 render(
